@@ -9,6 +9,7 @@ public class User {
     private int userID;
     private int roleID;
     private int jobID;
+    private char middleInitial;
     private String firstName;
     private String lastName;
     private String address;
@@ -31,6 +32,10 @@ public class User {
 
     public void setJobID(int jobID) {
         this.jobID = jobID;
+    }
+
+    public void setMiddleInitial(char middleInitial) {
+        this.middleInitial = middleInitial;
     }
 
     public void setFirstName(String firstName) {
@@ -68,6 +73,10 @@ public class User {
 
     public int getJobID() {
         return jobID;
+    }
+
+    public char getMiddleInitial() {
+        return middleInitial;
     }
 
     public String getFirstName() {
