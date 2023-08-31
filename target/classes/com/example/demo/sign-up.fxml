@@ -11,7 +11,7 @@
          <children>
             <ImageView fitHeight="84.0" fitWidth="150.0" layoutX="25.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@new-york-state-vector-logo.png" />
+                  <Image url="@../images/new-york-state-vector-logo.png" />
                </image></ImageView>
          </children></AnchorPane>
       <AnchorPane prefHeight="400.0" prefWidth="344.0" style="-fx-background-color: #424fb3;">
