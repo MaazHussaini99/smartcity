@@ -16,15 +16,19 @@ import java.sql.SQLException;
 public class SignupController {
 
     @FXML
+    private TextField emailIdFieldTxtBox;
+    @FXML
+    private TextField phoneNumberTxtBox;
+    @FXML
+    private TextField passwordTxtBox;
+    @FXML
+    private TextField confirmPasswordTxtBox;
+    @FXML
     private TextField firstNameTxtBox;
     @FXML
     private TextField lastNameTxtBox;
     @FXML
     private TextField middleInitialTxtBox;
-    @FXML
-    private TextField emailIdFieldTxtBox;
-    @FXML
-    private TextField phoneNumberTxtBox;
     @FXML
     private TextField addressTxtBox;
     @FXML
@@ -41,7 +45,18 @@ public class SignupController {
 
         Window owner = submitButton.getScene().getWindow();
 
-        // Check if any fields are blank
+        // Email validation
+        if (emailIdFieldTxtBox.getText().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                    "Please enter your email");
+            return;
+        }
+        if (phoneNumberTxtBox.getText().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                    "Please enter your phone number");
+            return;
+        }
+        // Password validation
         if (firstNameTxtBox.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "Please enter your first name");
@@ -55,16 +70,6 @@ public class SignupController {
         if (middleInitialTxtBox.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "Please enter your middle initial");
-            return;
-        }
-        if (emailIdFieldTxtBox.getText().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                    "Please enter your email");
-            return;
-        }
-        if (phoneNumberTxtBox.getText().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                    "Please enter your phone number");
             return;
         }
         if (addressTxtBox.getText().isEmpty()) {
