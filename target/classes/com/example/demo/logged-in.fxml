@@ -1,0 +1,37 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+
+<!--<?import javafx.scene.control.*?>-->
+<!--<?import javafx.scene.image.*?>-->
+<!--<?import javafx.scene.layout.*?>-->
+<!--<?import javafx.scene.text.*?>-->
+
+<!--<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="535.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">-->
+<!--   <children>-->
+<!--      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fffd70;">-->
+<!--         <children>-->
+<!--            <Label layoutX="20.0" layoutY="131.0" prefHeight="18.0" prefWidth="68.0" text="Username" />-->
+<!--            <Label layoutX="20.0" layoutY="185.0" text="Password" />-->
+<!--            <PasswordField layoutX="13.0" layoutY="208.0" prefHeight="26.0" prefWidth="170.0">-->
+<!--               <font>-->
+<!--                  <Font size="10.0" />-->
+<!--               </font></PasswordField>-->
+<!--            <TextField layoutX="13.0" layoutY="155.0" prefHeight="26.0" prefWidth="170.0">-->
+<!--               <font>-->
+<!--                  <Font size="10.0" />-->
+<!--               </font></TextField>-->
+<!--            <ImageView fitHeight="84.0" fitWidth="150.0" layoutX="25.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">-->
+<!--               <image>-->
+<!--                  <Image url="@new-york-state-vector-logo.png" />-->
+<!--               </image></ImageView>-->
+<!--            <Button layoutX="77.0" layoutY="248.0" mnemonicParsing="false" text="Login" />-->
+<!--            <Button contentDisplay="TEXT_ONLY" layoutX="72.0" layoutY="353.0" mnemonicParsing="false" text="Sign up" />-->
+<!--         </children></AnchorPane>-->
+<!--      <AnchorPane prefHeight="400.0" prefWidth="344.0" style="-fx-background-color: #424fb3;">-->
+<!--         <children>-->
+<!--            <ImageView fitHeight="376.0" fitWidth="314.0" layoutX="13.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">-->
+<!--               <image>-->
+<!--                  <Image url="@bg.jpg" />-->
+<!--               </image></ImageView>-->
+<!--         </children></AnchorPane>-->
+<!--   </children>-->
+<!--</HBox>-->

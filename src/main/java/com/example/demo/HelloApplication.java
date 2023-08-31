@@ -20,8 +20,11 @@ public class HelloApplication extends Application {
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
+
+
         DBConn newDB = new DBConn();
         newDB.DBConn();
+
     }
 
     public static void main(String[] args) {
