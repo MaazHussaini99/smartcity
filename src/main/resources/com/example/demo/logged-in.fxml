@@ -21,7 +21,7 @@
                </font></TextField>
             <ImageView fitHeight="84.0" fitWidth="150.0" layoutX="25.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@new-york-state-vector-logo.png" />
+                  <Image url="@../images/new-york-state-vector-logo.png" />
                </image></ImageView>
             <Button layoutX="77.0" layoutY="248.0" mnemonicParsing="false" text="Login" />
             <Button contentDisplay="TEXT_ONLY" layoutX="72.0" layoutY="353.0" mnemonicParsing="false" text="Sign up" />
@@ -30,7 +30,7 @@
          <children>
             <ImageView fitHeight="376.0" fitWidth="314.0" layoutX="13.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@bg.jpg" />
+                  <Image url="@../images/bg.jpg" />
                </image></ImageView>
          </children></AnchorPane>
    </children>
