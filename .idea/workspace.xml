@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9abf6f9a-f2d9-487e-8319-d7fb36438d43" name="Changes" comment="Continued working on SignupController">
+    <list default="true" id="9abf6f9a-f2d9-487e-8319-d7fb36438d43" name="Changes" comment="Gave text fields and buttons in both logged-in.fxml and sign-up.fxml names. Started working on input validation.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/SignupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/SignupController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/demo/logged-in.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/demo/logged-in.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/demo/sign-up.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/demo/sign-up.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +96,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693502297888</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Gave text fields and buttons in both logged-in.fxml and sign-up.fxml names. Started working on input validation.">
+      <option name="closed" value="true" />
+      <created>1693504984756</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1693504984756</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -117,7 +123,8 @@
     <MESSAGE value="Merge branch 'master' into Owen&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
     <MESSAGE value="Started working on SignupController" />
     <MESSAGE value="Continued working on SignupController" />
-    <option name="LAST_COMMIT_MESSAGE" value="Continued working on SignupController" />
+    <MESSAGE value="Gave text fields and buttons in both logged-in.fxml and sign-up.fxml names. Started working on input validation." />
+    <option name="LAST_COMMIT_MESSAGE" value="Gave text fields and buttons in both logged-in.fxml and sign-up.fxml names. Started working on input validation." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

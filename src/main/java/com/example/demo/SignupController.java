@@ -1,102 +1,120 @@
 package com.example.demo;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
 
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
-public class SignupController {
+public class SignupController implements Initializable {
 
     @FXML
-    private TextField emailIdFieldTxtBox;
+    private TextField emailIdTextField;
     @FXML
-    private TextField phoneNumberTxtBox;
+    private TextField phoneNumberTextField;
     @FXML
-    private TextField passwordTxtBox;
+    private TextField passwordTextField;
     @FXML
-    private TextField confirmPasswordTxtBox;
+    private TextField confirmPasswordTextField;
     @FXML
-    private TextField firstNameTxtBox;
+    private TextField firstNameTextField;
     @FXML
-    private TextField lastNameTxtBox;
+    private TextField lastNameTextField;
     @FXML
-    private TextField middleInitialTxtBox;
+    private TextField middleInitialTextField;
     @FXML
-    private TextField addressTxtBox;
+    private TextField addressTextField;
     @FXML
-    private TextField cityTxtBox;
+    private TextField cityTextField;
     // State drop down
     @FXML
-    private TextField zipCodeTxtBox;
+    private TextField zipCodeTextField;
 
     @FXML
     private Button submitButton;
 
-    public void signUp( ActionEvent event ) throws SQLException {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        // Make submitButton clickable and have it run the signUp method
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                signUp(actionEvent);
+                // TODO: Something to send user to home page
+            }
+        });
+    }
+
+
+    public void signUp( ActionEvent event ) {
 
 
         Window owner = submitButton.getScene().getWindow();
 
         // Email validation
-        if (emailIdFieldTxtBox.getText().isEmpty()) {
+        if (emailIdTextField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "Please enter your email");
             return;
         }
-        if (phoneNumberTxtBox.getText().isEmpty()) {
+        if (phoneNumberTextField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "Please enter your phone number");
             return;
         }
         // Password validation
-        if (firstNameTxtBox.getText().isEmpty()) {
+        if (firstNameTextField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "Please enter your first name");
             return;
         }
-        if (lastNameTxtBox.getText().isEmpty()) {
+        if (lastNameTextField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "Please enter your last name");
             return;
         }
-        if (middleInitialTxtBox.getText().isEmpty()) {
+        if (middleInitialTextField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "Please enter your middle initial");
             return;
         }
-        if (addressTxtBox.getText().isEmpty()) {
+        if (addressTextField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "Please enter your Street Address");
             return;
         }
-        if (cityTxtBox.getText().isEmpty()) {
+        if (cityTextField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "Please enter the City");
             return;
         }
-        if (zipCodeTxtBox.getText().isEmpty()) {
+        if (zipCodeTextField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "Please enter your Zip Code");
             return;
         }
 
         // Save user input from text fields
-        String firstName = firstNameTxtBox.getText();
-        String lastName = lastNameTxtBox.getText();
-        String middleInitial = middleInitialTxtBox.getText();
-        String email = emailIdFieldTxtBox.getText();
-        String phoneNumber = phoneNumberTxtBox.getText();
-        String streetAddress = addressTxtBox.getText();
-        String city = cityTxtBox.getText();
-        String zipCode = zipCodeTxtBox.getText();
+        String firstName = firstNameTextField.getText();
+        String lastName = lastNameTextField.getText();
+        String middleInitial = middleInitialTextField.getText();
+        String email = emailIdTextField.getText();
+        String phoneNumber = phoneNumberTextField.getText();
+        String streetAddress = addressTextField.getText();
+        String city = cityTextField.getText();
+        String zipCode = zipCodeTextField.getText();
 
         // Check if an account with the entered email already exists
         boolean flag = checkForEmail(email);
@@ -107,6 +125,8 @@ public class SignupController {
         } else {
             // Create account
             infoBox("Registration Successful", null, "Success");
+
+            // TODO: Create new account and add it to the database
         }
 
     } // End of signUp
