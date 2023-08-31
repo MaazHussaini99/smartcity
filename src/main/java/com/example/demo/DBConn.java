@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class DBConn {
-    public void DBConn(){
+    public static Connection connectDB(){
         Connection connection = null;
         try {
             // below two lines are used for connectivity.
@@ -32,10 +32,12 @@ public class DBConn {
             }
             resultSet.close();
             statement.close();
-            connection.close();
+//            connection.close();
+            return connection;
         }
         catch (Exception exception) {
             System.out.println(exception);
         }
+        return null;
     }
 }
