@@ -51,14 +51,18 @@ public class SignupController implements Initializable {
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                signUp(actionEvent);
+                try {
+                    signUp(actionEvent);
+                } catch (SQLException e) {
+                    printSQLException(e);
+                }
                 // TODO: Something to send user to home page
             }
         });
     }
 
 
-    public void signUp( ActionEvent event ) {
+    public void signUp( ActionEvent event ) throws SQLException {
 
 
         Window owner = submitButton.getScene().getWindow();
