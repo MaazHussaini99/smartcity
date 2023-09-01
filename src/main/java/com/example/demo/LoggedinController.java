@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,12 +9,17 @@ import java.sql.SQLException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
+import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
 
 public class LoggedinController {
 
@@ -27,7 +33,10 @@ public class LoggedinController {
     private Button submitButton;
 
     @FXML
-    public void login(ActionEvent event) throws SQLException {
+    private Button signUp;
+
+    @FXML
+    public void login(ActionEvent event) throws SQLException, IOException {
 
         Window owner = submitButton.getScene().getWindow();
 
@@ -53,9 +62,26 @@ public class LoggedinController {
         System.out.println("Flag: "+flag);
         if (flag == true) {
             infoBox("Login Successful!", null, "Success");
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loading.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 544, 400);
+            Node node = (Node) event.getSource();
+            Stage stage = (Stage) node.getScene().getWindow();
+            stage.setTitle("Smart City");
+            stage.setScene(scene);
+            stage.show();
         } else {
             infoBox("Please enter correct Email and Password", null, "Failed");
         }
+    }
+    @FXML
+    public void goToSignUp(ActionEvent event) throws SQLException, IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("sign-up.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 544, 400);
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.setTitle("Smart City - Sign up");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public static void infoBox(String infoMessage, String headerText, String title) {
@@ -120,3 +146,4 @@ public class LoggedinController {
         }
     }
 }
+
