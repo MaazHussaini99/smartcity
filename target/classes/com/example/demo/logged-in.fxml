@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="535.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LoggedinController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="535.0" fx:controller="com.example.demo.LoggedinController" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fffd70;">
          <children>
@@ -24,7 +24,7 @@
                   <Image url="@../images/new-york-state-vector-logo.png" />
                </image></ImageView>
             <Button fx:id="submitButton" layoutX="77.0" layoutY="248.0" mnemonicParsing="false" onAction="#login" text="Login" />
-            <Button fx:id="signUp" contentDisplay="TEXT_ONLY" layoutX="72.0" layoutY="353.0" mnemonicParsing="false" onAction="#goToSignUp" text="Sign up" />
+            <Button contentDisplay="TEXT_ONLY" layoutX="72.0" layoutY="353.0" mnemonicParsing="false" text="Sign up" />
          </children></AnchorPane>
       <AnchorPane prefHeight="400.0" prefWidth="344.0" style="-fx-background-color: #424fb3;">
          <children>

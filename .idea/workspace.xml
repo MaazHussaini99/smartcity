@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9abf6f9a-f2d9-487e-8319-d7fb36438d43" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/DBConn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/DBConn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/DBConn.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/DBConn.class" afterDir="false" />
-    </list>
+    <list default="true" id="9abf6f9a-f2d9-487e-8319-d7fb36438d43" name="Changes" comment="Merged master branch into Owen's branch" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,6 +20,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="master" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -75,6 +74,31 @@
       <option name="presentableId" value="Default" />
       <updated>1693333429736</updated>
     </task>
+    <task id="LOCAL-00001" summary="Started setting up User file">
+      <option name="closed" value="true" />
+      <created>1693490478119</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1693490478119</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Started setting up User file">
+      <option name="closed" value="true" />
+      <created>1693490554064</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1693490554064</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Merged master branch into Owen's branch">
+      <option name="closed" value="true" />
+      <created>1693578588392</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1693578588392</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -91,6 +115,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Sending Maaz his loader page" />
     <MESSAGE value="commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit" />
+    <MESSAGE value="Merged master branch into Owen's branch" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merged master branch into Owen's branch" />
   </component>
 </project>

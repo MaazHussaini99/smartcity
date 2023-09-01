@@ -14,10 +14,9 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException, SQLException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("logged-in.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 544, 400);
-        stage.setTitle("Hello!");
+        stage.setTitle("Smart City Application");
         stage.setScene(scene);
         stage.show();
-        News.getNews();
     }
 
     public static void main(String[] args) {
