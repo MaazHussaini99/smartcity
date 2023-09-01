@@ -17,7 +17,6 @@ public class HelloApplication extends Application {
         stage.setTitle("Smart City Application");
         stage.setScene(scene);
         stage.show();
-        News.getNews();
     }
 
     public static void main(String[] args) {
