@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="963.0" style="-fx-background-color: #fffd70;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="658.0" prefWidth="290.0" style="-fx-background-color: #fffd70;">
+         <children>
+            <ImageView fitHeight="84.0" fitWidth="211.0" layoutX="62.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/new-york-state-vector-logo.png" />
+               </image></ImageView>
+            <Button fx:id="profileLink" layoutX="104.0" layoutY="515.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="67.0" text="Profile" />
+            <Button fx:id="logOut" layoutX="104.0" layoutY="552.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="67.0" text="Log Out" />
+         </children></AnchorPane>
+      <TabPane layoutX="20.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="626.0" prefWidth="646.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Job Listing">
+            <content>
+              <AnchorPane maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="717.0" styleClass="anchor-pane" />
+            </content>
+          </Tab>
+          <Tab text="Hotels">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="Transport">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab text="News">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0">
+                     <children>
+                        <ListView fx:id="newsList" layoutX="14.0"  layoutY="14.0" prefHeight="573.0" prefWidth="620.0" />
+                     </children>
+                    </AnchorPane>
+                </content>
+            </Tab>
+        </tabs>
+         <HBox.margin>
+            <Insets top="10.0" />
+         </HBox.margin>
+      </TabPane>
+   </children>
+</HBox>

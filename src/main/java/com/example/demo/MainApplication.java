@@ -9,15 +9,16 @@ import java.sql.SQLException;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+//ERROR FIX 1: Put fx:controller="com.example.demo.LoggedinController"  in front of xmlns="http://javafx.com/javafx/11.0.14-internal" in logged-in.fxml
+public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException, SQLException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("logged-in.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("logged-in.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 544, 400);
-        stage.setTitle("Hello!");
+        stage.setTitle("smartcity");
         stage.setScene(scene);
         stage.show();
-        News.getNews();
+
     }
 
     public static void main(String[] args) {

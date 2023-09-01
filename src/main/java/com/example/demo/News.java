@@ -8,7 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class News {
-    public static void getNews(){
+    public static String[] getNews(){
         String apiUrl = " https://newsdata.io/api/1/news?apikey=pub_282524b67596732de8f9d3ecfb01a95de8781&q=NYC&country=us ";
 
         try {
@@ -34,6 +34,8 @@ public class News {
                 JSONObject jsonResponse = new JSONObject(response.toString());
                 JSONArray results = jsonResponse.getJSONArray("results");
 
+                StringBuilder newsContent = new StringBuilder();
+
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject article = results.getJSONObject(i);
                     String title = article.getString("title");
@@ -42,12 +44,13 @@ public class News {
                     String pubDate = article.getString("pubDate");
 //                    JSONArray keywords = article.getJSONArray("keywords");
 
-                    System.out.println("Title: " + title);
-                    System.out.println("Link: " + link);
-                    System.out.println("Description: " + description);
-                    System.out.println("Publication Date: " + pubDate);
-//                    System.out.println("Keywords: " + keywords.toString());
-                    System.out.println();
+
+                    return new String[]{("Title: " + title),
+                    ("Link: " + link),
+                    ("Description: " + description),
+                    ("Publication Date: " + pubDate)
+                    //,("Keywords: " + keywords.toString())
+                    };
                 }
             } else {
                 System.out.println("Request failed with response code: " + responseCode);
@@ -55,5 +58,6 @@ public class News {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 }
