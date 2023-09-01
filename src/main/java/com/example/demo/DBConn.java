@@ -12,8 +12,9 @@ public class DBConn {
             // below two lines are used for connectivity.
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/smartcity",
-                    "root", "");
+
+                    "jdbc:mysql://smartcity-db2.ctpu1etrkqud.us-east-1.rds.amazonaws.com:3306/smartcity",
+                    "admin", "maaz2023");
 
             // mydb is database
             // mydbuser is name of database
