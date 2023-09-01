@@ -19,9 +19,11 @@ public class LandingPageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        List<String> newsListData = News.getNewsTitles();
-        String[] newsArray = newsListData.toArray(new String[0]);
-        ObservableList<String> newsObservableList = FXCollections.observableArrayList(newsArray);
-        newsList.setItems(newsObservableList);
+        try {
+            ObservableList<String> names = FXCollections.observableArrayList(News.getNewsTitles());
+            newsList.setItems(names);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
