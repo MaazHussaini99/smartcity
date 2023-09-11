@@ -14,12 +14,6 @@ public class BankAccount {
         this.routingNo = routingNo;
     }
 
-    public BankAccount(int fetchedBankId, int userId, int routingNumber) {
-        this.accountNo = fetchedBankId;
-        this.userId = userId;
-        this.routingNo = routingNumber;
-    }
-
     public int getAccountNo() {
         return accountNo;
     }
@@ -50,13 +44,5 @@ public class BankAccount {
 
     public void setRoutingNo(int routingNo) {
         this.routingNo = routingNo;
-    }
-
-    public String getAccountNumber() {
-        return null;
-    }
-
-    public String getRoutingNumber() {
-        return null;
     }
 }
