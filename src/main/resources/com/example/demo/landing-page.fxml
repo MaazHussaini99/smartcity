@@ -37,7 +37,9 @@
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
-                        <ListView fx:id="newsList" layoutX="313.0" layoutY="22.0" prefHeight="546.0" prefWidth="312.0" />
+                        <ListView fx:id="newsList" layoutX="17.0" layoutY="123.0" prefHeight="450.0" prefWidth="300.0" />
+                        <Pane layoutX="329.0" layoutY="22.0" prefHeight="550.0" prefWidth="300.0" style="-fx-background-color: ffffff;" />
+                        <TextField layoutX="17.0" layoutY="22.0" prefHeight="26.0" prefWidth="300.0" promptText="SEARCH" />
                      </children>
                     </AnchorPane>
                 </content>
