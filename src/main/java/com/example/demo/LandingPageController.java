@@ -18,16 +18,16 @@ import java.util.ResourceBundle;
 public class LandingPageController implements Initializable {
 
     @FXML
-    private ListView<News> newsList;
+    private ListView<String> newsListView; // Rename your ListView
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            ObservableList<News> names = FXCollections.observableArrayList(News.getNews());
-            News[] newsArray = new News[names.size()];
-            names.toArray(newsArray);
+            ObservableList<String> titles = FXCollections.observableArrayList();
+            ObservableList<News> newsItems = FXCollections.observableArrayList(News.getNews()); // Rename your ObservableList
 
-            for (News news : newsArray) {
+            for (News news : newsItems) {
+                titles.add(news.getTitle());
                 System.out.println(news.getTitle());
                 System.out.println(news.getDescription());
                 System.out.println(news.getUrl());
@@ -36,11 +36,12 @@ public class LandingPageController implements Initializable {
 
             }
 
-            newsList.setItems(names);
+            newsListView.setItems(titles); // Use the renamed ListView
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public void LogOut(ActionEvent event) throws SQLException, IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("logged-in.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 544, 400);
@@ -50,4 +51,5 @@ public class LandingPageController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
 }

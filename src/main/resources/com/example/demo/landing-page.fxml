@@ -14,7 +14,7 @@
                   <Image url="@../images/new-york-state-vector-logo.png" />
                </image></ImageView>
             <Button fx:id="profileLink" layoutX="113.0" layoutY="514.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="67.0" text="Profile" />
-            <Button fx:id="logOut" layoutX="113.0" layoutY="550.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="67.0" text="Log Out" onAction="#LogOut"/>
+            <Button fx:id="logOut" layoutX="113.0" layoutY="550.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="26.0" prefWidth="67.0" text="Log Out" />
          </children></AnchorPane>
       <TabPane layoutX="20.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="626.0" prefWidth="646.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -37,7 +37,8 @@
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
-                        <ListView fx:id="newsList" layoutX="17.0" layoutY="123.0" prefHeight="450.0" prefWidth="300.0" style="-fx-background-color: #3567c4;" />
+
+                        <ListView fx:id="newsListView" layoutX="17.0" layoutY="123.0" prefHeight="450.0" prefWidth="300.0" />
                         <Pane layoutX="329.0" layoutY="22.0" prefHeight="550.0" prefWidth="300.0" style="-fx-background-color: #3567c4;">
                            <children>
                               <ImageView fitHeight="168.0" fitWidth="250.0" layoutX="25.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" />
@@ -45,6 +46,7 @@
                               <Hyperlink layoutX="29.0" layoutY="501.0" text="Hyperlink" />
                            </children></Pane>
                         <TextField layoutX="17.0" layoutY="22.0" prefHeight="26.0" prefWidth="300.0" promptText="SEARCH" style="-fx-background-color: #3567c4;" />
+
                      </children>
                     </AnchorPane>
                 </content>
