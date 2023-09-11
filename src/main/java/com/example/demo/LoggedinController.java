@@ -2,7 +2,6 @@ package com.example.demo;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +18,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
 import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
 
 public class LoggedinController {
 
@@ -62,8 +60,8 @@ public class LoggedinController {
         System.out.println("Flag: "+flag);
         if (flag == true) {
             infoBox("Login Successful!", null, "Success");
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("loading.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 544, 400);
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("landing-page.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 999, 658);
             Node node = (Node) event.getSource();
             Stage stage = (Stage) node.getScene().getWindow();
             stage.setTitle("Smart City");
@@ -75,7 +73,7 @@ public class LoggedinController {
     }
     @FXML
     public void goToSignUp(ActionEvent event) throws SQLException, IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("sign-up.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("sign-up.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 544, 400);
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
