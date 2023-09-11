@@ -17,7 +17,28 @@ public class User {
     private String password;
     private String phoneNumber;
 
-    public void createNewUser() {}
+    public User(String firstName,
+                String lastName,
+                String streetAddress,
+                String city,
+                String zipcode,
+                String state,
+                String email,
+                String password,
+                String phoneNumber,
+                int roleID) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.streetAddress = streetAddress;
+        this.city = city;
+        this.zipcode = zipcode;
+        this.state = state;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.roleID = roleID;
+    }
 
     public void createResumeProfile() {}
 
@@ -64,7 +85,6 @@ public class User {
     }
 
     // Setters
-    // first_name, last_name, user_streetaddress, user_city, user_zipcode, state_ID, user_email, user_password, user_phone, role_ID
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
