@@ -21,6 +21,7 @@ public class LandingPageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            Weather.getWeather();
             List<News> newsList = new ArrayList<>();
             newsList = News.getNews();
             for(News news : newsList){
