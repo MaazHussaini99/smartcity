@@ -13,6 +13,7 @@
                <image>
                   <Image url="@../images/new-york-state-vector-logo.png" />
                </image></ImageView>
+            <Button layoutX="56.0" layoutY="344.0" mnemonicParsing="false" text="Back to Login" onAction="#BackToLogin"/>
          </children></AnchorPane>
       <AnchorPane prefHeight="400.0" prefWidth="344.0" style="-fx-background-color: #424fb3;">
          <children>
