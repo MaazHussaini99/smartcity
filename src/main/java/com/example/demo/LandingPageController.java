@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class LandingPageController implements Initializable {
+public class LandingPageController extends HotelBookingController implements Initializable {
 
     @FXML
     private ListView<String> newsList;
