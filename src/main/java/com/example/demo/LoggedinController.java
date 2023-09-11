@@ -82,7 +82,6 @@ public class LoggedinController {
         stage.setScene(scene);
         stage.show();
     }
-
     public static void infoBox(String infoMessage, String headerText, String title) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setContentText(infoMessage);
