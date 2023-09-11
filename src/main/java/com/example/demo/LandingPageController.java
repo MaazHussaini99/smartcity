@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -20,8 +21,17 @@ public class LandingPageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            ObservableList<String> names = FXCollections.observableArrayList(News.getNewsTitles());
-            newsList.setItems(names);
+            List<News> newsList = new ArrayList<>();
+            newsList = News.getNews();
+            for(News news : newsList){
+                System.out.println(news.getTitle());
+                System.out.println(news.getDescription());
+                System.out.println(news.getUrl());
+                System.out.println(news.getImg_url());
+                System.out.println();
+            }
+//            ObservableList<String> names = FXCollections.observableArrayList(News.getNewsTitles());
+//            newsList.setItems(names);
         } catch (Exception e) {
             e.printStackTrace();
         }
