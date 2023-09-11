@@ -120,6 +120,7 @@ public class LoggedinController {
 
             if (resultSet.next() == true) {
                 System.out.println("Logged in!");
+                HotelBooking.getInstance().setEmailId(emailId);
                 return true;
             }
 
