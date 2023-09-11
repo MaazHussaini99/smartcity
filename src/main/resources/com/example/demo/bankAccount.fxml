@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.text.TextFlow?>
+
+<VBox fx:id="bankAccountView" alignment="CENTER" xmlns="http://javafx.com/javafx/16" fx:controller="com.example.demo.BankAccountController" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox alignment="TOP_RIGHT">
+            <Button text="Back to Bank" onAction="#navigateBackToBank" />
+        </HBox>
+        <Label text="Bank Account Information"/>
+
+        <!-- ComboBox to select the bank when creating a new account -->
+        <ComboBox fx:id="bankSelectionComboBox" promptText="Select a Bank"/>
+
+        <!-- ListView to display available bank accounts -->
+        <ListView fx:id="bankListView" onAction="#bankAccountList"/>
+
+        <!-- Buttons for actions -->
+        <Button fx:id="createBankAccountButton" text="Create Bank Account" onAction="#createNewBankAccount"/>
+        <Button fx:id="deleteBankButton" text="Delete Bank Account" onAction="#deleteSelectedBank"/>
+        <Button fx:id="updateBankButton" text="Update Bank Account" onAction="#updateSelectedBank"/>
+        <Button fx:id="depositButton" text="Deposit" onAction="#depositMoney"/>
+        <Button fx:id="withdrawButton" text="Withdraw" onAction="#withdrawMoney"/>
+        <Button fx:id="showBalanceButton" text="Show Balance" onAction="#showBalance"/>
+    </children>
+</VBox>

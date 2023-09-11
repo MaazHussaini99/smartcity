@@ -13,8 +13,8 @@
                <image>
                   <Image url="@../images/new-york-state-vector-logo.png" />
                </image></ImageView>
-            <Button fx:id="profileLink" layoutX="113.0" layoutY="514.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="67.0" text="Profile" />
-            <Button fx:id="logOut" layoutX="113.0" layoutY="550.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="67.0" text="Log Out" />
+             <Button fx:id="profileLink" layoutX="113.0" layoutY="514.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="67.0" text="Profile" onAction="#onProfileLinkClicked" />
+             <Button fx:id="logOut" layoutX="113.0" layoutY="550.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="67.0" text="Log Out" />
          </children></AnchorPane>
       <TabPane layoutX="20.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="626.0" prefWidth="646.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE">
         <tabs>
