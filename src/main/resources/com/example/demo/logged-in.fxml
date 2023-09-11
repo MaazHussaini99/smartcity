@@ -24,7 +24,7 @@
                   <Image url="@../images/new-york-state-vector-logo.png" />
                </image></ImageView>
             <Button fx:id="submitButton" layoutX="77.0" layoutY="248.0" mnemonicParsing="false" onAction="#login" text="Login" />
-            <Button fx:id="signUp" contentDisplay="TEXT_ONLY" layoutX="72.0" layoutY="353.0" mnemonicParsing="false" text="Sign up" />
+            <Button fx:id="signUp" contentDisplay="TEXT_ONLY" layoutX="72.0" layoutY="353.0" mnemonicParsing="false" onAction="#goToSignUp" text="Sign up" />
          </children></AnchorPane>
       <AnchorPane prefHeight="400.0" prefWidth="344.0" style="-fx-background-color: #424fb3;">
          <children>
