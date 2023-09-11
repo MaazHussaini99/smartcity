@@ -6,78 +6,22 @@ package com.example.demo;
  */
 public class User {
 
-    private int userID;
     private int roleID;
-    private int jobID;
-    private char middleInitial;
     private String firstName;
     private String lastName;
-    private String address;
-    private String password;
+    private String streetAddress;
+    private String city;
+    private String zipcode;
+    private String state;
     private String email;
+    private String password;
     private String phoneNumber;
 
     public void createNewUser() {}
 
     public void createResumeProfile() {}
 
-    // Setters
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
-    }
-
-    public void setJobID(int jobID) {
-        this.jobID = jobID;
-    }
-
-    public void setMiddleInitial(char middleInitial) {
-        this.middleInitial = middleInitial;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     // Getters
-    public int getUserID() {
-        return userID;
-    }
-
-    public int getRoleID() {
-        return roleID;
-    }
-
-    public int getJobID() {
-        return jobID;
-    }
-
-    public char getMiddleInitial() {
-        return middleInitial;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -87,8 +31,20 @@ public class User {
         return lastName;
     }
 
-    public String getAddress() {
-        return address;
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public String getState() {
+        return state;
     }
 
     public String getEmail() {
@@ -101,5 +57,52 @@ public class User {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public int getRoleID() {
+        return roleID;
+    }
+
+    // Setters
+    // first_name, last_name, user_streetaddress, user_city, user_zipcode, state_ID, user_email, user_password, user_phone, role_ID
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setStreetAddress(String address) {
+        this.streetAddress = address;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setRoleID(int roleID) {
+        this.roleID = roleID;
     }
 }
