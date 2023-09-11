@@ -24,10 +24,10 @@ public class BankAccountController {
 
     @FXML
     private VBox bankAccountView;
-
+    @FXML
+    private TextField emailIdField;
     @FXML
     private Label bankNameLabel;
-    private LoggedinController loggedinController;
 
     @FXML
     private ListView<String> bankListView;
@@ -66,9 +66,7 @@ public class BankAccountController {
             e.printStackTrace();
         }
     }
-    public void setLoggedinController(LoggedinController loggedinController) {
-        this.loggedinController = loggedinController;
-    }
+
     @FXML
     public void createNewBankAccount() {
         // Get the input values
@@ -83,9 +81,13 @@ public class BankAccountController {
             try (Connection connection = DBConn.connectDB()) {
                 // Get the bank_id based on the selected bank name
                 int bankId = getBankId(selectedBank);
-                String userEmail = loggedinController.getUserEmail();
+
+               // String userEmail = loggedinController.getUserEmail();
+                String userEmail = HotelBooking.getInstance().getEmailId();
+                HotelBooking c = new HotelBooking();
+                int userId = c.getUserdetails(userEmail);
                 // Retrieve the userId based on the user's id from your user table
-                int userId = getUserIdFromUserTable(userEmail);
+               // int userId = getUserIdFromUserTable(userEmail);
 
                 if (userId > 0) {
                     // Check if the account number is unique within the selected bank
@@ -124,7 +126,6 @@ public class BankAccountController {
             showErrorMessage("Please select a bank.");
         }
     }
-
     private int getUserIdFromUserTable(String userEmail) {
         int userId = -1; // Initialize to -1 to indicate no user found
 
