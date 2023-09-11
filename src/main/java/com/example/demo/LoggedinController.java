@@ -33,7 +33,7 @@ public class LoggedinController {
 
     @FXML
     private Button signUp;
-    private String userEmail;
+    //private String userEmail;
 
     @FXML
     public void login(ActionEvent event) throws SQLException, IOException {
@@ -61,7 +61,7 @@ public class LoggedinController {
         boolean flag = validate(emailId, password);
         System.out.println("Flag: "+flag);
         if (flag == true) {
-            userEmail = emailId;
+            //userEmail = emailId;
             infoBox("Login Successful!", null, "Success");
             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("landing-page.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 999, 658);
@@ -146,9 +146,6 @@ public class LoggedinController {
                 }
             }
         }
-    }
-    public String getUserEmail() {
-        return emailIdField.getText();
     }
 }
 
