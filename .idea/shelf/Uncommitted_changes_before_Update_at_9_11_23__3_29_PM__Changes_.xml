@@ -1,0 +1,19 @@
+<changelist name="Uncommitted_changes_before_Update_at_9_11_23,_3_29_PM_[Changes]" date="1694460616235" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_11_23,_3_29_PM_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 9/11/23, 3:29 PM [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/com/example/demo/LoggedinController.class" />
+    <option name="AFTER_PATH" value="target/classes/com/example/demo/LoggedinController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_11_23,_3_29_PM_[Changes]/LoggedinController.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/module-info.class" />
+    <option name="AFTER_PATH" value="target/classes/module-info.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_11_23,_3_29_PM_[Changes]/module-info.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/com/example/demo/DBConn.class" />
+    <option name="AFTER_PATH" value="target/classes/com/example/demo/DBConn.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_11_23,_3_29_PM_[Changes]/DBConn.class" />
+  </binary>
+</changelist>

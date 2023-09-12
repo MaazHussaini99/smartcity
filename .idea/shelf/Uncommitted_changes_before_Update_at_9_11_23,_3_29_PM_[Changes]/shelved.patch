@@ -1,0 +1,347 @@
+Index: src/main/java/com/example/demo/BankAccountController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo;\n\nimport javafx.collections.FXCollections;\nimport javafx.collections.ObservableList;\nimport javafx.fxml.FXML;\nimport javafx.fxml.FXMLLoader;\nimport javafx.scene.Parent;\nimport javafx.scene.Scene;\nimport javafx.scene.control.*;\nimport javafx.scene.layout.VBox;\nimport javafx.stage.Stage;\n\nimport java.io.IOException;\nimport java.sql.Connection;\nimport java.sql.PreparedStatement;\nimport java.sql.ResultSet;\nimport java.sql.SQLException;\nimport java.util.Optional;\nimport java.util.Random;\nimport java.util.regex.Matcher;\nimport java.util.regex.Pattern;\n\npublic class BankAccountController {\n\n    @FXML\n    private VBox bankAccountView;\n\n    @FXML\n    private Label bankNameLabel;\n    private LoggedinController loggedinController;\n\n    @FXML\n    private ListView<String> bankListView;\n\n    @FXML\n    private ComboBox<String> bankSelectionComboBox;\n\n    public ObservableList<String> bankNames = FXCollections.observableArrayList();\n    // Create an ObservableList to hold bank account data\n    private ObservableList<String> bankAccountData = FXCollections.observableArrayList();\n    @FXML\n    public void initialize() {\n        // Bind the ListView to the ObservableList\n        bankListView.setItems(bankAccountData);\n        // Call loadBankNames when the controller is initialized\n        loadBankNames();\n        loadBankAccounts();\n    }\n    public void initData(String selectedBank) {\n        bankNameLabel.setText(\"Bank Name: \" + selectedBank);\n        loadBankAccounts();\n    }\n\n    private void loadBankNames() {\n        try (Connection connection = DBConn.connectDB()) {\n            String sql = \"SELECT bank_name FROM Bank\";\n            PreparedStatement preparedStatement = connection.prepareStatement(sql);\n            ResultSet resultSet = preparedStatement.executeQuery();\n\n            while (resultSet.next()) {\n                bankNames.add(resultSet.getString(\"bank_name\"));\n            }\n\n            bankSelectionComboBox.setItems(bankNames);\n        } catch (SQLException e) {\n            e.printStackTrace();\n        }\n    }\n    public void setLoggedinController(LoggedinController loggedinController) {\n        this.loggedinController = loggedinController;\n    }\n    @FXML\n    public void createNewBankAccount() {\n        // Get the input values\n        int accountNumber = generateRandomAccountNumber();\n        int routingNumber = generateRandomRoutingNumber();\n        double balance = 0;\n\n        // Retrieve the selected bank from the ComboBox\n        String selectedBank = bankSelectionComboBox.getValue();\n\n        if (selectedBank != null && !selectedBank.isEmpty()) {\n            try (Connection connection = DBConn.connectDB()) {\n                // Get the bank_id based on the selected bank name\n                int bankId = getBankId(selectedBank);\n                String userEmail = loggedinController.getUserEmail();\n                // Retrieve the userId based on the user's id from your user table\n                int userId = getUserIdFromUserTable(userEmail);\n\n                if (userId > 0) {\n                    // Check if the account number is unique within the selected bank\n                    if (isAccountNumberUnique(accountNumber, bankId)) {\n                        // Insert a new bank account\n                        String sql = \"INSERT INTO bank_account (account_no, user_id, bank_id, routing_no, balance) VALUES (?, ?, ?, ?, ?)\";\n                        PreparedStatement preparedStatement = connection.prepareStatement(sql);\n                        preparedStatement.setInt(1, accountNumber);\n                        preparedStatement.setInt(2, userId);\n                        preparedStatement.setInt(3, bankId);\n                        preparedStatement.setInt(4, routingNumber);\n                        preparedStatement.setDouble(5, balance);\n\n                        int rowsAffected = preparedStatement.executeUpdate();\n\n                        if (rowsAffected > 0) {\n                            showSuccessMessage(\"Bank Account Created Successfully!\");\n                            // After successfully creating a bank account, add it to the ListView\n                            String accountText = \"Account No: \" + accountNumber + \" - User ID: \" + userId;\n                            bankListView.getItems().add(accountText);\n                            loadBankAccounts();\n                        } else {\n                            showErrorMessage(\"Failed to Create Bank Account.\");\n                        }\n                    } else {\n                        showErrorMessage(\"Account number must be unique within the selected bank.\");\n                    }\n                } else {\n                    showErrorMessage(\"User with the specified email not found.\");\n                }\n            } catch (SQLException e) {\n                e.printStackTrace();\n                showErrorMessage(\"An error occurred while creating the bank account.\");\n            }\n        } else {\n            showErrorMessage(\"Please select a bank.\");\n        }\n    }\n\n    private int getUserIdFromUserTable(String userEmail) {\n        int userId = -1; // Initialize to -1 to indicate no user found\n\n        try (Connection connection = DBConn.connectDB()) {\n            String sql = \"SELECT uid FROM user WHERE user_email = ?\";\n            PreparedStatement preparedStatement = connection.prepareStatement(sql);\n            preparedStatement.setString(1, userEmail);\n\n            ResultSet resultSet = preparedStatement.executeQuery();\n\n            if (resultSet.next()) {\n                userId = resultSet.getInt(\"uid\");\n            }\n        } catch (SQLException e) {\n            e.printStackTrace();\n            // Handle the SQL exception, log it, or show an error message\n        }\n\n        return userId;\n    }\n\n\n    private int getBankId(String selectedBank) {\n        int bankId = -1; // Default value in case of an error\n\n        try (Connection connection = DBConn.connectDB()) {\n            String sql = \"SELECT bank_id FROM bank WHERE bank_name = ?\";\n            PreparedStatement preparedStatement = connection.prepareStatement(sql);\n            preparedStatement.setString(1, selectedBank);\n            ResultSet resultSet = preparedStatement.executeQuery();\n\n            if (resultSet.next()) {\n                bankId = resultSet.getInt(\"bank_id\");\n            }\n        } catch (SQLException e) {\n            e.printStackTrace();\n        }\n\n        return bankId;\n    }\n    @FXML\n    public void deleteSelectedBank() {\n        String selectedBankAccountText = bankListView.getSelectionModel().getSelectedItem();\n        if (selectedBankAccountText != null) {\n            int accountNumber = extractAccountNumberFromText(selectedBankAccountText);\n\n            if (accountNumber != -1) {\n\n                try (Connection connection = DBConn.connectDB()) {\n                    // Implement the logic to delete the bank account based on account number\n                    String sql = \"DELETE FROM bank_account WHERE account_no = ?\";\n                    PreparedStatement preparedStatement = connection.prepareStatement(sql);\n                    preparedStatement.setInt(1, accountNumber);\n\n                    int rowsAffected = preparedStatement.executeUpdate();\n\n                    if (rowsAffected > 0) {\n                        showSuccessMessage(\"Bank Account Deleted Successfully!\");\n                        // Remove the deleted account from the ListView\n                        bankListView.getItems().remove(selectedBankAccountText);\n                    } else {\n                        showErrorMessage(\"Failed to Delete Bank Account.\");\n                    }\n                } catch (SQLException e) {\n                    e.printStackTrace();\n                    showErrorMessage(\"An error occurred while deleting the bank account.\");\n                }\n            } else {\n                showErrorMessage(\"Invalid account number extracted.\");\n            }\n        } else {\n            showErrorMessage(\"Please select a bank account to delete.\");\n        }\n    }\n\n    private int extractAccountNumberFromText(String text) {\n\n        // Define a regular expression pattern to match the \"Account No:\" part and extract the number\n        Pattern pattern = Pattern.compile(\"Account No:\\\\s*(-?\\\\d+)\");\n        Matcher matcher = pattern.matcher(text);\n\n        if (matcher.find()) {\n            String accountNumberStr = matcher.group(1).trim();\n            if (!accountNumberStr.isEmpty()) {\n                try {\n                    return Integer.parseInt(accountNumberStr);\n                } catch (NumberFormatException e) {\n                    e.printStackTrace();\n                }\n            }\n        }\n\n        // Handle cases where the \"Account No:\" information is missing or empty\n        System.err.println(\"No valid account number found.\");\n        return -1;\n    }\n\n    @FXML\n    public void updateSelectedBank() {\n        String selectedBankAccountText = bankListView.getSelectionModel().getSelectedItem();\n        if (selectedBankAccountText != null) {\n            int accountNumber = extractAccountNumberFromText(selectedBankAccountText);\n            // Implement the logic to update a bank account based on the account number\n            // Replace this with database update logic\n        } else {\n            showErrorMessage(\"Please select a bank account to update.\");\n        }\n    }\n\n    @FXML\n    public void depositMoney() {\n        String selectedBankAccountText = bankListView.getSelectionModel().getSelectedItem();\n\n        if (selectedBankAccountText != null) {\n            int accountNumber = extractAccountNumberFromText(selectedBankAccountText);\n\n            TextInputDialog dialog = new TextInputDialog();\n            dialog.setTitle(\"Deposit Money\");\n            dialog.setHeaderText(\"Enter the deposit amount:\");\n            dialog.setContentText(\"Amount:\");\n\n            Optional<String> result = dialog.showAndWait();\n\n            if (result.isPresent()) {\n                try {\n                    double depositAmount = Double.parseDouble(result.get());\n\n                    if (depositAmount > 0) {\n                        // Implement the logic to update the balance in the database.\n                        boolean depositSuccess = updateAccountBalance(accountNumber, depositAmount);\n\n                        if (depositSuccess) {\n                            // After successful deposit, fetch updated details and update the ListView\n                            String updatedAccountInfo = fetchUpdatedAccountInfo(accountNumber);\n                            bankListView.getItems().set(bankListView.getSelectionModel().getSelectedIndex(), updatedAccountInfo);\n\n                            showSuccessMessage(\"Deposit Successful!\");\n                        } else {\n                            showErrorMessage(\"Failed to update the balance.\");\n                        }\n                    } else {\n                        showErrorMessage(\"Please enter a positive deposit amount.\");\n                    }\n                } catch (NumberFormatException e) {\n                    showErrorMessage(\"Invalid deposit amount format.\");\n                }\n            }\n        } else {\n            showErrorMessage(\"Please select a bank account to deposit money.\");\n        }\n    }\n\n    // Fetch updated account details after deposit\n    private String fetchUpdatedAccountInfo(int accountNumber) {\n        try (Connection connection = DBConn.connectDB()) {\n            String sql = \"SELECT ba.balance, b.bank_name, ba.routing_no, ba.user_id FROM bank_account ba JOIN bank b ON ba.bank_id = b.bank_id WHERE ba.account_no = ?\";\n            PreparedStatement preparedStatement = connection.prepareStatement(sql);\n            preparedStatement.setInt(1, accountNumber);\n\n            ResultSet resultSet = preparedStatement.executeQuery();\n\n            if (resultSet.next()) {\n                String bankName = resultSet.getString(\"bank_name\");\n                int userId = resultSet.getInt(\"user_id\");\n                double balance = resultSet.getDouble(\"balance\");\n                String routingNo = resultSet.getString(\"routing_no\");\n\n\n                return \"Bank: \" + bankName + \" - Account No: \" + accountNumber + \" - User ID: \" + userId + \" - Routing No: \" + routingNo + \" - Balance:$\" + balance;\n            }\n        } catch (SQLException e) {\n            e.printStackTrace();\n        }\n        return null;\n    }\n\n    private boolean updateAccountBalance(int accountNumber, double depositAmount) {\n        try (Connection connection = DBConn.connectDB()) {\n            connection.setAutoCommit(false); // Disable auto-commit\n\n            String sql = \"UPDATE bank_account SET balance = balance + ? WHERE account_no = ?\";\n            PreparedStatement preparedStatement = connection.prepareStatement(sql);\n            preparedStatement.setDouble(1, depositAmount);\n            preparedStatement.setInt(2, accountNumber);\n\n            int rowsAffected = preparedStatement.executeUpdate();\n\n            if (rowsAffected > 0) {\n                connection.commit(); // Commit the transaction\n                return true;\n            } else {\n                connection.rollback(); // Rollback if the update fails\n                return false;\n            }\n        } catch (SQLException e) {\n            e.printStackTrace();\n            return false;\n        }\n    }\n\n    @FXML\n    public void withdrawMoney() {\n        String selectedBankAccountText = bankListView.getSelectionModel().getSelectedItem();\n\n        if (selectedBankAccountText != null) {\n            int accountNumber = extractAccountNumberFromText(selectedBankAccountText);\n\n            TextInputDialog dialog = new TextInputDialog();\n            dialog.setTitle(\"Withdraw Money\");\n            dialog.setHeaderText(\"Enter the withdrawal amount:\");\n            dialog.setContentText(\"Amount:\");\n\n            Optional<String> result = dialog.showAndWait();\n\n            if (result.isPresent()) {\n                try {\n                    double withdrawalAmount = Double.parseDouble(result.get());\n\n                    if (withdrawalAmount > 0) {\n                        // Check if withdrawal amount is greater than the account balance\n                        double currentBalance = getAccountBalance(accountNumber);\n                        if (withdrawalAmount > currentBalance) {\n                            showErrorMessage(\"Insufficient funds.\");\n                        } else {\n                            // Implement the logic to update the balance in the database.\n                            boolean withdrawalSuccess = updateAccountBalance(accountNumber, -withdrawalAmount);\n\n                            if (withdrawalSuccess) {\n                                // After successful withdrawal, fetch updated details and update the ListView\n                                String updatedAccountInfo = fetchUpdatedAccountInfo(accountNumber);\n                                bankListView.getItems().set(bankListView.getSelectionModel().getSelectedIndex(), updatedAccountInfo);\n\n                                showSuccessMessage(\"Withdrawal Successful!\");\n                            } else {\n                                showErrorMessage(\"Failed to update the balance.\");\n                            }\n                        }\n                    } else {\n                        showErrorMessage(\"Please enter a positive withdrawal amount.\");\n                    }\n                } catch (NumberFormatException e) {\n                    showErrorMessage(\"Invalid withdrawal amount format.\");\n                }\n            }\n        } else {\n            showErrorMessage(\"Please select a bank account to withdraw money from.\");\n        }\n    }\n\n    @FXML\n    public void showBalance() {\n        String selectedBankAccountText = bankListView.getSelectionModel().getSelectedItem();\n        if (selectedBankAccountText != null) {\n            int accountNumber = extractAccountNumberFromText(selectedBankAccountText);\n            double balance = getAccountBalance(accountNumber);\n            showSuccessMessage(\"Account Balance: $\" + balance);\n        } else {\n            showErrorMessage(\"Please select a bank account to show balance.\");\n        }\n    }\n\n    @FXML\n    public void navigateBackToBank() {\n        try {\n            // Load the LandingPage.fxml file\n            FXMLLoader loader = new FXMLLoader(getClass().getResource(\"bank.fxml\"));\n            Parent root = loader.load();\n\n            // Create a new scene\n            Scene scene = new Scene(root);\n\n            // Get the current stage and set the new scene\n            Stage stage = (Stage) bankAccountView.getScene().getWindow();\n            stage.setScene(scene);\n            stage.show();\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n    }\n    private void loadBankAccounts() {\n        bankListView.getItems().clear(); // Clear the ListView before loading new accounts\n\n        try (Connection connection = DBConn.connectDB()) {\n            String sql = \"SELECT ba.account_no, ba.user_id, ba.bank_id, ba.routing_no, ba.balance, b.bank_name \" +\n                    \"FROM bank_account ba \" +\n                    \"JOIN bank b ON ba.bank_id = b.bank_id\";\n            PreparedStatement preparedStatement = connection.prepareStatement(sql);\n            ResultSet resultSet = preparedStatement.executeQuery();\n\n            while (resultSet.next()) {\n                int accountNumber = resultSet.getInt(\"account_no\");\n                int userId = resultSet.getInt(\"user_id\");\n                String bankName = resultSet.getString(\"bank_name\");\n                int routingNumber = resultSet.getInt(\"routing_no\");\n                double balance = resultSet.getDouble(\"balance\");\n\n                // Create a formatted account text with bank name\n                String accountText = \"Bank: \" + bankName + \" - Account No: \"\n                        + accountNumber + \" - User ID: \" + userId + \" - Routing No: \" + routingNumber + \" - Balance:$\" + balance;\n                bankListView.getItems().add(accountText); // Add the account to the ListView\n            }\n        } catch (SQLException e) {\n            e.printStackTrace();\n        }\n    }\n\n    private double getAccountBalance(int accountNumber) {\n        try (Connection connection = DBConn.connectDB()) {\n            String sql = \"SELECT balance FROM bank_account WHERE account_no = ?\";\n            PreparedStatement preparedStatement = connection.prepareStatement(sql);\n            preparedStatement.setInt(1, accountNumber);\n\n            ResultSet resultSet = preparedStatement.executeQuery();\n\n            if (resultSet.next()) {\n                return resultSet.getDouble(\"balance\");\n            }\n        } catch (SQLException e) {\n            e.printStackTrace();\n        }\n\n        // Return a default value if there was an error or if the account doesn't exist\n        return 0.0;\n    }\n\n    private boolean isAccountNumberUnique(int accountNumber, int bankId) {\n        try (Connection connection = DBConn.connectDB()) {\n            String sql = \"SELECT COUNT(*) AS count FROM bank_account WHERE account_no = ? AND bank_id = ?\";\n            PreparedStatement preparedStatement = connection.prepareStatement(sql);\n            preparedStatement.setInt(1, accountNumber);\n            preparedStatement.setInt(2, bankId);\n            ResultSet resultSet = preparedStatement.executeQuery();\n\n            if (resultSet.next()) {\n                int count = resultSet.getInt(\"count\");\n                // If count is 0, it means the account number is unique for the selected bank\n                return count == 0;\n            }\n        } catch (SQLException e) {\n            e.printStackTrace();\n        }\n\n        // In case of an error, return false to be on the safe side\n        return false;\n    }\n    // Generate a random account number of 8 digits\n    private int generateRandomAccountNumber() {\n        Random random = new Random();\n        int accountNumber = 0;\n\n        // Generate a random 8-digit account number\n        for (int i = 0; i < 8; i++) {\n            accountNumber = accountNumber * 10 + random.nextInt(10);\n        }\n\n        return accountNumber;\n    }\n\n    // Generate a random routing number of 8 digits\n    private int generateRandomRoutingNumber() {\n        Random random = new Random();\n        int routingNumber = 0;\n\n        // Generate a random 8-digit routing number\n        for (int i = 0; i < 8; i++) {\n            routingNumber = routingNumber * 10 + random.nextInt(10);\n        }\n\n        return routingNumber;\n    }\n    private void showSuccessMessage(String message) {\n        Alert alert = new Alert(Alert.AlertType.INFORMATION);\n        alert.setTitle(\"Success\");\n        alert.setHeaderText(null);\n        alert.setContentText(message);\n        alert.showAndWait();\n    }\n\n    private void showErrorMessage(String message) {\n        Alert alert = new Alert(Alert.AlertType.ERROR);\n        alert.setTitle(\"Error\");\n        alert.setHeaderText(null);\n        alert.setContentText(message);\n        alert.showAndWait();\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/demo/BankAccountController.java b/src/main/java/com/example/demo/BankAccountController.java
+--- a/src/main/java/com/example/demo/BankAccountController.java	(revision 889cdefbd87caaf67b60cbc6c8ec38abd00c16d6)
++++ b/src/main/java/com/example/demo/BankAccountController.java	(date 1694456059473)
+@@ -83,7 +83,7 @@
+             try (Connection connection = DBConn.connectDB()) {
+                 // Get the bank_id based on the selected bank name
+                 int bankId = getBankId(selectedBank);
+-                String userEmail = loggedinController.getUserEmail();
++                String userEmail = "r";
+                 // Retrieve the userId based on the user's id from your user table
+                 int userId = getUserIdFromUserTable(userEmail);
+ 
+Index: src/main/java/com/example/demo/LoggedinController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo;\n\nimport java.io.IOException;\nimport java.sql.Connection;\nimport java.sql.PreparedStatement;\nimport java.sql.ResultSet;\nimport java.sql.SQLException;\n\nimport javafx.event.ActionEvent;\nimport javafx.fxml.FXML;\nimport javafx.fxml.FXMLLoader;\nimport javafx.scene.Node;\nimport javafx.scene.Parent;\nimport javafx.scene.Scene;\nimport javafx.scene.control.Alert;\nimport javafx.scene.control.Alert.AlertType;\nimport javafx.scene.control.Button;\nimport javafx.scene.control.PasswordField;\nimport javafx.scene.control.TextField;\nimport javafx.stage.Window;\nimport javafx.stage.Stage;\n\npublic class LoggedinController {\n\n    @FXML\n    private TextField emailIdField;\n\n    @FXML\n    private PasswordField passwordField;\n\n    @FXML\n    private Button submitButton;\n\n    @FXML\n    private Button signUp;\n    private String userEmail;\n\n    @FXML\n    public void login(ActionEvent event) throws SQLException, IOException {\n\n        Window owner = submitButton.getScene().getWindow();\n\n        System.out.println(emailIdField.getText());\n        System.out.println(passwordField.getText());\n\n        if (emailIdField.getText().isEmpty()) {\n            showAlert(Alert.AlertType.ERROR, owner, \"Form Error!\",\n                    \"Please enter your email id\");\n            return;\n        }\n        if (passwordField.getText().isEmpty()) {\n            showAlert(Alert.AlertType.ERROR, owner, \"Form Error!\",\n                    \"Please enter a password\");\n            return;\n        }\n\n        String emailId = emailIdField.getText();\n        String password = passwordField.getText();\n\n\n        boolean flag = validate(emailId, password);\n        System.out.println(\"Flag: \"+flag);\n        if (flag == true) {\n            userEmail = emailId;\n            infoBox(\"Login Successful!\", null, \"Success\");\n            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(\"landing-page.fxml\"));\n            Scene scene = new Scene(fxmlLoader.load(), 999, 658);\n            Node node = (Node) event.getSource();\n            Stage stage = (Stage) node.getScene().getWindow();\n            stage.setTitle(\"Smart City\");\n            stage.setScene(scene);\n            stage.show();\n        } else {\n            infoBox(\"Please enter correct Email and Password\", null, \"Failed\");\n        }\n    }\n    @FXML\n    public void goToSignUp(ActionEvent event) throws SQLException, IOException {\n        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(\"sign-up.fxml\"));\n        Scene scene = new Scene(fxmlLoader.load(), 544, 400);\n        Node node = (Node) event.getSource();\n        Stage stage = (Stage) node.getScene().getWindow();\n        stage.setTitle(\"Smart City - Sign up\");\n        stage.setScene(scene);\n        stage.show();\n    }\n\n    public static void infoBox(String infoMessage, String headerText, String title) {\n        Alert alert = new Alert(AlertType.CONFIRMATION);\n        alert.setContentText(infoMessage);\n        alert.setTitle(title);\n        alert.setHeaderText(headerText);\n        alert.showAndWait();\n    }\n\n    private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {\n        Alert alert = new Alert(alertType);\n        alert.setTitle(title);\n        alert.setHeaderText(null);\n        alert.setContentText(message);\n        alert.initOwner(owner);\n        alert.show();\n    }\n\n    public static boolean validate(String emailId, String password) throws SQLException {\n\n        // Step 1: Establishing a Connection and\n        // try-with-resource statement will auto close the connection.\n        final String SELECT_QUERY = \"SELECT * FROM user WHERE user_email = ? and user_password = ?\";\n        try (Connection connection = DBConn.connectDB();\n\n             // Step 2:Create a statement using connection object\n             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {\n            preparedStatement.setString(1, emailId);\n            preparedStatement.setString(2, password);\n\n            System.out.println(preparedStatement);\n\n            ResultSet resultSet = preparedStatement.executeQuery();\n\n            if (resultSet.next() == true) {\n                System.out.println(\"Logged in!\");\n                HotelBooking.getInstance().setEmailId(emailId);\n                return true;\n            }\n\n\n        } catch (SQLException e) {\n            // print SQL exception information\n            printSQLException(e);\n        }\n        return false;\n    }\n\n    public static void printSQLException(SQLException ex) {\n        for (Throwable e: ex) {\n            if (e instanceof SQLException) {\n                e.printStackTrace(System.err);\n                System.err.println(\"SQLState: \" + ((SQLException) e).getSQLState());\n                System.err.println(\"Error Code: \" + ((SQLException) e).getErrorCode());\n                System.err.println(\"Message: \" + e.getMessage());\n                Throwable t = ex.getCause();\n                while (t != null) {\n                    System.out.println(\"Cause: \" + t);\n                    t = t.getCause();\n                }\n            }\n        }\n    }\n    public String getUserEmail() {\n        return emailIdField.getText();\n    }\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/demo/LoggedinController.java b/src/main/java/com/example/demo/LoggedinController.java
+--- a/src/main/java/com/example/demo/LoggedinController.java	(revision 889cdefbd87caaf67b60cbc6c8ec38abd00c16d6)
++++ b/src/main/java/com/example/demo/LoggedinController.java	(date 1694455952363)
+@@ -10,7 +10,6 @@
+ import javafx.fxml.FXML;
+ import javafx.fxml.FXMLLoader;
+ import javafx.scene.Node;
+-import javafx.scene.Parent;
+ import javafx.scene.Scene;
+ import javafx.scene.control.Alert;
+ import javafx.scene.control.Alert.AlertType;
+@@ -33,7 +32,16 @@
+ 
+     @FXML
+     private Button signUp;
+-    private String userEmail;
++
++    private String emailId;
++
++    public String getEmailId() {
++        return emailId;
++    }
++
++    public void setEmailId(String emailId) {
++        this.emailId = emailId;
++    }
+ 
+     @FXML
+     public void login(ActionEvent event) throws SQLException, IOException {
+@@ -61,7 +69,6 @@
+         boolean flag = validate(emailId, password);
+         System.out.println("Flag: "+flag);
+         if (flag == true) {
+-            userEmail = emailId;
+             infoBox("Login Successful!", null, "Success");
+             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("landing-page.fxml"));
+             Scene scene = new Scene(fxmlLoader.load(), 999, 658);
+@@ -103,7 +110,6 @@
+     }
+ 
+     public static boolean validate(String emailId, String password) throws SQLException {
+-
+         // Step 1: Establishing a Connection and
+         // try-with-resource statement will auto close the connection.
+         final String SELECT_QUERY = "SELECT * FROM user WHERE user_email = ? and user_password = ?";
+@@ -147,8 +153,5 @@
+             }
+         }
+     }
+-    public String getUserEmail() {
+-        return emailIdField.getText();
+-    }
+ }
+ 
+Index: src/main/java/com/example/demo/DBConn.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo;\n\nimport java.sql.Connection;\nimport java.sql.DriverManager;\nimport java.sql.ResultSet;\nimport java.sql.Statement;\n\npublic class DBConn {\n    public static Connection connectDB(){\n        Connection connection = null;\n        try {\n            // below two lines are used for connectivity.\n            Class.forName(\"com.mysql.cj.jdbc.Driver\");\n            connection = DriverManager.getConnection(\n                    \"jdbc:mysql://smartcity-db2.ctpu1etrkqud.us-east-1.rds.amazonaws.com:3306/smartcity\",\n                    \"admin\", \"maaz2023\");\n\n            // mydb is database\n            // mydbuser is name of database\n            // mydbuser is password of database\n\n            Statement statement;\n            statement = connection.createStatement();\n            ResultSet resultSet;\n            resultSet = statement.executeQuery(\n                    \"select * from bank\");\n            int code;\n            String title;\n            while (resultSet.next()) {\n                title = resultSet.getString(\"bank_name\").trim();\n                System.out.println(\" Title : \" + title);\n            }\n            resultSet.close();\n            statement.close();\n//            connection.close();\n            return connection;\n        }\n        catch (Exception exception) {\n            System.out.println(exception);\n        }\n        return null;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/demo/DBConn.java b/src/main/java/com/example/demo/DBConn.java
+--- a/src/main/java/com/example/demo/DBConn.java	(revision 889cdefbd87caaf67b60cbc6c8ec38abd00c16d6)
++++ b/src/main/java/com/example/demo/DBConn.java	(date 1694455685978)
+@@ -12,27 +12,8 @@
+             // below two lines are used for connectivity.
+             Class.forName("com.mysql.cj.jdbc.Driver");
+             connection = DriverManager.getConnection(
+-                    "jdbc:mysql://smartcity-db2.ctpu1etrkqud.us-east-1.rds.amazonaws.com:3306/smartcity",
+-                    "admin", "maaz2023");
+-
+-            // mydb is database
+-            // mydbuser is name of database
+-            // mydbuser is password of database
+-
+-            Statement statement;
+-            statement = connection.createStatement();
+-            ResultSet resultSet;
+-            resultSet = statement.executeQuery(
+-                    "select * from bank");
+-            int code;
+-            String title;
+-            while (resultSet.next()) {
+-                title = resultSet.getString("bank_name").trim();
+-                System.out.println(" Title : " + title);
+-            }
+-            resultSet.close();
+-            statement.close();
+-//            connection.close();
++                    "jdbc:mysql://localhost:3306/smartcity",
++                    "root", "Satla@450");
+             return connection;
+         }
+         catch (Exception exception) {
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\">\n    <modelVersion>4.0.0</modelVersion>\n\n    <groupId>com.example</groupId>\n    <artifactId>demo</artifactId>\n    <version>1.0-SNAPSHOT</version>\n    <name>demo</name>\n\n    <properties>\n        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\n        <junit.version>5.8.1</junit.version>\n    </properties>\n\n    <dependencies>\n        <dependency>\n            <groupId>org.openjfx</groupId>\n            <artifactId>javafx-controls</artifactId>\n            <version>17.0.1</version>\n        </dependency>\n        <dependency>\n            <groupId>org.openjfx</groupId>\n            <artifactId>javafx-fxml</artifactId>\n            <version>17.0.1</version>\n        </dependency>\n\n        <dependency>\n            <groupId>org.junit.jupiter</groupId>\n            <artifactId>junit-jupiter-api</artifactId>\n            <version>${junit.version}</version>\n            <scope>test</scope>\n        </dependency>\n        <dependency>\n            <groupId>org.junit.jupiter</groupId>\n            <artifactId>junit-jupiter-engine</artifactId>\n            <version>${junit.version}</version>\n            <scope>test</scope>\n        </dependency>\n        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->\n        <dependency>\n            <groupId>mysql</groupId>\n            <artifactId>mysql-connector-java</artifactId>\n            <version>8.0.33</version>\n        </dependency>\n        <dependency>\n            <groupId>org.openjfx</groupId>\n            <artifactId>javafx-fxml</artifactId>\n            <version>21-ea+5</version>\n        </dependency>\n        <dependency>\n            <groupId>com.googlecode.json-simple</groupId>\n            <artifactId>json-simple</artifactId>\n            <version>1.1.1</version>\n        </dependency>\n        <dependency>\n            <groupId>org.json</groupId>\n            <artifactId>json</artifactId>\n            <version>20220924</version>\n        </dependency>\n        <dependency>\n            <groupId>org.openjfx</groupId>\n            <artifactId>javafx-controls</artifactId>\n            <version>19.0.2</version>\n        </dependency>\n\n    </dependencies>\n\n    <build>\n        <plugins>\n            <plugin>\n                <groupId>org.apache.maven.plugins</groupId>\n                <artifactId>maven-compiler-plugin</artifactId>\n                <version>3.8.1</version>\n                <configuration>\n                    <source>17</source>\n                    <target>17</target>\n                </configuration>\n            </plugin>\n            <plugin>\n                <groupId>org.openjfx</groupId>\n                <artifactId>javafx-maven-plugin</artifactId>\n                <version>0.0.8</version>\n                <executions>\n                    <execution>\n                        <!-- Default configuration for running with: mvn clean javafx:run -->\n                        <id>default-cli</id>\n                        <configuration>\n                            <mainClass>com.example.demo/com.example.demo.MainApplication</mainClass>\n                            <launcher>app</launcher>\n                            <jlinkZipName>app</jlinkZipName>\n                            <jlinkImageName>app</jlinkImageName>\n                            <noManPages>true</noManPages>\n                            <stripDebug>true</stripDebug>\n                            <noHeaderFiles>true</noHeaderFiles>\n                        </configuration>\n                    </execution>\n                </executions>\n            </plugin>\n        </plugins>\n    </build>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 889cdefbd87caaf67b60cbc6c8ec38abd00c16d6)
++++ b/pom.xml	(date 1694455685969)
+@@ -16,6 +16,11 @@
+ 
+     <dependencies>
+         <dependency>
++            <groupId>mysql</groupId>
++            <artifactId>mysql-connector-java</artifactId>
++            <version>8.0.26</version> <!-- Use the latest version available -->
++        </dependency>
++        <dependency>
+             <groupId>org.openjfx</groupId>
+             <artifactId>javafx-controls</artifactId>
+             <version>17.0.1</version>
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><project version=\"4\">\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\n  <component name=\"MavenProjectsManager\">\n    <option name=\"originalFiles\">\n      <list>\n        <option value=\"$PROJECT_DIR$/pom.xml\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_17\" default=\"true\" project-jdk-name=\"17\" project-jdk-type=\"JavaSDK\">\n    <output url=\"file://$PROJECT_DIR$/out\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 889cdefbd87caaf67b60cbc6c8ec38abd00c16d6)
++++ b/.idea/misc.xml	(date 1694455685974)
+@@ -1,3 +1,4 @@
++<?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ExternalStorageConfigurationManager" enabled="true" />
+   <component name="MavenProjectsManager">
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"9abf6f9a-f2d9-487e-8319-d7fb36438d43\" name=\"Changes\" comment=\"Merged master branch into Owen's branch\">\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/com/example/demo/Weather.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/example/demo/LandingPageController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/example/demo/LandingPageController.java\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"CodeStyleSettingsInfer\">\n    <option name=\"done\" value=\"true\" />\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"FxmlFile\" />\n        <option value=\"Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Merge.Settings\">\n    <option name=\"BRANCH\" value=\"master\" />\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\n      <map>\n        <entry key=\"$PROJECT_DIR$\" value=\"master\" />\n      </map>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n    <option name=\"SWAP_SIDES_IN_COMPARE_BRANCHES\" value=\"true\" />\n  </component>\n  <component name=\"MarkdownSettingsMigration\">\n    <option name=\"stateVersion\" value=\"1\" />\n  </component>\n  <component name=\"ProjectCodeStyleSettingsMigration\">\n    <option name=\"version\" value=\"2\" />\n  </component>\n  <component name=\"ProjectId\" id=\"2Ufb8zTFM2crj9NFA2nfsHZDzMw\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$/target/classes/com/example/demo\" />\n  </component>\n  <component name=\"RecentsManager\">\n    <key name=\"CopyFile.RECENT_KEYS\">\n      <recent name=\"C:\\Users\\maazh\\eclipse-workspace\\demo\\target\\classes\\com\\example\\demo\" />\n    </key>\n    <key name=\"MoveFile.RECENT_KEYS\">\n      <recent name=\"C:\\Users\\maazh\\eclipse-workspace\\demo\\src\\main\\resources\\com\\example\\images\" />\n      <recent name=\"C:\\Users\\maazh\\eclipse-workspace\\demo\\src\\main\\resources\\com\\example\\demo\" />\n    </key>\n    <key name=\"MoveClassesOrPackagesDialog.RECENTS_KEY\">\n      <recent name=\"com.example.demo\" />\n    </key>\n  </component>\n  <component name=\"RunManager\">\n    <configuration name=\"MainApplication\" type=\"Application\" factoryName=\"Application\" nameIsGenerated=\"true\">\n      <option name=\"ALTERNATIVE_JRE_PATH\" value=\"$PROJECT_DIR$/../../../../Program Files/Java/jdk-17.0.1\" />\n      <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"true\" />\n      <option name=\"MAIN_CLASS_NAME\" value=\"com.example.demo.MainApplication\" />\n      <module name=\"smartcity\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"9abf6f9a-f2d9-487e-8319-d7fb36438d43\" name=\"Changes\" comment=\"\" />\n      <created>1693333429736</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1693333429736</updated>\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"Started setting up User file\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1693490478119</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1693490478119</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"Started setting up User file\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1693490554064</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1693490554064</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"Merged master branch into Owen's branch\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1693578588392</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1693578588392</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"4\" />\n    <servers />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State />\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"Sending Maaz his loader page\" />\n    <MESSAGE value=\"commit\" />\n    <MESSAGE value=\"Merged master branch into Owen's branch\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Merged master branch into Owen's branch\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 889cdefbd87caaf67b60cbc6c8ec38abd00c16d6)
++++ b/.idea/workspace.xml	(date 1694458387762)
+@@ -4,10 +4,18 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="9abf6f9a-f2d9-487e-8319-d7fb36438d43" name="Changes" comment="Merged master branch into Owen's branch">
+-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/Weather.java" afterDir="false" />
++    <list default="true" id="9abf6f9a-f2d9-487e-8319-d7fb36438d43" name="Changes" comment="">
++      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/LandingPageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/LandingPageController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/BankAccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/BankAccountController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/DBConn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/DBConn.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/LoggedinController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/LoggedinController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/DBConn.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/DBConn.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/LoggedinController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/LoggedinController.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -27,6 +35,13 @@
+   </component>
+   <component name="Git.Merge.Settings">
+     <option name="BRANCH" value="master" />
++  </component>
++  <component name="Git.Pull.Settings">
++    <option name="OPTIONS">
++      <set>
++        <option value="REBASE" />
++      </set>
++    </option>
+   </component>
+   <component name="Git.Settings">
+     <option name="RECENT_BRANCH_BY_REPOSITORY">
+@@ -39,23 +54,36 @@
+   </component>
+   <component name="MarkdownSettingsMigration">
+     <option name="stateVersion" value="1" />
++  </component>
++  <component name="MavenImportPreferences">
++    <option name="generalSettings">
++      <MavenGeneralSettings>
++        <option name="useMavenConfig" value="true" />
++      </MavenGeneralSettings>
++    </option>
+   </component>
+   <component name="ProjectCodeStyleSettingsMigration">
+     <option name="version" value="2" />
+   </component>
+   <component name="ProjectId" id="2Ufb8zTFM2crj9NFA2nfsHZDzMw" />
+-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
++  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
++    <ConfirmationsSetting value="1" id="Add" />
++  </component>
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">
+-    <property name="last_opened_file_path" value="$PROJECT_DIR$/target/classes/com/example/demo" />
+-  </component>
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;git-widget-placeholder&quot;: &quot;rahul&quot;,
++    &quot;last_opened_file_path&quot;: &quot;/Users/rahulsatla/Documents/smartcity&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.JavaFX&quot;
++  }
++}</component>
+   <component name="RecentsManager">
+-    <key name="CopyFile.RECENT_KEYS">
+-      <recent name="C:\Users\maazh\eclipse-workspace\demo\target\classes\com\example\demo" />
+-    </key>
+     <key name="MoveFile.RECENT_KEYS">
+       <recent name="C:\Users\maazh\eclipse-workspace\demo\src\main\resources\com\example\images" />
+       <recent name="C:\Users\maazh\eclipse-workspace\demo\src\main\resources\com\example\demo" />
+@@ -64,16 +92,50 @@
+       <recent name="com.example.demo" />
+     </key>
+   </component>
+-  <component name="RunManager">
++  <component name="RunManager" selected="Application.MainApplication">
+     <configuration name="MainApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+-      <option name="ALTERNATIVE_JRE_PATH" value="$PROJECT_DIR$/../../../../Program Files/Java/jdk-17.0.1" />
++      <option name="ALTERNATIVE_JRE_PATH" value="JavaSE-17" />
+       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+       <option name="MAIN_CLASS_NAME" value="com.example.demo.MainApplication" />
++      <module name="demo" />
++      <extension name="coverage">
++        <pattern>
++          <option name="PATTERN" value="com.example.demo.*" />
++          <option name="ENABLED" value="true" />
++        </pattern>
++      </extension>
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <configuration name="&lt;default&gt;" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
++      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
++      <option name="ALTERNATIVE_JRE_PATH" value="17" />
++      <option name="PACKAGE_NAME" value="" />
++      <option name="MAIN_CLASS_NAME" value="" />
++      <option name="METHOD_NAME" value="" />
++      <option name="TEST_OBJECT" value="package" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <configuration default="true" type="JetRunConfigurationType">
++      <module name="smartcity" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+       <module name="smartcity" />
++      <option name="filePath" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
++    <list>
++      <item itemvalue="Application.MainApplication" />
++      <item itemvalue="JUnit.&lt;default&gt;" />
++    </list>
+   </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+@@ -128,4 +190,8 @@
+     <MESSAGE value="Merged master branch into Owen's branch" />
+     <option name="LAST_COMMIT_MESSAGE" value="Merged master branch into Owen's branch" />
+   </component>
++  <component name="XSLT-Support.FileAssociations.UIState">
++    <expand />
++    <select />
++  </component>
+ </project>
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"CompilerConfiguration\">\n    <annotationProcessing>\n      <profile name=\"Maven default annotation processors profile\" enabled=\"true\">\n        <sourceOutputDir name=\"target/generated-sources/annotations\" />\n        <sourceTestOutputDir name=\"target/generated-test-sources/test-annotations\" />\n        <outputRelativeToContentRoot value=\"true\" />\n        <module name=\"smartcity\" />\n        <module name=\"demo\" />\n      </profile>\n    </annotationProcessing>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+--- a/.idea/compiler.xml	(revision 889cdefbd87caaf67b60cbc6c8ec38abd00c16d6)
++++ b/.idea/compiler.xml	(date 1694455701436)
+@@ -6,7 +6,6 @@
+         <sourceOutputDir name="target/generated-sources/annotations" />
+         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+         <outputRelativeToContentRoot value="true" />
+-        <module name="smartcity" />
+         <module name="demo" />
+       </profile>
+     </annotationProcessing>
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"VcsDirectoryMappings\">\n    <mapping directory=\"$PROJECT_DIR$\" vcs=\"Git\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+--- a/.idea/vcs.xml	(revision 889cdefbd87caaf67b60cbc6c8ec38abd00c16d6)
++++ b/.idea/vcs.xml	(date 1694455701439)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="VcsDirectoryMappings">
+-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++    <mapping directory="" vcs="Git" />
+   </component>
+ </project>
+\ No newline at end of file

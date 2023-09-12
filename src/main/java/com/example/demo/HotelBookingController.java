@@ -144,7 +144,8 @@ public class HotelBookingController {
                 long days=ChronoUnit.DAYS.between(LocalDateTime.parse(hotelBookings.getCheck_in_time(),formatter),LocalDateTime.parse(hotelBookings.getCheck_out_time(),formatter));
                 int hotelPrice=hotelBookings.getHotel_total_cost()/(int)days;
                 int totalCost = hotelPrice * (int) daysBetween;
-                boolean bookingSuccess = hotelBooking.extendBooking(checkInDate.toString(),checkOutDate.toString(),hotelBookings.getHotel_booking_id(),totalCost);
+                HotelBooking hb=new HotelBooking();
+                boolean bookingSuccess = hb.extendBooking(checkInDate.toString(),checkOutDate.toString(),hotelBookings.getHotel_booking_id(),totalCost);
 
                 if (bookingSuccess) {
                     // Show a success message using an Alert
@@ -163,7 +164,8 @@ public class HotelBookingController {
     @FXML
     private void cancelButtonClicked() {
         hotelBookings = hotelBookingListView.getSelectionModel().getSelectedItem();
-        boolean bookingSuccess = hotelBooking.cancelBooking(hotelBookings.getHotel_booking_id());
+        HotelBooking hb=new HotelBooking();
+        boolean bookingSuccess = hb.cancelBooking(hotelBookings.getHotel_booking_id());
 
         if (bookingSuccess) {
             // Show a success message using an Alert
@@ -207,7 +209,8 @@ public class HotelBookingController {
                 long days=ChronoUnit.DAYS.between(LocalDateTime.parse(hotelBookings.getCheck_in_time(),formatter),LocalDateTime.parse(hotelBookings.getCheck_out_time(),formatter));
                 int hotelPrice=hotelBookings.getHotel_total_cost()/(int)days;
                 int totalCost = hotelPrice * (int) daysBetween;
-                boolean bookingSuccess = hotelBooking.editBooking(checkInDate.toString(), checkOutDate.toString(),hotelBookings.getHotel_booking_id(),totalCost);
+                HotelBooking hb=new HotelBooking();
+                boolean bookingSuccess = hb.editBooking(checkInDate.toString(), checkOutDate.toString(),hotelBookings.getHotel_booking_id(),totalCost);
 
                 if (bookingSuccess) {
                     // Show a success message using an Alert
@@ -227,6 +230,10 @@ public class HotelBookingController {
     private void createBookingClicked() {
         //boolean isVisible = hotelListView.isVisible();
         //if(!isVisible)
+        try{retrieveHotelsFromDatabase();}
+        catch(Exception e){
+            e.printStackTrace();
+        }
         hotelBookingListView.setVisible(false);
         editButton.setVisible(false);
         extendButton.setVisible(false);
@@ -278,19 +285,19 @@ public class HotelBookingController {
 
     @FXML
     private void handleHotelSelection(MouseEvent event) {
-        selectedHotel = hotelListView.getSelectionModel().getSelectedItem();
+        this.selectedHotel = hotelListView.getSelectionModel().getSelectedItem();
 
             }
 
     @FXML
     private void handleHotelBookingSelection(MouseEvent event) {
-       hotelBookings = hotelBookingListView.getSelectionModel().getSelectedItem();
+       this.hotelBookings = hotelBookingListView.getSelectionModel().getSelectedItem();
 
     }
 
     @FXML
     private void onBookButtonClicked() {
-        Hotel selectedHotel = hotelListView.getSelectionModel().getSelectedItem();
+        this.selectedHotel = hotelListView.getSelectionModel().getSelectedItem();
         if (selectedHotel != null) {
             showBookingDialog(selectedHotel);
         }
@@ -360,7 +367,8 @@ public class HotelBookingController {
                 String emailId = HotelBooking.getInstance().getEmailId();
                 HotelBooking c = new HotelBooking();
                 int userId = c.getUserdetails(emailId);
-                boolean bookingSuccess = hotelBooking.createBooking(selectedHotel.getHotelId(), userId,245 ,
+                HotelBooking hotelbookingg=new HotelBooking();
+                boolean bookingSuccess = hotelbookingg.createBooking(selectedHotel.getHotelId(), userId,1234 ,
                         checkInDate.toString(),
                         checkOutDate.toString(),totalCost);
 
