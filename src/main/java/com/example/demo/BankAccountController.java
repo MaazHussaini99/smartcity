@@ -53,7 +53,7 @@ public class BankAccountController {
 
     private void loadBankNames() {
         try (Connection connection = DBConn.connectDB()) {
-            String sql = "SELECT bank_name FROM Bank";
+            String sql = "SELECT bank_name FROM bank";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
 
