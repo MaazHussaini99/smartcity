@@ -9,6 +9,12 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Hyperlink;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -24,11 +30,16 @@ import javax.swing.text.Element;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class LandingPageController implements Initializable {
+public class LandingPageController extends HotelBookingController implements Initializable {
 
     @FXML
     private ListView<String> newsListView; // Rename your ListView
@@ -43,17 +54,37 @@ public class LandingPageController implements Initializable {
     @FXML
     private StackPane userDataStackPane;
     private boolean isProfilePaneOpen = false;
+    private ListView<String> newsList;
+    @FXML
+    private void onProfileLinkClicked() {
+        loadBankFXML();
+    }
+    private void loadBankFXML() {
+        try {
+            // Load the Bank.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("bank.fxml"));
+            Parent root = loader.load();
 
+            // Create a new scene
+            Scene scene = new Scene(root);
+
+            // Get the current stage and set the new scene
+            Stage stage = (Stage) profileLink.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             ObservableList<String> titles = FXCollections.observableArrayList();
             ObservableList<News> newsItems = FXCollections.observableArrayList(News.getNews());
-
             for (News news : newsItems) {
                 titles.add(news.getTitle());
-            }
 
+            }
             newsListView.setItems(titles);
 
             // Add an event handler for the ListView

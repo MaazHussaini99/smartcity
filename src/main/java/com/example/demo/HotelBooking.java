@@ -8,7 +8,27 @@ public class HotelBooking {
     private int accountId;
     private String checkInDate;
     private String checkOutDate;
+   private static int userId;
+   private String emailId;
 
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
+    private static HotelBooking instance;
+    public static HotelBooking getInstance() {
+        if (instance == null) {
+            instance = new HotelBooking();
+        }
+        return instance;
+    }
+    public HotelBooking(){
+
+    }
     public HotelBooking(int hotelBookId, int hotelId, int uid, int accountId, String checkInDate, String checkOutDate) {
         this.hotelBookId = hotelBookId;
         this.hotelId = hotelId;
@@ -19,17 +39,16 @@ public class HotelBooking {
     }
 
     // Method to create a new hotel booking
-    public boolean createBooking(int hotelBookId, int hotelId, int uid, int accountId, String checkInDate, String checkOutDate, double totalCost) {
-        String sql = "INSERT INTO hotel_booking (hotel_booking_id, hotel_id, user_id, account_id, check_in_time, check_out_time, hotel_total_cost) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public boolean createBooking(int hotelId, int uid, int accountId, String checkInDate, String checkOutDate, double totalCost) {
+        String sql = "INSERT INTO hotel_booking (hotel_id, user_id, account_id, check_in_time, check_out_time, hotel_total_cost) VALUES ( ?, ?, ?, ?, ?, ?)";
         try (Connection connection = DBConn.connectDB();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-            preparedStatement.setInt(1, hotelBookId);
-            preparedStatement.setInt(2, hotelId);
-            preparedStatement.setInt(3, uid);
-            preparedStatement.setInt(4, accountId);
-            preparedStatement.setString(5, checkInDate);
-            preparedStatement.setString(6, checkOutDate);
-            preparedStatement.setDouble(7, totalCost);
+            preparedStatement.setInt(1, hotelId);
+            preparedStatement.setInt(2, uid);
+            preparedStatement.setInt(3, accountId);
+            preparedStatement.setString(4, checkInDate);
+            preparedStatement.setString(5, checkOutDate);
+            preparedStatement.setDouble(6, totalCost);
 
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
@@ -40,14 +59,15 @@ public class HotelBooking {
     }
 
     // Method to edit an existing hotel booking
-    public boolean editBooking(String newCheckIn, String newCheckOut,int hotelBookId) {
-        String sql = "UPDATE hotel_booking SET check_in_time = ?, check_out_time = ? WHERE hotel_booking_id = ?";
+    public boolean editBooking(String newCheckIn, String newCheckOut,int hotelBookId, int totalCost) {
+        String sql = "UPDATE hotel_booking SET check_in_time = ?, check_out_time = ?, hotel_total_cost=? WHERE hotel_booking_id = ?";
         try (Connection connection = DBConn.connectDB();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setString(1,newCheckIn);
             preparedStatement.setString(2, newCheckOut);
-            preparedStatement.setInt(3, hotelBookId);
+            preparedStatement.setInt(4, hotelBookId);
+            preparedStatement.setInt(3, totalCost);
 
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
@@ -67,28 +87,52 @@ public class HotelBooking {
 
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
     // Method to extend an existing hotel booking
-    public boolean extendBooking(String newCheckOut, int hotelBookId) {
-        String sql = "UPDATE hotel_booking SET check_out_time = ? WHERE hotel_booking_id = ?";
+    public boolean extendBooking(String newCheckIn,String newCheckOut, int hotelBookId, int totalCost) {
+        String sql = "UPDATE hotel_booking SET check_in_time=?, check_out_time = ?, hotel_total_cost=?  WHERE hotel_booking_id = ?";
         try (Connection connection = DBConn.connectDB();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, newCheckOut);
-            preparedStatement.setInt(2, hotelBookId);
+            preparedStatement.setString(1, newCheckIn);
+            preparedStatement.setString(2, newCheckOut);
+            preparedStatement.setInt(4, hotelBookId);
+            preparedStatement.setInt(3, totalCost);
 
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+           // System.out.println(e.printStackTrace());
             return false;
         }
     }
+    public int getUserdetails(String emailId){
+        System.out.println(emailId);
+        String sql = "SELECT uid FROM user where user_email= ?";
+        try (Connection connection = DBConn.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1,emailId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+               final int userId=resultSet.getInt("uid");
+                //HotelBooking.getInstance().setUserId(userId);
+                this.userId=userId;
+                int c=HotelBooking.getInstance().getUserId();
+                return userId;
 
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+
+    }
     // Method to retrieve hotel booking details for a specific user
     public ResultSet getBookingDetails(int userId) {
         String sql = "SELECT * FROM hotel_booking WHERE user_id = ?";
@@ -100,5 +144,13 @@ public class HotelBooking {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 }
