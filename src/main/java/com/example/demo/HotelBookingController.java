@@ -1,28 +1,28 @@
-        package com.example.demo;
+package com.example.demo;
 
-        import javafx.fxml.FXML;
-        import javafx.scene.control.*;
-        import javafx.scene.image.Image;
-        import javafx.scene.image.ImageView;
-        import javafx.scene.input.MouseEvent;
-        import javafx.scene.layout.StackPane;
-        import javafx.scene.layout.VBox;
-        import javafx.stage.Modality;
-        import javafx.collections.FXCollections;
-        import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-        import java.net.StandardSocketOptions;
-        import java.sql.Connection;
-        import java.sql.PreparedStatement;
-        import java.sql.ResultSet;
-        import java.sql.SQLException;
-        import java.time.LocalDate;
-        import java.time.LocalDateTime;
-        import java.time.format.DateTimeFormatter;
-        import java.time.temporal.ChronoUnit;
+import java.net.StandardSocketOptions;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
-        import javafx.scene.control.Alert;
-        import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class HotelBookingController {
     @FXML
@@ -48,11 +48,11 @@ public class HotelBookingController {
     private HotelBooking hotelBooking;
 
     @FXML
-            private Button extendButton;
+    private Button extendButton;
     @FXML
-            private Button cancelButton;
- String emailId;
- int userId;
+    private Button cancelButton;
+    String emailId;
+    int userId;
 
     public String getEmailId() {
         return emailId;
@@ -91,7 +91,7 @@ public class HotelBookingController {
 
     public void initialize() {
         // Initialize the hotelBooking object
-      hotelBooking = new HotelBooking();
+        hotelBooking = new HotelBooking();
         // Populate the ListView with hotels from the database
         try {
             retrieveHotelsFromDatabase();
@@ -232,20 +232,20 @@ public class HotelBookingController {
         extendButton.setVisible(false);
         cancelButton.setVisible(false);
         hotelListView.setVisible(true);
-       // boolean isVisiblee = bookButton.isVisible();
+        // boolean isVisiblee = bookButton.isVisible();
         //if(!isVisiblee)
-       bookButton.setVisible(true);
+        bookButton.setVisible(true);
     }
     @FXML
     private void viewButtonClicked() {
-       // boolean isVisible = hotelBookingListView.isVisible();
-       // if(!isVisible)
+        // boolean isVisible = hotelBookingListView.isVisible();
+        // if(!isVisible)
         hotelListView.setVisible(false);
         bookButton.setVisible(false);
-       hotelBookingListView.setVisible(true);
-       editButton.setVisible(true);
-       extendButton.setVisible(true);
-       cancelButton.setVisible(true);
+        hotelBookingListView.setVisible(true);
+        editButton.setVisible(true);
+        extendButton.setVisible(true);
+        cancelButton.setVisible(true);
         String emailId=HotelBooking.getInstance().getEmailId();
         HotelBooking c= new HotelBooking();
         int userId=c.getUserdetails(emailId);
@@ -255,23 +255,23 @@ public class HotelBookingController {
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1,userId);
             ResultSet resultSet = preparedStatement.executeQuery();
-                        ObservableList<HotelBookings> hotelBookings = FXCollections.observableArrayList();
+            ObservableList<HotelBookings> hotelBookings = FXCollections.observableArrayList();
 
-                        while (resultSet.next()) {
-                            int hotelBookingId = resultSet.getInt("hotel_booking_id");
-                            int accountId = resultSet.getInt("account_id");
-                            String checkInTime = resultSet.getString("check_in_time");
-                            String checkOutTime = resultSet.getString("check_out_time");
-                            int hotelTotalCost = resultSet.getInt("hotel_total_cost");
+            while (resultSet.next()) {
+                int hotelBookingId = resultSet.getInt("hotel_booking_id");
+                int accountId = resultSet.getInt("account_id");
+                String checkInTime = resultSet.getString("check_in_time");
+                String checkOutTime = resultSet.getString("check_out_time");
+                int hotelTotalCost = resultSet.getInt("hotel_total_cost");
 
-                            HotelBookings hotelBooking = new HotelBookings(hotelBookingId, accountId, checkInTime, checkOutTime, hotelTotalCost);
-                            hotelBookings.add(hotelBooking);
-                        }
+                HotelBookings hotelBooking = new HotelBookings(hotelBookingId, accountId, checkInTime, checkOutTime, hotelTotalCost);
+                hotelBookings.add(hotelBooking);
+            }
 
-                        hotelBookingListView.setItems(hotelBookings);
-                    }
+            hotelBookingListView.setItems(hotelBookings);
+        }
 
-         catch (SQLException e) {
+        catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -280,11 +280,11 @@ public class HotelBookingController {
     private void handleHotelSelection(MouseEvent event) {
         selectedHotel = hotelListView.getSelectionModel().getSelectedItem();
 
-            }
+    }
 
     @FXML
     private void handleHotelBookingSelection(MouseEvent event) {
-       hotelBookings = hotelBookingListView.getSelectionModel().getSelectedItem();
+        hotelBookings = hotelBookingListView.getSelectionModel().getSelectedItem();
 
     }
 
@@ -365,6 +365,7 @@ public class HotelBookingController {
                         checkOutDate.toString(),totalCost);
 
                 if (bookingSuccess) {
+
                     // Show a success message using an Alert
                     showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booked successfully! Total Cost: $" + totalCost);
                 } else {
