@@ -70,6 +70,8 @@ public class LoggedinController {
             stage.setTitle("Smart City");
             stage.setScene(scene);
             stage.show();
+            stage.centerOnScreen();
+
         } else {
             infoBox("Please enter correct Email and Password", null, "Failed");
         }
@@ -84,7 +86,6 @@ public class LoggedinController {
         stage.setScene(scene);
         stage.show();
     }
-
     public static void infoBox(String infoMessage, String headerText, String title) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setContentText(infoMessage);
@@ -132,7 +133,7 @@ public class LoggedinController {
 
                 // Save login data to User object
                 System.out.println("\nUserData");
-                User user = new User(resultSet.getString(2),
+                User user = User.getInstance(resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getString(5),
