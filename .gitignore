@@ -25,3 +25,7 @@ Thumbs.db
 
 # Generated files
 bin/
+.idea/misc.xml
+.idea/workspace.xml
+target/classes/com/example/demo/LoggedinController.class
+target/classes/module-info.class
