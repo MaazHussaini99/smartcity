@@ -5,10 +5,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -91,6 +96,15 @@ public class SignupController implements Initializable{
 
 
 
+    }
+    public void BackToLogin(ActionEvent event) throws SQLException, IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("logged-in.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 544, 400);
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.setTitle("Smart City - Sign up");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void signUp( ActionEvent event ) throws SQLException {
