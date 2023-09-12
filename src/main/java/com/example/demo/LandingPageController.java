@@ -9,13 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Hyperlink;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
@@ -24,16 +18,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import javax.swing.text.Element;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -56,26 +40,7 @@ public class LandingPageController extends HotelBookingController implements Ini
     private boolean isProfilePaneOpen = false;
     private ListView<String> newsList;
     @FXML
-    private void onProfileLinkClicked() {
-        loadBankFXML();
-    }
-    private void loadBankFXML() {
-        try {
-            // Load the Bank.fxml file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("bank.fxml"));
-            Parent root = loader.load();
-
-            // Create a new scene
-            Scene scene = new Scene(root);
-
-            // Get the current stage and set the new scene
-            Stage stage = (Stage) profileLink.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private Button newCard;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -121,14 +86,6 @@ public class LandingPageController extends HotelBookingController implements Ini
             descriptionPane.setHeaderText(news.getTitle());
         }
 
-//        // Assuming you have a URL field in your News class
-//        linkHyperlink.setText("Read Full Article");
-//        linkHyperlink.setOnAction(event -> {
-//            // Open the URL in a web browser or perform the desired action
-//            // You need to implement the logic to handle the hyperlink click
-//            openURLInBrowser(news.getUrl());
-//        });
-
     }
     private void handleProfileButtonClick(ActionEvent event) {
         if (!isProfilePaneOpen) {
@@ -166,25 +123,38 @@ public class LandingPageController extends HotelBookingController implements Ini
         userDataText.setLayoutX(10);
         userDataText.setLayoutY(10);
 
-        userDataPane.getChildren().add(userDataText);
+        newCard = new Button("Add a New Payment Method"); // Replace with your user data components
+        newCard.setLayoutX(10);
+        newCard.setLayoutY(250);
 
+        // Add an event handler to the button
+        newCard.setOnAction(event -> loadBankFXML());
+
+        userDataPane.getChildren().add(userDataText);
+        userDataPane.getChildren().add(newCard);
         return userDataPane;
     }
+    private void onProfileLinkClicked() {
+        loadBankFXML();
+    }
+    private void loadBankFXML() {
+        try {
+            // Load the Bank.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("bankAccount.fxml"));
+            Parent root = loader.load();
 
-//    private void openURLInBrowser(String url) {
-//        // Implement the logic to open the URL in a web browser
-//        // For example, you can use java.awt.Desktop for this purpose
-//        // You'll need to import java.awt.Desktop
-//        try {
-//            if (Desktop.isDesktopSupported()) {
-//
-//                Desktop.getDesktop().browse(new URI(url));
-//            }
-//        } catch (IOException | URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-//    }
+            // Create a new scene
+            Scene scene = new Scene(root);
 
+            // Get the current stage and set the new scene
+            Stage stage = (Stage) newCard.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+            stage.centerOnScreen();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void LogOut(ActionEvent event) throws SQLException, IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("logged-in.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 544, 400);
