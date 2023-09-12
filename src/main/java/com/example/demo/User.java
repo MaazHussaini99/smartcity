@@ -19,6 +19,7 @@ public class User {
     private String password;
     private String phoneNumber;
 
+    //
     public User(String firstName,
                 String lastName,
                 String streetAddress,
@@ -42,7 +43,7 @@ public class User {
         this.roleID = roleID;
     }
 
-    public static synchronized User getInstance(String firstName,
+    public static synchronized User initializeUser(String firstName,
                                                 String lastName,
                                                 String streetAddress,
                                                 String city,
@@ -64,6 +65,10 @@ public class User {
                     phoneNumber,
                     roleID);
 
+        return user;
+    }
+
+    public static synchronized User getInstance() {
         return user;
     }
 

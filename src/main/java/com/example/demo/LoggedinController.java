@@ -133,7 +133,7 @@ public class LoggedinController {
 
                 // Save login data to User object
                 System.out.println("\nUserData");
-                User user = User.getInstance(resultSet.getString(2),
+                User user = User.initializeUser(resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getString(5),
