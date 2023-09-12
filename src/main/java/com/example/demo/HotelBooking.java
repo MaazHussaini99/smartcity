@@ -57,7 +57,24 @@ public class HotelBooking {
             return false;
         }
     }
+    public int getAccountId(int userId) {
+        int accountId = -1; // Default value in case of an error
 
+        try (Connection connection = DBConn.connectDB()) {
+            String sql = "SELECT account_no FROM bank_account WHERE user_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                accountId = resultSet.getInt("account_no");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return accountId;
+    }
     // Method to edit an existing hotel booking
     public boolean editBooking(String newCheckIn, String newCheckOut,int hotelBookId, int totalCost) {
         String sql = "UPDATE hotel_booking SET check_in_time = ?, check_out_time = ?, hotel_total_cost=? WHERE hotel_booking_id = ?";

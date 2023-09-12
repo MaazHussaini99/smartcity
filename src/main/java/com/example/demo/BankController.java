@@ -60,7 +60,7 @@ public class BankController {
         String newBankName = newBankNameField.getText();
         if (!newBankName.isEmpty()) {
             try (Connection connection = DBConn.connectDB()) {
-                String sql = "INSERT INTO Bank (bank_name) VALUES (?)";
+                String sql = "INSERT INTO bank (bank_name) VALUES (?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, newBankName);
                 int rowsAffected = preparedStatement.executeUpdate();
@@ -89,7 +89,7 @@ public class BankController {
         String selectedBank = bankListView.getSelectionModel().getSelectedItem();
         if (selectedBank != null) {
             try (Connection connection = DBConn.connectDB()) {
-                String sql = "DELETE FROM Bank WHERE bank_name = ?";
+                String sql = "DELETE FROM bank WHERE bank_name = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, selectedBank);
                 int rowsAffected = preparedStatement.executeUpdate();
@@ -117,7 +117,7 @@ public class BankController {
         bankNames.clear();
 
         try (Connection connection = DBConn.connectDB()) {
-            String sql = "SELECT bank_name FROM Bank";
+            String sql = "SELECT bank_name FROM bank";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -137,7 +137,7 @@ public class BankController {
 
         if (selectedBank != null && !updatedBankName.isEmpty()) {
             try (Connection connection = DBConn.connectDB()) {
-                String sql = "UPDATE Bank SET bank_name = ? WHERE bank_name = ?";
+                String sql = "UPDATE bank SET bank_name = ? WHERE bank_name = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, updatedBankName);
                 preparedStatement.setString(2, selectedBank);
