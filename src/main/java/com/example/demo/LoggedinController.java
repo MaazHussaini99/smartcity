@@ -68,6 +68,8 @@ public class LoggedinController {
             stage.setTitle("Smart City");
             stage.setScene(scene);
             stage.show();
+            stage.centerOnScreen();
+
         } else {
             infoBox("Please enter correct Email and Password", null, "Failed");
         }

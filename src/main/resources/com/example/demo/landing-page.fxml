@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="963.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LandingPageController">
+<HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="960.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LandingPageController">
    <children>
       <AnchorPane maxWidth="-Infinity" prefHeight="658.0" prefWidth="293.0" style="-fx-background-color: #ffffff;">
          <children>
@@ -15,6 +15,7 @@
                </image></ImageView>
             <Button fx:id="profileLink" layoutX="113.0" layoutY="514.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="67.0" text="Profile" />
             <Button fx:id="logOut" layoutX="113.0" layoutY="550.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="26.0" prefWidth="67.0" text="Log Out" />
+            <StackPane fx:id="userDataStackPane" layoutX="29.0" layoutY="207.0" prefHeight="292.0" prefWidth="234.0" />
          </children></AnchorPane>
       <TabPane layoutX="20.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="626.0" prefWidth="646.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -27,38 +28,48 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Pane layoutX="387.0" layoutY="26.0" prefHeight="550.0" prefWidth="243.0">
+                        <Pane layoutX="387.0" layoutY="26.0" prefHeight="550.0" prefWidth="243.0" style="-fx-background-color: #3567c4;">
                            <children>
                               <TextField layoutX="14.0" layoutY="478.0" prefHeight="25.0" prefWidth="42.0" promptText="QTY" />
                               <Button layoutX="14.0" layoutY="511.0" mnemonicParsing="false" text="Purchase" />
                               <ImageView fitHeight="160.0" fitWidth="221.0" layoutX="11.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
                            </children></Pane>
-                        <ScrollPane layoutX="17.0" layoutY="26.0" prefHeight="550.0" prefWidth="353.0">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-                          </content>
-                        </ScrollPane>
                      </children></AnchorPane>
             </content>
           </Tab>
             <Tab text="Transport">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="599.0" prefWidth="665.0">
+                      <children>
+                          <Pane layoutX="387.0" layoutY="26.0" prefHeight="550.0" prefWidth="243.0" style="-fx-background-color: #3567c4;">
+                              <children>
+                                  <TextField layoutX="14.0" layoutY="478.0" prefHeight="25.0" prefWidth="42.0" promptText="QTY" />
+                                  <Button layoutX="14.0" layoutY="511.0" mnemonicParsing="false" text="Purchase" />
+                                  <ImageView fitHeight="160.0" fitWidth="221.0" layoutX="11.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+                              </children></Pane>
+                          <ScrollPane layoutX="17.0" layoutY="26.0" prefHeight="550.0" prefWidth="353.0">
+                              <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                              </content>
+                          </ScrollPane>
+                      </children>
+
+                  </AnchorPane>
               </content>
             </Tab>
             <Tab text="News">
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
+                        <TextField layoutX="17.0" layoutY="22.0" prefHeight="26.0" prefWidth="300.0" promptText="SEARCH" style="-fx-background-color: #3567c4;" />
 
                         <ListView fx:id="newsListView" layoutX="17.0" layoutY="123.0" prefHeight="450.0" prefWidth="300.0" />
-                        <Pane layoutX="329.0" layoutY="22.0" prefHeight="550.0" prefWidth="300.0" style="-fx-background-color: #3567c4;">
+                        <Pane fx:id="articlePane" layoutX="329.0" layoutY="22.0" prefHeight="550.0" prefWidth="300.0" style="-fx-background-color: #3567c4;">
                            <children>
-                              <ImageView fitHeight="168.0" fitWidth="250.0" layoutX="25.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" />
-                              <DialogPane layoutX="25.0" layoutY="215.0" prefHeight="315.0" prefWidth="250.0" style="-fx-background-color: white;" />
-                              <Hyperlink layoutX="31.0" layoutY="499.0" text="Hyperlink" />
+                              <ImageView fx:id="newsImage" fitHeight="168.0" fitWidth="250.0" layoutX="25.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" />
+                              <Hyperlink layoutX="25.0" layoutY="505.0" text="Hyperlink" />
+                              <DialogPane fx:id="descriptionPane" layoutX="26.0" layoutY="206.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="303.0" prefWidth="249.0" />
                            </children></Pane>
-                        <TextField layoutX="17.0" layoutY="22.0" prefHeight="26.0" prefWidth="300.0" promptText="SEARCH" style="-fx-background-color: #3567c4;" />
 
                      </children>
                     </AnchorPane>
