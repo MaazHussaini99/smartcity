@@ -6,6 +6,8 @@ package com.example.demo;
  */
 public class User {
 
+    private static User user = null;
+
     private int roleID;
     private String firstName;
     private String lastName;
@@ -38,6 +40,31 @@ public class User {
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.roleID = roleID;
+    }
+
+    public static synchronized User getInstance(String firstName,
+                                                String lastName,
+                                                String streetAddress,
+                                                String city,
+                                                String zipcode,
+                                                String state,
+                                                String email,
+                                                String password,
+                                                String phoneNumber,
+                                                int roleID) {
+        if (user == null)
+            user = new User(firstName,
+                    lastName,
+                    streetAddress,
+                    city,
+                    zipcode,
+                    state,
+                    email,
+                    password,
+                    phoneNumber,
+                    roleID);
+
+        return user;
     }
 
     public void createResumeProfile() {}
