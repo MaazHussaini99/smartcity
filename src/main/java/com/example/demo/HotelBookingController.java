@@ -365,6 +365,7 @@ public class HotelBookingController {
                         checkOutDate.toString(),totalCost);
 
                 if (bookingSuccess) {
+                    
                     // Show a success message using an Alert
                     showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booked successfully! Total Cost: $" + totalCost);
                 } else {
