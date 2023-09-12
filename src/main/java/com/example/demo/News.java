@@ -58,9 +58,6 @@ public class News {
                 // Parse the JSON response
                 JSONObject jsonResponse = new JSONObject(response.toString());
                 JSONArray results = jsonResponse.getJSONArray("results");
-
-                System.out.println(results);
-
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject article = results.getJSONObject(i);
                     String title = article.getString("title");

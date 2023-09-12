@@ -17,7 +17,6 @@ public class MainApplication extends Application {
         stage.setTitle("Smart City Application");
         stage.setScene(scene);
         stage.show();
-        JobListing.getAllJobs();
     }
 
     public static void main(String[] args) {
