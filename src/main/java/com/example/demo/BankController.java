@@ -37,7 +37,6 @@ public class BankController {
     // Add a flag to track whether to show the "Delete" and "Update" sections
     private boolean showDeleteAndUpdate = false;
     public ObservableList<String> bankNames = FXCollections.observableArrayList();
-    private LoggedinController loggedinController;
 
     public void initialize() {
         bankListView.setCellFactory(TextFieldListCell.forListView());
@@ -184,8 +183,6 @@ public class BankController {
             // Load the Bank.fxml file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("bankAccount.fxml"));
             Parent root = loader.load();
-            BankAccountController controller = loader.getController();
-            controller.setLoggedinController(loggedinController);
             // Create a new scene
             Scene scene = new Scene(root);
 

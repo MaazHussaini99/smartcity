@@ -33,7 +33,7 @@ public class LoggedinController {
 
     @FXML
     private Button signUp;
-    private String userEmail;
+    //private String userEmail;
 
     @FXML
     public void login(ActionEvent event) throws SQLException, IOException {
@@ -61,7 +61,7 @@ public class LoggedinController {
         boolean flag = validate(emailId, password);
         System.out.println("Flag: "+flag);
         if (flag == true) {
-            userEmail = emailId;
+            //userEmail = emailId;
             infoBox("Login Successful!", null, "Success");
             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("landing-page.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 999, 658);
@@ -118,8 +118,33 @@ public class LoggedinController {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
+            // 2 = first name
+            // 3 = last name
+            // 4 = street Add
+            // 5 = city
+            // 6 = zip
+            // 7 = state
+            // 8 = email
+            // 9 = password
+            // 10 = phone
+            // 11 = role
             if (resultSet.next() == true) {
+
+                // Save login data to User object
+                System.out.println("\nUserData");
+                User user = new User(resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getString(6),
+                        resultSet.getString(7),
+                        resultSet.getString(8),
+                        resultSet.getString(9),
+                        resultSet.getString(10),
+                        Integer.parseInt(resultSet.getString(11)));
+                System.out.println(user.getFirstName());
                 System.out.println("Logged in!");
+                HotelBooking.getInstance().setEmailId(emailId);
                 return true;
             }
 
@@ -145,9 +170,6 @@ public class LoggedinController {
                 }
             }
         }
-    }
-    public String getUserEmail() {
-        return emailIdField.getText();
     }
 }
 

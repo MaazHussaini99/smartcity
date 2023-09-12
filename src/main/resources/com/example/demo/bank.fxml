@@ -5,6 +5,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import com.example.demo.LoggedinController?>
+
 
 <VBox fx:id="bankView" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
