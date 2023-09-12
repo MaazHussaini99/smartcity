@@ -168,7 +168,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/demo/LandingPageController.java</url>
-          <line>28</line>
+          <line>19</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
