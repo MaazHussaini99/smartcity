@@ -370,7 +370,9 @@ public class HotelBookingController {
                 HotelBooking c = new HotelBooking();
                 int userId = c.getUserdetails(emailId);
                 HotelBooking hb=new HotelBooking();
-                boolean bookingSuccess = hb.createBooking(selectedHotel.getHotelId(), userId,245 ,
+                
+                int accountId=hb.getAccountId(userId);
+                boolean bookingSuccess = hb.createBooking(selectedHotel.getHotelId(), userId ,accountId,
                         checkInDate.toString(),
                         checkOutDate.toString(),totalCost);
 
