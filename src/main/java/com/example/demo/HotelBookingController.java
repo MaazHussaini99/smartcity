@@ -145,14 +145,22 @@ public class HotelBookingController {
                 int hotelPrice=hotelBookings.getHotel_total_cost()/(int)days;
                 int totalCost = hotelPrice * (int) daysBetween;
                 HotelBooking hb=new HotelBooking();
-                boolean bookingSuccess = hb.extendBooking(checkInDate.toString(),checkOutDate.toString(),hotelBookings.getHotel_booking_id(),totalCost);
-
+                boolean bookingSuccess=false;
+                try {
+                    bookingSuccess = hb.extendBooking(checkInDate.toString(), checkOutDate.toString(), hotelBookings.getHotel_booking_id(), totalCost);
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+                int amountt=(int)(hb.getAccountBalance(accountId));
+                System.out.println(amountt);
+                int updatedAmount=amountt-totalCost;
                 if (bookingSuccess) {
                     // Show a success message using an Alert
-                    showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booking changed successfully!");
+                    showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booking changed successfully! Updated Cost: $" + totalCost);
                 } else {
                     // Show an error message using an Alert
-                    showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed.");
+                    showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed.  Please check balance");
                 }
             }
             return null;
@@ -169,7 +177,7 @@ public class HotelBookingController {
 
         if (bookingSuccess) {
             // Show a success message using an Alert
-            showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booking changed successfully!");
+            showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booking cancelled successfully! Total Cost: $0");
         } else {
             // Show an error message using an Alert
             showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed.");
@@ -211,13 +219,14 @@ public class HotelBookingController {
                 int totalCost = hotelPrice * (int) daysBetween;
                 HotelBooking hb=new HotelBooking();
                 boolean bookingSuccess = hb.editBooking(checkInDate.toString(), checkOutDate.toString(),hotelBookings.getHotel_booking_id(),totalCost);
-
+                int amountt=(int)(hb.getAccountBalance(accountId));
+                int updatedAmount=amountt-totalCost;
                 if (bookingSuccess) {
                     // Show a success message using an Alert
-                    showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booking changed successfully!");
+                    showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booking changed successfully! Updated Cost: $" + totalCost);
                 } else {
                     // Show an error message using an Alert
-                    showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed.");
+                    showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed. Please check balance");
                 }
             }
             return null;
@@ -370,19 +379,21 @@ public class HotelBookingController {
                 HotelBooking c = new HotelBooking();
                 int userId = c.getUserdetails(emailId);
                 HotelBooking hb=new HotelBooking();
-                
+
                 int accountId=hb.getAccountId(userId);
+                this.accountId=accountId;
                 boolean bookingSuccess = hb.createBooking(selectedHotel.getHotelId(), userId ,accountId,
                         checkInDate.toString(),
                         checkOutDate.toString(),totalCost);
-
-                if (bookingSuccess) {
+                int amountt=(int)(hb.getAccountBalance(accountId));
+                int updatedAmount=amountt-totalCost;
+                if (bookingSuccess&&(hb.updateAccountBalance(accountId,updatedAmount))) {
 
                     // Show a success message using an Alert
                     showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booked successfully! Total Cost: $" + totalCost);
                 } else {
                     // Show an error message using an Alert
-                    showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed.");
+                    showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed. Please check balance");
                 }
             }
             return null;
