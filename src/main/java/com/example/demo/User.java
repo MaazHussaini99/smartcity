@@ -19,8 +19,7 @@ public class User {
     private String password;
     private String phoneNumber;
 
-    //
-    public User(String firstName,
+    private User(String firstName,
                 String lastName,
                 String streetAddress,
                 String city,
@@ -66,6 +65,10 @@ public class User {
                     roleID);
 
         return user;
+    }
+
+    public static void logOut() {
+        user = null;
     }
 
     public static synchronized User getInstance() {

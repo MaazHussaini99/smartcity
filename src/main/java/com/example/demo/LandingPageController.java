@@ -156,6 +156,10 @@ public class LandingPageController extends HotelBookingController implements Ini
         }
     }
     public void LogOut(ActionEvent event) throws SQLException, IOException {
+
+        // Log user out of account
+        User.logOut();
+
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("logged-in.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 544, 400);
         Node node = (Node) event.getSource();
