@@ -61,12 +61,13 @@ public class LoggedinController {
             //userEmail = emailId;
             infoBox("Login Successful!", null, "Success");
             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("landing-page.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 999, 658);
+            Scene scene = new Scene(fxmlLoader.load(), 1200, 681);
             Node node = (Node) event.getSource();
             Stage stage = (Stage) node.getScene().getWindow();
             stage.setTitle("Smart City");
             stage.setScene(scene);
             stage.show();
+            stage.centerOnScreen();
         } else {
             infoBox("Please enter correct Email and Password", null, "Failed");
         }

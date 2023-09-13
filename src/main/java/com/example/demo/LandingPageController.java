@@ -7,21 +7,24 @@ import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Hyperlink;
+import javafx.scene.control.*;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import javafx.util.StringConverter;
 
 public class LandingPageController extends HotelBookingController implements Initializable {
 
@@ -34,58 +37,77 @@ public class LandingPageController extends HotelBookingController implements Ini
     @FXML
     private ImageView newsImage;
     @FXML
-    private Button profileLink;
+    private Button profileLink,newCard,nextButton,previousButton;
     @FXML
     private StackPane userDataStackPane;
     private boolean isProfilePaneOpen = false;
     private ListView<String> newsList;
+
     @FXML
-    private Button newCard;
+    private Pane weatherPane;
+    @FXML
+    private ImageView newsImage1,newsImage2,newsImage3;
+    @FXML
+    private DialogPane descriptionPane1,descriptionPane2,descriptionPane3;
+    private int currentNewsIndex = 0; // Initialize to 0
+    private int newsPerPage = 3; // Number of news articles to display at a time
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            ObservableList<String> titles = FXCollections.observableArrayList();
             ObservableList<News> newsItems = FXCollections.observableArrayList(News.getNews());
-            for (News news : newsItems) {
-                titles.add(news.getTitle());
 
-            }
-            newsListView.setItems(titles);
+            // Initialize the dialog panes and images for the first set of news articles
+            populateNewsPanes(newsItems, currentNewsIndex);
 
-            // Add an event handler for the ListView
-            newsListView.setOnMouseClicked(event -> {
-                String selectedTitle = newsListView.getSelectionModel().getSelectedItem();
-                if (selectedTitle != null) {
-                    // Find the corresponding News object
-                    News selectedNews = null;
-                    for (News news : newsItems) {
-                        if (news.getTitle().equals(selectedTitle)) {
-                            selectedNews = news;
-                            break;
-                        }
-                    }
+            // Add event handlers for the navigation buttons
+            previousButton.setOnAction(event -> {
+                if (currentNewsIndex >= newsPerPage) {
+                    currentNewsIndex -= newsPerPage;
+                    populateNewsPanes(newsItems, currentNewsIndex);
+                }
+            });
 
-                    // Display the news article in the articlePane (you need to implement this)
-                    displayNewsArticle(selectedNews);
+            nextButton.setOnAction(event -> {
+                if (currentNewsIndex + newsPerPage < newsItems.size()) {
+                    currentNewsIndex += newsPerPage;
+                    populateNewsPanes(newsItems, currentNewsIndex);
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
         profileLink.setOnAction(this::handleProfileButtonClick);
+        displayWeather();
     }
-    private void displayNewsArticle(News news) {
-        // Set the title, description, and image of News article
-        if(news.getImg_url() == "null" || news.getImg_url() == ""){
-            descriptionPane.setContentText(news.getDescription());
-            descriptionPane.setHeaderText(news.getTitle());
-        }else {
-            Image image = new Image(news.getImg_url());
-            newsImage.setImage(image);
-            descriptionPane.setContentText(news.getDescription());
-            descriptionPane.setHeaderText(news.getTitle());
-        }
+    private void populateNewsPanes(ObservableList<News> newsItems, int startIndex) {
+        for (int i = 0; i < newsPerPage; i++) {
+            int newsIndex = startIndex + i;
+            if (newsIndex < newsItems.size()) {
+                News news = newsItems.get(newsIndex);
+                ImageView imageView = getImagePaneForIndex(i);
+                DialogPane descriptionPane = getDescriptionPaneForIndex(i);
 
+                try {
+                    Image image = new Image(news.getImg_url());
+                    imageView.setImage(image);
+                } catch (IllegalArgumentException e) {
+                    // Handle the case where the image URL is invalid or not found
+                    // Set a placeholder image or display an error message
+                    imageView.setImage(null); // Set to a placeholder or null
+                }
+
+                descriptionPane.setContentText(news.getDescription());
+                descriptionPane.setHeaderText(news.getTitle());
+            } else {
+                // If there are no more news articles, clear the remaining panes
+                ImageView imageView = getImagePaneForIndex(i);
+                DialogPane descriptionPane = getDescriptionPaneForIndex(i);
+                imageView.setImage(null);
+                descriptionPane.setContentText("");
+                descriptionPane.setHeaderText("");
+            }
+        }
     }
     private void handleProfileButtonClick(ActionEvent event) {
         if (!isProfilePaneOpen) {
@@ -105,7 +127,76 @@ public class LandingPageController extends HotelBookingController implements Ini
             isProfilePaneOpen = false;
         }
     }
+    private void displayWeather() {
+        Weather weather = Weather.getWeather();
 
+        if (weather != null) {
+//            //for maaz to fix later
+
+
+            // Create a URL object for the image
+            URL imageUrl = null;
+            try {
+                imageUrl = new URL("https:" + weather.getConditionIcon());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            ImageView iconImageView = new ImageView();
+            // Open a stream to read the image data
+            InputStream stream = null;
+            try {
+                stream = imageUrl.openStream();
+                // Create an Image object from the input stream
+                Image image = new Image(stream);
+
+                iconImageView.setLayoutX(10.0);
+                iconImageView.setLayoutY(0.0);
+                Image conditionIconImage = image;
+                iconImageView.setImage(conditionIconImage);
+                // Close the input stream
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Label temperatureLabel = new Label(weather.getTempFarhenhiet() + "°F");
+            temperatureLabel.setLayoutX(100.0);
+            temperatureLabel.setLayoutY(10.0);
+            temperatureLabel.setFont(new Font(30));
+
+
+            double temperatureLabelWidth = new Text(temperatureLabel.getText()).getLayoutBounds().getWidth();
+            Label conditionLabel = new Label(weather.getConditionText());
+            double conditionLabelX = 105.0; // Adjust as needed
+            double conditionLabelY = 45.0; // Align vertically with temperatureLabel
+            conditionLabel.setLayoutX(conditionLabelX);
+            conditionLabel.setLayoutY(conditionLabelY);
+
+            Label humidityLabel = new Label("Humidity: " + weather.getHumidity());
+            humidityLabel.setLayoutX(10.0);
+            humidityLabel.setLayoutY(60.0);
+
+            Label percipLabel = new Label("Precipitation: " + weather.getPrecipIn());
+            percipLabel.setLayoutX(10.0);
+            percipLabel.setLayoutY(80.0);
+
+            Label windLabel = new Label("Wind: " + weather.getWindMph());
+            windLabel.setLayoutX(190.0);
+            windLabel.setLayoutY(60.0);
+            windLabel.setTextAlignment(TextAlignment.RIGHT);
+
+            Label uvLabel = new Label("UV Index: " + weather.getUvIndex());
+            uvLabel.setLayoutX(190.0);
+            uvLabel.setLayoutY(80.0);
+            uvLabel.setTextAlignment(TextAlignment.RIGHT);
+
+
+            // Add these labels to the weatherPane
+            weatherPane.getChildren().addAll(temperatureLabel, conditionLabel,humidityLabel,percipLabel,windLabel,uvLabel, iconImageView);
+        } else {
+            System.out.println("Failed to fetch weather data.");
+        }
+    }
     // Implement this method to create and populate the user data pane
     private Pane createUserProfilePane() {
         // Create a Pane for user data
@@ -168,5 +259,33 @@ public class LandingPageController extends HotelBookingController implements Ini
         stage.setScene(scene);
         stage.show();
     }
+    public ImageView getImagePaneForIndex(int index) {
+        switch (index) {
+            case 0:
+                return newsImage1;
+            case 1:
+                return newsImage2;
+            case 2:
+                return newsImage3;
+            default:
+                // Handle any other index as needed
+                return null;
+        }
+    }
+
+    public DialogPane getDescriptionPaneForIndex(int index) {
+        switch (index) {
+            case 0:
+                return descriptionPane1;
+            case 1:
+                return descriptionPane2;
+            case 2:
+                return descriptionPane3;
+            default:
+                // Handle any other index as needed
+                return null;
+        }
+    }
+
 
 }
