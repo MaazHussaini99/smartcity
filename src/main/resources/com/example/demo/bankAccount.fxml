@@ -1,38 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.geometry.Pos?>
-<?import javafx.scene.text.TextFlow?>
-<?import com.example.demo.LoggedinController?>
 
-<VBox fx:id="bankAccountView" xmlns="http://javafx.com/javafx/16"
-      fx:controller="com.example.demo.BankAccountController"
-      xmlns:fx="http://javafx.com/fxml/1"
-      prefHeight="400.0"
-      prefWidth="544.0"
-      spacing="10">
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="bankAccountView" prefHeight="400.0" prefWidth="544.0" spacing="10" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.BankAccountController">
     <children>
         <HBox alignment="TOP_RIGHT">
-            <Button text="Back to Bank" onAction="#navigateBackToBank" />
+            <Button onAction="#navigateBackToBank" text="Back to Bank" />
         </HBox>
-        <Label text="Bank Account Information"/>
+        <Label text="Bank Account Information" />
 
         <!-- ComboBox to select the bank when creating a new account -->
-        <ComboBox fx:id="bankSelectionComboBox" promptText="Select a Bank"/>
+        <ComboBox fx:id="bankSelectionComboBox" promptText="Select a Bank" />
 
         <!-- ListView to display available bank accounts -->
-        <ListView fx:id="bankListView"/>
+        <ListView fx:id="bankListView" />
 
         <!-- Buttons for actions -->
-        <Button fx:id="createBankAccountButton" text="Create Bank Account" onAction="#createNewBankAccount"/>
-        <Button fx:id="deleteBankButton" text="Delete Bank Account" onAction="#deleteSelectedBank"/>
+        <Button fx:id="createBankAccountButton" onAction="#createNewBankAccount" text="Create Bank Account" />
+        <Button fx:id="deleteBankButton" onAction="#deleteSelectedBank" text="Delete Bank Account" />
       <!--  <Button fx:id="updateBankButton" text="Update Bank Account" onAction="#updateSelectedBank"/> -->
-        <Button fx:id="depositButton" text="Deposit" onAction="#depositMoney"/>
-        <Button fx:id="withdrawButton" text="Withdraw" onAction="#withdrawMoney"/>
-        <Button fx:id="showBalanceButton" text="Show Balance" onAction="#showBalance"/>
+        <Button fx:id="depositButton" onAction="#depositMoney" text="Deposit" />
+        <Button fx:id="withdrawButton" onAction="#withdrawMoney" text="Withdraw" />
+        <Button fx:id="showBalanceButton" onAction="#showBalance" text="Show Balance" />
     </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </VBox>

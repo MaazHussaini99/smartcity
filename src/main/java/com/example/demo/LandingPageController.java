@@ -206,7 +206,14 @@ public class LandingPageController extends HotelBookingController implements Ini
         Pane userDataPane = new Pane();
 
         // Populate the user data Pane with user-specific content
-        Text userDataText = new Text("User Profile Data"); // Replace with your user data components
+        Text userDataText = new Text("First name: " + User.getInstance().getFirstName()
+                + "\nLast name: " + User.getInstance().getLastName()
+                + "\nStreet address: " + User.getInstance().getStreetAddress()
+                + "\nCity: " + User.getInstance().getCity()
+                + "\nZipcode: " + User.getInstance().getZipcode()
+                + "\nState: " + User.getInstance().getState()
+                + "\nEmail: " + User.getInstance().getEmail()
+                + "\nPhone number: " + User.getInstance().getPhoneNumber()); // Replace with your user data components
         userDataText.setLayoutX(10);
         userDataText.setLayoutY(10);
 
@@ -243,6 +250,10 @@ public class LandingPageController extends HotelBookingController implements Ini
         }
     }
     public void LogOut(ActionEvent event) throws SQLException, IOException {
+
+        // Log user out of account
+        User.logOut();
+
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("logged-in.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 544, 400);
         Node node = (Node) event.getSource();

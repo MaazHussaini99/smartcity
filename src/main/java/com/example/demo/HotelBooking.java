@@ -49,13 +49,36 @@ public class HotelBooking {
             preparedStatement.setString(4, checkInDate);
             preparedStatement.setString(5, checkOutDate);
             preparedStatement.setDouble(6, totalCost);
-
-            int rowsAffected = preparedStatement.executeUpdate();
+            HotelBooking hb=new HotelBooking();
+            int accountno=hb.getAccountId(uid);
+            double balance=hb.getAccountBalance(accountno);
+            int rowsAffected=0;
+           if(balance>=totalCost) {
+                rowsAffected = preparedStatement.executeUpdate();
+           }
             return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+    public double getAccountBalance(int accountNumber) {
+        try (Connection connection = DBConn.connectDB()) {
+            String sql = "SELECT balance FROM bank_account WHERE account_no = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, accountNumber);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getDouble("balance");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Return a default value if there was an error or if the account doesn't exist
+        return 0.0;
     }
     public int getAccountId(int userId) {
         int accountId = -1; // Default value in case of an error
@@ -85,8 +108,16 @@ public class HotelBooking {
             preparedStatement.setString(2, newCheckOut);
             preparedStatement.setInt(4, hotelBookId);
             preparedStatement.setInt(3, totalCost);
-
-            int rowsAffected = preparedStatement.executeUpdate();
+            HotelBooking hb=new HotelBooking();
+            String emailId = HotelBooking.getInstance().getEmailId();
+            HotelBooking c = new HotelBooking();
+            int userId = c.getUserdetails(emailId);
+            int accountno=hb.getAccountId(userId);
+            double balance=hb.getAccountBalance(accountno);
+            int rowsAffected=0;
+            if(balance>=totalCost) {
+                rowsAffected = preparedStatement.executeUpdate();
+            }
             return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,8 +150,16 @@ public class HotelBooking {
             preparedStatement.setString(2, newCheckOut);
             preparedStatement.setInt(4, hotelBookId);
             preparedStatement.setInt(3, totalCost);
-
-            int rowsAffected = preparedStatement.executeUpdate();
+            HotelBooking hb=new HotelBooking();
+            String emailId = HotelBooking.getInstance().getEmailId();
+            HotelBooking c = new HotelBooking();
+            int userId = c.getUserdetails(emailId);
+            int accountno=hb.getAccountId(userId);
+            double balance=hb.getAccountBalance(accountno);
+            int rowsAffected=0;
+            if(balance>=totalCost) {
+                rowsAffected = preparedStatement.executeUpdate();
+            }
             return rowsAffected > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -169,5 +208,29 @@ public class HotelBooking {
 
     public int getUserId() {
         return userId;
+    }
+
+    public boolean updateAccountBalance(int accountNumber, double amount) {
+        try (Connection connection = DBConn.connectDB()) {
+            connection.setAutoCommit(false); // Disable auto-commit
+
+            String sql = "UPDATE bank_account SET balance = ? WHERE account_no = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setDouble(1, amount);
+            preparedStatement.setInt(2, accountNumber);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                connection.commit(); // Commit the transaction
+                return true;
+            } else {
+                connection.rollback(); // Rollback if the update fails
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
