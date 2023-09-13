@@ -19,6 +19,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -130,11 +132,32 @@ public class LandingPageController extends HotelBookingController implements Ini
 
         if (weather != null) {
 //            //for maaz to fix later
-//            ImageView iconImageView = new ImageView();
-//            iconImageView.setLayoutX(10.0);
-//            iconImageView.setLayoutY(40.0);
-//            Image conditionIconImage = new Image(weather.getConditionIcon());
-//            iconImageView.setImage(conditionIconImage);
+
+
+            // Create a URL object for the image
+            URL imageUrl = null;
+            try {
+                imageUrl = new URL("https:" + weather.getConditionIcon());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            ImageView iconImageView = new ImageView();
+            // Open a stream to read the image data
+            InputStream stream = null;
+            try {
+                stream = imageUrl.openStream();
+                // Create an Image object from the input stream
+                Image image = new Image(stream);
+
+                iconImageView.setLayoutX(10.0);
+                iconImageView.setLayoutY(0.0);
+                Image conditionIconImage = image;
+                iconImageView.setImage(conditionIconImage);
+                // Close the input stream
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             Label temperatureLabel = new Label(weather.getTempFarhenhiet() + "°F");
             temperatureLabel.setLayoutX(100.0);
@@ -169,7 +192,7 @@ public class LandingPageController extends HotelBookingController implements Ini
 
 
             // Add these labels to the weatherPane
-            weatherPane.getChildren().addAll(temperatureLabel, conditionLabel,humidityLabel,percipLabel,windLabel,uvLabel);
+            weatherPane.getChildren().addAll(temperatureLabel, conditionLabel,humidityLabel,percipLabel,windLabel,uvLabel, iconImageView);
         } else {
             System.out.println("Failed to fetch weather data.");
         }
