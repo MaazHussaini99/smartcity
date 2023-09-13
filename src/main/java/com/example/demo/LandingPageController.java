@@ -92,8 +92,13 @@ public class LandingPageController extends HotelBookingController implements Ini
                 DialogPane descriptionPane = getDescriptionPaneForIndex(i);
 
                 try {
-                    Image image = new Image(news.getImg_url());
-                    imageView.setImage(image);
+                    if(news.getImg_url()=="null") {
+                        Image image = new Image("src/main/resources/com/example/images/MicrosoftTeams-image.png");
+                        imageView.setImage(image);
+                    }else{
+                        Image image = new Image(news.getImg_url());
+                        imageView.setImage(image);
+                    }
                 } catch (IllegalArgumentException e) {
                     // Handle the case where the image URL is invalid or not found
                     // Set a placeholder image or display an error message
