@@ -2,16 +2,12 @@ package com.example.demo;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.net.StandardSocketOptions;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +16,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
@@ -136,15 +131,22 @@ public class HotelBookingController {
                 }
 
                 long daysBetween = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+                if(daysBetween==0){
+                    daysBetween=daysBetween+1;
+                }
 
                 // Calculate the total cost based on the hotel's price and the number of days
 
                 hotelBookings = hotelBookingListView.getSelectionModel().getSelectedItem();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 long days=ChronoUnit.DAYS.between(LocalDateTime.parse(hotelBookings.getCheck_in_time(),formatter),LocalDateTime.parse(hotelBookings.getCheck_out_time(),formatter));
+                if(days==0){
+                    days=days+1;
+                }
                 int hotelPrice=hotelBookings.getHotel_total_cost()/(int)days;
                 int totalCost = hotelPrice * (int) daysBetween;
                 HotelBooking hb=new HotelBooking();
+                int previousHotelBookingCost=hb.getHotelBookingCost(hotelBookings.getHotel_booking_id());
                 boolean bookingSuccess=false;
                 try {
                     bookingSuccess = hb.extendBooking(checkInDate.toString(), checkOutDate.toString(), hotelBookings.getHotel_booking_id(), totalCost);
@@ -152,11 +154,13 @@ public class HotelBookingController {
                 catch(Exception e){
                     e.printStackTrace();
                 }
+                String emailId = HotelBooking.getInstance().getEmailId();
+                int userId = hb.getUserdetails(emailId);
+                int accountId=hb.getAccountId(userId);
                 int amountt=(int)(hb.getAccountBalance(accountId));
-                System.out.println(amountt);
-                int updatedAmount=amountt-totalCost;
+                int balance=amountt-totalCost+previousHotelBookingCost;
                 if (bookingSuccess) {
-                    // Show a success message using an Alert
+                    hb.updateAccountBalance(accountId,balance);
                     showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booking changed successfully! Updated Cost: $" + totalCost);
                 } else {
                     // Show an error message using an Alert
@@ -173,11 +177,17 @@ public class HotelBookingController {
     private void cancelButtonClicked() {
         hotelBookings = hotelBookingListView.getSelectionModel().getSelectedItem();
         HotelBooking hb=new HotelBooking();
+        int previousHotelBookingCost=hb.getHotelBookingCost(hotelBookings.getHotel_booking_id());
         boolean bookingSuccess = hb.cancelBooking(hotelBookings.getHotel_booking_id());
-
+        String emailId = HotelBooking.getInstance().getEmailId();
+        int userId = hb.getUserdetails(emailId);
+        int accountId=hb.getAccountId(userId);
+        int amountt=(int)(hb.getAccountBalance(accountId));
+        int balance=amountt+previousHotelBookingCost;
         if (bookingSuccess) {
+            hb.updateAccountBalance(accountId,balance);
             // Show a success message using an Alert
-            showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booking cancelled successfully! Total Cost: $0");
+            showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booking cancelled successfully! Amount Refunded: $"+previousHotelBookingCost);
         } else {
             // Show an error message using an Alert
             showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed.");
@@ -209,24 +219,39 @@ public class HotelBookingController {
 
                 // Calculate the number of days between check-in and check-out
                 long daysBetween = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
-
+                if(daysBetween==0){
+                    daysBetween=daysBetween+1;
+                }
                 // Calculate the total cost based on the hotel's price and the number of days
 
                 hotelBookings = hotelBookingListView.getSelectionModel().getSelectedItem();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 long days=ChronoUnit.DAYS.between(LocalDateTime.parse(hotelBookings.getCheck_in_time(),formatter),LocalDateTime.parse(hotelBookings.getCheck_out_time(),formatter));
+                if(days==0){
+                    days=days+1;
+                }
                 int hotelPrice=hotelBookings.getHotel_total_cost()/(int)days;
                 int totalCost = hotelPrice * (int) daysBetween;
                 HotelBooking hb=new HotelBooking();
-                boolean bookingSuccess = hb.editBooking(checkInDate.toString(), checkOutDate.toString(),hotelBookings.getHotel_booking_id(),totalCost);
+                int previousHotelBookingCost=hb.getHotelBookingCost(hotelBookings.getHotel_booking_id());
+                boolean bookingSuccess=false;
+                try {
+                    bookingSuccess = hb.extendBooking(checkInDate.toString(), checkOutDate.toString(), hotelBookings.getHotel_booking_id(), totalCost);
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+                String emailId = HotelBooking.getInstance().getEmailId();
+                int userId = hb.getUserdetails(emailId);
+                int accountId=hb.getAccountId(userId);
                 int amountt=(int)(hb.getAccountBalance(accountId));
-                int updatedAmount=amountt-totalCost;
+                int balance=amountt-totalCost+previousHotelBookingCost;
                 if (bookingSuccess) {
-                    // Show a success message using an Alert
+                    hb.updateAccountBalance(accountId,balance);
                     showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booking changed successfully! Updated Cost: $" + totalCost);
                 } else {
                     // Show an error message using an Alert
-                    showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed. Please check balance");
+                    showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed.  Please check balance");
                 }
             }
             return null;
@@ -370,6 +395,9 @@ public class HotelBookingController {
 
                 // Calculate the number of days between check-in and check-out
                 long daysBetween = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+                if(daysBetween==0){
+                    daysBetween=daysBetween+1;
+                }
 
                 // Calculate the total cost based on the hotel's price and the number of days
                 int totalCost = selectedHotel.getHotelPrice() * (int) daysBetween;
@@ -381,6 +409,10 @@ public class HotelBookingController {
                 HotelBooking hb=new HotelBooking();
 
                 int accountId=hb.getAccountId(userId);
+                if (accountId == -1) {
+                    showAlert(AlertType.ERROR, "Add Payement method", "Please add a valid payment method");
+                    return null;
+                }
                 this.accountId=accountId;
                 boolean bookingSuccess = hb.createBooking(selectedHotel.getHotelId(), userId ,accountId,
                         checkInDate.toString(),
