@@ -98,6 +98,25 @@ public class HotelBooking {
 
         return accountId;
     }
+
+    public int getHotelBookingCost(int bookingId) {
+        int hotelCost = -1; // Default value in case of an error
+
+        try (Connection connection = DBConn.connectDB()) {
+            String sql = "SELECT hotel_total_cost FROM hotel_booking WHERE hotel_booking_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, bookingId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                hotelCost = resultSet.getInt("hotel_total_cost");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return hotelCost;
+    }
     // Method to edit an existing hotel booking
     public boolean editBooking(String newCheckIn, String newCheckOut,int hotelBookId, int totalCost) {
         String sql = "UPDATE hotel_booking SET check_in_time = ?, check_out_time = ?, hotel_total_cost=? WHERE hotel_booking_id = ?";
@@ -168,7 +187,7 @@ public class HotelBooking {
         }
     }
     public int getUserdetails(String emailId){
-        System.out.println(emailId);
+       // System.out.println(emailId);
         String sql = "SELECT uid FROM user where user_email= ?";
         try (Connection connection = DBConn.connectDB();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
