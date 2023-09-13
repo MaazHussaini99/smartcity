@@ -55,23 +55,26 @@ public class LandingPageController extends HotelBookingController implements Ini
         try {
             ObservableList<News> newsItems = FXCollections.observableArrayList(News.getNews());
 
-            // Initialize the dialog panes and images for the first set of news articles
+            // Initialize the dialog panes and images for the first news article
             populateNewsPanes(newsItems, currentNewsIndex);
 
-            // Add event handlers for the navigation buttons
+            // Add an event handler for the "Next" button
+            nextButton.setOnAction(event -> {
+                if (currentNewsIndex + 1 < newsItems.size()-2) {
+                    currentNewsIndex++;
+                    populateNewsPanes(newsItems, currentNewsIndex);
+                }
+            });
             previousButton.setOnAction(event -> {
-                if (currentNewsIndex >= newsPerPage) {
-                    currentNewsIndex -= newsPerPage;
+                if (currentNewsIndex - 1 < newsItems.size()-2) {
+                    if(currentNewsIndex==0){
+                        currentNewsIndex=1;
+                    }
+                    currentNewsIndex--;
                     populateNewsPanes(newsItems, currentNewsIndex);
                 }
             });
 
-            nextButton.setOnAction(event -> {
-                if (currentNewsIndex + newsPerPage < newsItems.size()) {
-                    currentNewsIndex += newsPerPage;
-                    populateNewsPanes(newsItems, currentNewsIndex);
-                }
-            });
         } catch (Exception e) {
             e.printStackTrace();
         }
