@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <HBox prefHeight="661.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LandingPageController">
    <children>
@@ -13,9 +14,9 @@
                <image>
                   <Image url="@../images/new-york-state-vector-logo.png" />
                </image></ImageView>
-            <Button fx:id="profileLink" layoutX="113.0" layoutY="567.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="67.0" text="Profile" />
-            <Button fx:id="logOut" layoutX="113.0" layoutY="603.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="26.0" prefWidth="67.0" text="Log Out" />
-            <StackPane fx:id="userDataStackPane" layoutX="29.0" layoutY="272.0" prefHeight="280.0" prefWidth="234.0" />
+            <Button fx:id="profileLink" layoutX="110.0" layoutY="572.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="81.0" text="Profile" />
+            <Button fx:id="logOut" layoutX="109.0" layoutY="608.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="26.0" prefWidth="82.0" text="Log Out" />
+            <StackPane fx:id="userDataStackPane" layoutX="33.0" layoutY="281.0" prefHeight="280.0" prefWidth="234.0" />
             <Pane fx:id="weatherPane" layoutX="13.0" layoutY="150.0" prefHeight="90.0" prefWidth="200.0">
 
             </Pane>
@@ -25,14 +26,23 @@
          </HBox.margin></AnchorPane>
       <TabPane prefHeight="658.0" prefWidth="875.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Job Listing">
-            <content>
-              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="685.0" styleClass="anchor-pane">
-                     <children>
-                        <ListView fx:id="jobList" blendMode="SCREEN" layoutX="14.0" layoutY="14.0" prefHeight="452.0" prefWidth="287.0" />
-                     </children></AnchorPane>
-            </content>
-          </Tab>
+            <Tab text="Job Listing">
+                <content>
+                    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="630.0" prefWidth="869.0" styleClass="anchor-pane">
+                        <children>
+                            <TableView fx:id="jobTableView" layoutX="10.0" layoutY="14.0" prefHeight="606.0" prefWidth="600.0" style="-fx-background-color: #87aede;">
+                                <columns>
+                                    <TableColumn fx:id="titleColumn" styleClass="TitleTabStyle" text="Title" />
+                                    <TableColumn fx:id="gradeColumn" text="Grade" />
+                                    <TableColumn fx:id="agencyColumn" text="Agency" />
+                                    <TableColumn fx:id="locationColumn" text="City" />
+                                    <TableColumn fx:id="applyColumn" text="Apply" />
+                                </columns>
+                            </TableView>
+                        </children>
+                    </AnchorPane>
+                </content>
+            </Tab>
           <Tab text="Hotels">
             <content>
 
@@ -93,19 +103,19 @@
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
-                        <Pane fx:id="articlePane1" layoutX="10.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4;">
+                        <Pane fx:id="articlePane1" layoutX="10.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
                            <children>
                               <ImageView fx:id="newsImage1" fitHeight="150.0" fitWidth="255.0" layoutX="10.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
-                              <DialogPane fx:id="descriptionPane1" headerText="random" layoutX="10.0" layoutY="180.0" prefHeight="370.0" prefWidth="255.0" styleClass="custom-dialog-header">
+                              <DialogPane fx:id="descriptionPane1" layoutX="10.0" layoutY="180.0" prefHeight="370.0" prefWidth="255.0" style="-fx-background-radius: 20px; -fx-background-color: #87aede;" styleClass="custom-dialog-header">
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </DialogPane>
                            </children>
                         </Pane>
-                        <Pane fx:id="articlePane2" layoutX="296.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4;">
+                        <Pane fx:id="articlePane2" layoutX="298.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
                            <children>
-                              <DialogPane fx:id="descriptionPane2" layoutX="10.0" layoutY="15.0" prefHeight="370.0" prefWidth="255.0" styleClass="custom-dialog-header">
+                              <DialogPane fx:id="descriptionPane2" layoutX="10.0" layoutY="15.0" prefHeight="370.0" prefWidth="255.0" style="-fx-background-radius: 20px; -fx-background-color: #87aede;" styleClass="custom-dialog-header">
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
@@ -113,18 +123,24 @@
                               <ImageView fx:id="newsImage2" fitHeight="150.0" fitWidth="255.0" layoutX="10.0" layoutY="400.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
                            </children>
                         </Pane>
-                        <Pane fx:id="articlePane3" layoutX="585.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4;">
+                        <Pane fx:id="articlePane3" layoutX="585.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
                            <children>
                               <ImageView fx:id="newsImage3" fitHeight="150.0" fitWidth="255.0" layoutX="10.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
-                              <DialogPane fx:id="descriptionPane3" layoutX="10.0" layoutY="180.0" prefHeight="370.0" prefWidth="255.0" styleClass="custom-dialog-header">
+                              <DialogPane fx:id="descriptionPane3" layoutX="10.0" layoutY="180.0" prefHeight="370.0" prefWidth="255.0" style="-fx-background-radius: 20px; -fx-background-color: #87aede;" styleClass="custom-dialog-header">
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </DialogPane>
                            </children>
                         </Pane>
-                         <Button fx:id="previousButton" layoutX="388.0" layoutY="590.0" mnemonicParsing="false" text="&lt;&lt;&lt;" />
-                         <Button fx:id="nextButton" layoutX="439.0" layoutY="590.0" mnemonicParsing="false" text="&gt;&gt;&gt;" />
+                         <Button fx:id="previousButton" layoutX="377.0" layoutY="590.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" text="&lt;&lt;">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font></Button>
+                         <Button fx:id="nextButton" layoutX="441.0" layoutY="590.0" mnemonicParsing="false" prefWidth="60.0" text="&gt;&gt;">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font></Button>
                      </children>
                     </AnchorPane>
                 </content>

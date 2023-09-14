@@ -52,5 +52,7 @@
     -fx-font-family:"Utopia";
 }
 .articleImage{
--fx-alignment: center;
+    -fx-alignment: center;
+    -fx-border-color: #FF0000; dax  123da
+    -fx-border-width: 2px;
 }

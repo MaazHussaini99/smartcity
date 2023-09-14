@@ -1,21 +1,30 @@
 package com.example.demo;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.scene.control.Button;
+
 public class Job {
-    private String jobTitle;
+    private final StringProperty jobTitle;
     private int jobId;
-    private String jobGrade;
-    private String jobAgency;
-    private String jobLocation;
+    private StringProperty jobGrade;
+    private StringProperty jobAgency;
+    private StringProperty jobLocation;
+    private final Button applyButton;
 
     public Job(String jobTitle, int jobId, String jobGrade, String jobAgency, String jobLocation){
-        this.jobTitle = jobTitle;
+        this.jobTitle = new SimpleStringProperty(jobTitle);
         this.jobId = jobId;
-        this.jobGrade = jobGrade;
-        this.jobAgency = jobAgency;
-        this.jobLocation = jobLocation;
+        this.jobGrade = new SimpleStringProperty(jobGrade);
+        this.jobAgency = new SimpleStringProperty(jobAgency);
+        this.jobLocation = new SimpleStringProperty(jobLocation);
+        this.applyButton = new Button("Apply");
     }
 
     public String getJobTitle() {
+        return jobTitle.get();
+    }
+    public StringProperty titleProperty() {
         return jobTitle;
     }
 
@@ -24,15 +33,26 @@ public class Job {
     }
 
     public String getJobGrade() {
+        return jobGrade.get();
+    }
+    public StringProperty JobGradeProperty() {
         return jobGrade;
     }
-
     public String getJobAgency() {
+        return jobAgency.get();
+    }
+    public StringProperty JobAgencyProperty() {
         return jobAgency;
     }
 
     public String getJobLocation() {
+        return jobLocation.get();
+    }
+    public StringProperty JobLocationProperty() {
         return jobLocation;
+    }
+    public Button ApplyButtonProperty() {
+        return applyButton;
     }
 
 }
