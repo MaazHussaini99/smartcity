@@ -45,9 +45,6 @@ public class Job {
         return jobAgency;
     }
 
-    public String getJobLocation() {
-        return jobLocation.get();
-    }
     public StringProperty JobLocationProperty() {
         return jobLocation;
     }
