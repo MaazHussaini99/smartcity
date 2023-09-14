@@ -14,25 +14,6 @@ public class DBConn {
             connection = DriverManager.getConnection(
                     "jdbc:mysql://smartcity-db2.ctpu1etrkqud.us-east-1.rds.amazonaws.com:3306/smartcity",
                     "admin", "maaz2023");
-
-            // mydb is database
-            // mydbuser is name of database
-            // mydbuser is password of database
-
-            Statement statement;
-            statement = connection.createStatement();
-            ResultSet resultSet;
-            resultSet = statement.executeQuery(
-                    "select * from bank");
-            int code;
-            String title;
-            while (resultSet.next()) {
-                title = resultSet.getString("bank_name").trim();
-                System.out.println(" Title : " + title);
-            }
-            resultSet.close();
-            statement.close();
-//            connection.close();
             return connection;
         }
         catch (Exception exception) {

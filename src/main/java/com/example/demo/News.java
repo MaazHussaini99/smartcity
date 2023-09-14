@@ -6,11 +6,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.DialogPane;
+import javafx.scene.image.ImageView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class News {
     private String title, description, url, img_url;
+
     private static List<News> newsList = new ArrayList<>();
 
     public News(String title, String description, String url, String img_url){
@@ -58,9 +63,6 @@ public class News {
                 // Parse the JSON response
                 JSONObject jsonResponse = new JSONObject(response.toString());
                 JSONArray results = jsonResponse.getJSONArray("results");
-
-                System.out.println(results);
-
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject article = results.getJSONObject(i);
                     String title = article.getString("title");
