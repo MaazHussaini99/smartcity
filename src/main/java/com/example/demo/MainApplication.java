@@ -12,10 +12,6 @@ import java.io.IOException;
 public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException, SQLException {
-
-        TransportTest test = new TransportTest();
-        //uncomment when merging backinto kevin transport
-
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("logged-in.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 544, 400);
         stage.setTitle("Smart City Application");

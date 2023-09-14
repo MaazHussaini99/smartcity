@@ -35,17 +35,3 @@
     -fx-alignment: CENTER;
     -fx-text-fill:  #fffd70;
 }
-.custom-list-view .list-cell{
--fx-border-color:black;
--fx-border-width:2px;
-
-}
-.custom-list-view .list-cell:even {
-    -fx-background-color: #4287f5;
-    -fx-text-fill:#FFFFFF;
-
-}
-.custom-list-view .list-cell:odd {
-    -fx-background-color: #538eed;
-    -fx-text-fill:#FFFFFF;
-}

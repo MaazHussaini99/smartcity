@@ -35,8 +35,6 @@ public class BankAccountController {
     @FXML
     private ComboBox<String> bankSelectionComboBox;
 
-    private static int userId;
-
     public ObservableList<String> bankNames = FXCollections.observableArrayList();
     // Create an ObservableList to hold bank account data
     private ObservableList<String> bankAccountData = FXCollections.observableArrayList();
@@ -68,12 +66,7 @@ public class BankAccountController {
             e.printStackTrace();
         }
     }
-    public int getUserId(){
-        String userEmail = HotelBooking.getInstance().getEmailId();
-        HotelBooking c = new HotelBooking();
-        userId = c.getUserdetails(userEmail);
-        return userId;
-    }
+
     @FXML
     public void createNewBankAccount() {
         // Get the input values
@@ -89,7 +82,12 @@ public class BankAccountController {
                 // Get the bank_id based on the selected bank name
                 int bankId = getBankId(selectedBank);
 
-                userId = getUserId();
+               // String userEmail = loggedinController.getUserEmail();
+                String userEmail = HotelBooking.getInstance().getEmailId();
+                HotelBooking c = new HotelBooking();
+                int userId = c.getUserdetails(userEmail);
+                // Retrieve the userId based on the user's id from your user table
+               // int userId = getUserIdFromUserTable(userEmail);
 
                 if (userId > 0) {
                     // Check if the account number is unique within the selected bank
@@ -413,10 +411,8 @@ public class BankAccountController {
         try (Connection connection = DBConn.connectDB()) {
             String sql = "SELECT ba.account_no, ba.user_id, ba.bank_id, ba.routing_no, ba.balance, b.bank_name " +
                     "FROM bank_account ba " +
-                    "JOIN bank b ON ba.bank_id = b.bank_id " +
-                    "WHERE ba.user_id = ?";
+                    "JOIN bank b ON ba.bank_id = b.bank_id";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, getUserId());
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
