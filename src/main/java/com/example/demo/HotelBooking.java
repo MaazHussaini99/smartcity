@@ -117,6 +117,42 @@ public class HotelBooking {
 
         return hotelCost;
     }
+    public String getHotelBookingName(int hotelId) {
+        String hotelName = "null"; // Default value in case of an error
+
+        try (Connection connection = DBConn.connectDB()) {
+            String sql = "SELECT hotel_name FROM hotel WHERE hotel_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, hotelId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                hotelName = resultSet.getString("hotel_name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return hotelName;
+    }
+    public String getHotelBookingLocation(int hotelId) {
+        String hotelLocation = "null"; // Default value in case of an error
+
+        try (Connection connection = DBConn.connectDB()) {
+            String sql = "SELECT hotel_location FROM hotel WHERE hotel_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, hotelId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                hotelLocation = resultSet.getString("hotel_location");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return hotelLocation;
+    }
     // Method to edit an existing hotel booking
     public boolean editBooking(String newCheckIn, String newCheckOut,int hotelBookId, int totalCost) {
         String sql = "UPDATE hotel_booking SET check_in_time = ?, check_out_time = ?, hotel_total_cost=? WHERE hotel_booking_id = ?";
