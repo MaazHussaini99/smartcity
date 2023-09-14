@@ -28,14 +28,7 @@ import javafx.util.StringConverter;
 
 public class LandingPageController extends HotelBookingController implements Initializable {
 
-    @FXML
-    private ListView<String> newsListView; // Rename your ListView
-    @FXML
-    private DialogPane descriptionPane;
-    @FXML
-    private Hyperlink linkHyperlink;
-    @FXML
-    private ImageView newsImage;
+
     @FXML
     private Button profileLink,newCard,nextButton,previousButton;
     @FXML
@@ -49,6 +42,11 @@ public class LandingPageController extends HotelBookingController implements Ini
     private ImageView newsImage1,newsImage2,newsImage3;
     @FXML
     private DialogPane descriptionPane1,descriptionPane2,descriptionPane3;
+    @FXML
+    private TableView<Job> jobTableView;
+    @FXML
+    private TableColumn<Job, String> titleColumn,gradeColumn,agencyColumn,locationColumn,applyColumn;
+
     private int currentNewsIndex = 0; // Initialize to 0
     private int newsPerPage = 3; // Number of news articles to display at a time
 
@@ -57,28 +55,67 @@ public class LandingPageController extends HotelBookingController implements Ini
         try {
             ObservableList<News> newsItems = FXCollections.observableArrayList(News.getNews());
 
-            // Initialize the dialog panes and images for the first set of news articles
+            // Initialize the dialog panes and images for the first news article
             populateNewsPanes(newsItems, currentNewsIndex);
 
-            // Add event handlers for the navigation buttons
+            // Add an event handler for the "Next" button
+            nextButton.setOnAction(event -> {
+                if (currentNewsIndex + 1 < newsItems.size()-2) {
+                    currentNewsIndex++;
+                    populateNewsPanes(newsItems, currentNewsIndex);
+                }
+            });
             previousButton.setOnAction(event -> {
-                if (currentNewsIndex >= newsPerPage) {
-                    currentNewsIndex -= newsPerPage;
+                if (currentNewsIndex - 1 < newsItems.size()-2) {
+                    if(currentNewsIndex==0){
+                        currentNewsIndex=1;
+                    }
+                    currentNewsIndex--;
                     populateNewsPanes(newsItems, currentNewsIndex);
                 }
             });
 
-            nextButton.setOnAction(event -> {
-                if (currentNewsIndex + newsPerPage < newsItems.size()) {
-                    currentNewsIndex += newsPerPage;
-                    populateNewsPanes(newsItems, currentNewsIndex);
-                }
-            });
         } catch (Exception e) {
             e.printStackTrace();
         }
         profileLink.setOnAction(this::handleProfileButtonClick);
         displayWeather();
+
+
+        titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
+        titleColumn.setMaxWidth(249);
+        gradeColumn.setCellValueFactory(cellData -> cellData.getValue().JobGradeProperty());
+
+        agencyColumn.setCellValueFactory(cellData -> cellData.getValue().JobAgencyProperty());
+        locationColumn.setCellValueFactory(cellData -> cellData.getValue().JobLocationProperty());
+        applyColumn.setCellFactory(column -> new TableCell<Job, String>() {
+            private final Button applyButton = new Button("Apply");
+
+            {
+                applyButton.setOnAction(event -> {
+                    // Handle the button click event here
+                    // You can access the job information associated with this row
+                    Job job = getTableView().getItems().get(getIndex());
+                    // Perform actions like applying for the job using the job information
+                });
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    setGraphic(applyButton);
+                    setText(null);
+                }
+            }
+        });
+
+        // Populate the TableView with job listings from JobListing class
+        jobTableView.getItems().addAll(JobListing.getAllJobs());
     }
     private void populateNewsPanes(ObservableList<News> newsItems, int startIndex) {
         for (int i = 0; i < newsPerPage; i++) {
@@ -86,11 +123,23 @@ public class LandingPageController extends HotelBookingController implements Ini
             if (newsIndex < newsItems.size()) {
                 News news = newsItems.get(newsIndex);
                 ImageView imageView = getImagePaneForIndex(i);
+
                 DialogPane descriptionPane = getDescriptionPaneForIndex(i);
 
                 try {
-                    Image image = new Image(news.getImg_url());
-                    imageView.setImage(image);
+                    if (news.getImg_url() == "null") {
+                        Image image = new Image("file:src/main/resources/com/example/images/MicrosoftTeams-image.png");
+                        imageView.setImage(image);
+                    } else {
+                        Image image = new Image(news.getImg_url());
+                        imageView.setImage(image);
+                    }
+
+                    // Center the image within the ImageView
+                    imageView.setPreserveRatio(true);
+                    imageView.setFitWidth(255);
+                    imageView.setFitHeight(150);
+
                 } catch (IllegalArgumentException e) {
                     // Handle the case where the image URL is invalid or not found
                     // Set a placeholder image or display an error message
