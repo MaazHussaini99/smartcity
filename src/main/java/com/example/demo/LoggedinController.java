@@ -40,9 +40,6 @@ public class LoggedinController {
 
         Window owner = submitButton.getScene().getWindow();
 
-        System.out.println(emailIdField.getText());
-        System.out.println(passwordField.getText());
-
         if (emailIdField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "Please enter your email id");
@@ -64,12 +61,13 @@ public class LoggedinController {
             //userEmail = emailId;
             infoBox("Login Successful!", null, "Success");
             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("landing-page.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 999, 658);
+            Scene scene = new Scene(fxmlLoader.load(), 1200, 681);
             Node node = (Node) event.getSource();
             Stage stage = (Stage) node.getScene().getWindow();
             stage.setTitle("Smart City");
             stage.setScene(scene);
             stage.show();
+            stage.centerOnScreen();
         } else {
             infoBox("Please enter correct Email and Password", null, "Failed");
         }
@@ -113,9 +111,6 @@ public class LoggedinController {
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
             preparedStatement.setString(1, emailId);
             preparedStatement.setString(2, password);
-
-            System.out.println(preparedStatement);
-
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // 2 = first name
@@ -131,8 +126,8 @@ public class LoggedinController {
             if (resultSet.next() == true) {
 
                 // Save login data to User object
-                System.out.println("\nUserData");
-                User user = new User(resultSet.getString(2),
+                User user = User.initializeUser(Integer.parseInt(resultSet.getString(1)),
+                        resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getString(5),
@@ -142,7 +137,6 @@ public class LoggedinController {
                         resultSet.getString(9),
                         resultSet.getString(10),
                         Integer.parseInt(resultSet.getString(11)));
-                System.out.println(user.getFirstName());
                 System.out.println("Logged in!");
                 HotelBooking.getInstance().setEmailId(emailId);
                 return true;
