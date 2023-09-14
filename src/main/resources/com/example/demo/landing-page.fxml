@@ -5,6 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <HBox prefHeight="661.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LandingPageController">
    <children>
@@ -59,8 +60,71 @@
                     <!--<ListView fx:id="hotelListView" onMouseClicked="#handleHotelSelection" prefHeight="300.0" prefWidth="550.0" visible="false" />-->
 
                     <StackPane>
-                        <ListView fx:id="hotelListView" onMouseClicked="#handleHotelSelection" prefHeight="300.0" prefWidth="550.0" visible="false" />
-                        <ListView fx:id="hotelBookingListView" onMouseClicked="#handleHotelBookingSelection" prefHeight="300.0" prefWidth="550.0" visible="false" />
+                        <ImageView fitHeight="484.0" fitWidth="748.0" pickOnBounds="true" preserveRatio="true"> <image> <Image url="@../images/Map-of-Albany.jpg" /> </image> </ImageView>
+                        <TableView fx:id="hotelTableView" onMouseClicked="#handleHotelSelection" prefHeight="300.0" prefWidth="750.0" visible="false">
+                            <columns>
+                                <TableColumn text="Hotel Name">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelName" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Location">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelLocation" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Price">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelPrice" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Room Number">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelRoomNumber" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Availability">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelAvailability" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                            </columns>
+                        </TableView>
+
+                        <TableView fx:id="hotelBookingListView" onMouseClicked="#handleHotelBookingSelection" prefHeight="300.0" prefWidth="550.0" visible="false" >
+                            <columns>
+                                <TableColumn text="Hotel Booking Id">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="hotelBookingId" />
+                                </cellValueFactory>
+                            </TableColumn>
+                                <TableColumn text="Hotel Name">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelNamee" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Location">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelLocationn" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Check In Time">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="checkInTime" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Check Out Time">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="checkOutTime" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Hotel Total Cost">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelTotalCost" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                            </columns>
+                        </TableView>
                     </StackPane>
                     <StackPane>
                         <Button fx:id="bookButton" onAction="#onBookButtonClicked" text="Book Hotel" visible="false" />
