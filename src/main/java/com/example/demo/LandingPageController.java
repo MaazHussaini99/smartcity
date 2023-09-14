@@ -128,7 +128,7 @@ public class LandingPageController extends HotelBookingController implements Ini
 
                 try {
                     if (news.getImg_url() == "null") {
-                        Image image = new Image("D:\\Xampp\\htdocs\\git\\smartcity2\\smartcity\\src\\main\\resources\\com\\example\\images\\MicrosoftTeams-image.png");
+                        Image image = new Image("file:src/main/resources/com/example/images/MicrosoftTeams-image.png");
                         imageView.setImage(image);
                     } else {
                         Image image = new Image(news.getImg_url());
