@@ -4,30 +4,45 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="960.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LandingPageController">
+<HBox prefHeight="661.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LandingPageController">
    <children>
-      <AnchorPane maxWidth="-Infinity" prefHeight="658.0" prefWidth="293.0" style="-fx-background-color: #ffffff;">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="300.0" style="-fx-background-color: #ffffff;">
          <children>
-            <ImageView fitHeight="84.0" fitWidth="211.0" layoutX="71.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="84.0" fitWidth="211.0" layoutX="62.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/new-york-state-vector-logo.png" />
                </image></ImageView>
-            <Button fx:id="profileLink" layoutX="113.0" layoutY="514.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="67.0" text="Profile" />
-            <Button fx:id="logOut" layoutX="113.0" layoutY="550.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="26.0" prefWidth="67.0" text="Log Out" />
-            <StackPane fx:id="userDataStackPane" layoutX="29.0" layoutY="207.0" prefHeight="292.0" prefWidth="234.0" />
+            <Button fx:id="profileLink" layoutX="110.0" layoutY="572.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="81.0" text="Profile" />
+            <Button fx:id="logOut" layoutX="109.0" layoutY="608.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="26.0" prefWidth="82.0" text="Log Out" />
+            <StackPane fx:id="userDataStackPane" layoutX="33.0" layoutY="281.0" prefHeight="280.0" prefWidth="234.0" />
+            <Pane fx:id="weatherPane" layoutX="13.0" layoutY="150.0" prefHeight="90.0" prefWidth="200.0">
 
-         </children></AnchorPane>
-      <TabPane layoutX="20.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="626.0" prefWidth="646.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE">
+            </Pane>
+         </children>
+         <HBox.margin>
+            <Insets right="10.0" />
+         </HBox.margin></AnchorPane>
+      <TabPane prefHeight="658.0" prefWidth="875.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Job Listing">
-            <content>
-              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="662.0" styleClass="anchor-pane">
-                     <children>
-                        <ListView fx:id="jobList" layoutX="14.0" layoutY="14.0" prefHeight="452.0" prefWidth="287.0" />
-                     </children></AnchorPane>
-            </content>
-          </Tab>
+            <Tab text="Job Listing">
+                <content>
+                    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="630.0" prefWidth="869.0" styleClass="anchor-pane">
+                        <children>
+                            <TableView fx:id="jobTableView" layoutX="10.0" layoutY="20.0" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #87aede;">
+                                <columns>
+                                    <TableColumn fx:id="titleColumn" styleClass="TitleTabStyle" text="Title" />
+                                    <TableColumn fx:id="gradeColumn" text="Grade" />
+                                    <TableColumn fx:id="agencyColumn" text="Agency" />
+                                    <TableColumn fx:id="locationColumn" text="City" />
+                                    <TableColumn fx:id="applyColumn" text="Apply" />
+                                </columns>
+                            </TableView>
+                        </children>
+                    </AnchorPane>
+                </content>
+            </Tab>
           <Tab text="Hotels">
             <content>
 
@@ -68,17 +83,18 @@
               <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="599.0" prefWidth="665.0">
                       <children>
-                          <Pane layoutX="387.0" layoutY="26.0" prefHeight="550.0" prefWidth="243.0" style="-fx-background-color: #3567c4;">
+                          <Pane layoutX="608.0" layoutY="20.0" prefHeight="600.0" prefWidth="250.0" style="-fx-background-color: #3567c4;">
                               <children>
                                   <TextField layoutX="14.0" layoutY="478.0" prefHeight="25.0" prefWidth="42.0" promptText="QTY" />
                                   <Button layoutX="14.0" layoutY="511.0" mnemonicParsing="false" text="Purchase" />
                                   <ImageView fitHeight="160.0" fitWidth="221.0" layoutX="11.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
                               </children></Pane>
-                          <ScrollPane layoutX="17.0" layoutY="26.0" prefHeight="550.0" prefWidth="353.0">
-                              <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-                              </content>
-                          </ScrollPane>
+                        <TableView layoutX="10.0" layoutY="20.0" prefHeight="600.0" prefWidth="587.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
                       </children>
 
                   </AnchorPane>
@@ -88,24 +104,55 @@
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
-                        <TextField layoutX="17.0" layoutY="22.0" prefHeight="26.0" prefWidth="300.0" promptText="SEARCH" style="-fx-background-color: #3567c4;" />
-
-                        <ListView fx:id="newsListView" layoutX="17.0" layoutY="123.0" prefHeight="450.0" prefWidth="300.0" />
-                        <Pane fx:id="articlePane" layoutX="329.0" layoutY="22.0" prefHeight="550.0" prefWidth="300.0" style="-fx-background-color: #3567c4;">
+                        <Pane fx:id="articlePane1" layoutX="10.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
                            <children>
-                              <ImageView fx:id="newsImage" fitHeight="168.0" fitWidth="250.0" layoutX="25.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" />
-                              <Hyperlink layoutX="25.0" layoutY="505.0" text="Hyperlink" />
-                              <DialogPane fx:id="descriptionPane" layoutX="26.0" layoutY="206.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="303.0" prefWidth="249.0" />
-                           </children></Pane>
-
+                              <ImageView fx:id="newsImage1" fitHeight="150.0" fitWidth="255.0" layoutX="10.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
+                              <DialogPane fx:id="descriptionPane1" layoutX="10.0" layoutY="180.0" prefHeight="370.0" prefWidth="255.0" style="-fx-background-radius: 20px; -fx-background-color: #87aede;" styleClass="custom-dialog-header">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </DialogPane>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="articlePane2" layoutX="298.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
+                           <children>
+                              <DialogPane fx:id="descriptionPane2" layoutX="10.0" layoutY="15.0" prefHeight="370.0" prefWidth="255.0" style="-fx-background-radius: 20px; -fx-background-color: #87aede;" styleClass="custom-dialog-header">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </DialogPane>
+                              <ImageView fx:id="newsImage2" fitHeight="150.0" fitWidth="255.0" layoutX="10.0" layoutY="400.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
+                           </children>
+                        </Pane>
+                        <Pane fx:id="articlePane3" layoutX="585.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
+                           <children>
+                              <ImageView fx:id="newsImage3" fitHeight="150.0" fitWidth="255.0" layoutX="10.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
+                              <DialogPane fx:id="descriptionPane3" layoutX="10.0" layoutY="180.0" prefHeight="370.0" prefWidth="255.0" style="-fx-background-radius: 20px; -fx-background-color: #87aede;" styleClass="custom-dialog-header">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </DialogPane>
+                           </children>
+                        </Pane>
+                         <Button fx:id="previousButton" layoutX="377.0" layoutY="590.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" text="&lt;&lt;">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font></Button>
+                         <Button fx:id="nextButton" layoutX="441.0" layoutY="590.0" mnemonicParsing="false" prefWidth="60.0" text="&gt;&gt;">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font></Button>
                      </children>
                     </AnchorPane>
                 </content>
             </Tab>
         </tabs>
          <HBox.margin>
-            <Insets top="10.0" />
+            <Insets />
          </HBox.margin>
       </TabPane>
    </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </HBox>
