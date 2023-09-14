@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9abf6f9a-f2d9-487e-8319-d7fb36438d43" name="Changes" comment="" />
+<<<<<<< HEAD
+    <list default="true" id="9abf6f9a-f2d9-487e-8319-d7fb36438d43" name="Changes" comment="Changed the User constructor to be private and fixed the log out system so it actually logs the user out.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/User.class" afterDir="false" />
+=======
+    <list default="true" id="9abf6f9a-f2d9-487e-8319-d7fb36438d43" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/LandingPageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/LandingPageController.java" afterDir="false" />
+>>>>>>> Dax
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,7 +37,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Owen" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -55,6 +65,9 @@
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
   <component name="ProjectId" id="2Ufb8zTFM2crj9NFA2nfsHZDzMw" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -63,7 +76,12 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "git-widget-placeholder": "master"
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Owen",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -98,6 +116,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1693333429736</updated>
+      <workItem from="1694611846395" duration="2501000" />
     </task>
     <task id="LOCAL-00001" summary="Started setting up User file">
       <option name="closed" value="true" />
@@ -131,7 +150,31 @@
       <option name="project" value="LOCAL" />
       <updated>1694451937041</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Merged master branch into Owen's branch">
+      <option name="closed" value="true" />
+      <created>1694542618300</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1694542618300</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Restoring LoggedinController">
+      <option name="closed" value="true" />
+      <created>1694542724573</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1694542724573</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Changed the User constructor to be private and fixed the log out system so it actually logs the user out.">
+      <option name="closed" value="true" />
+      <created>1694612372872</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1694612372872</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,11 +195,21 @@
     <MESSAGE value="Sending Maaz his loader page" />
     <MESSAGE value="commit" />
     <MESSAGE value="Merged master branch into Owen's branch" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merged master branch into Owen's branch" />
+    <MESSAGE value="Restoring LoggedinController" />
+    <MESSAGE value="Changed the User constructor to be private and fixed the log out system so it actually logs the user out." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed the User constructor to be private and fixed the log out system so it actually logs the user out." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
+<<<<<<< HEAD
+=======
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/demo/LandingPageController.java</url>
+          <line>18</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+>>>>>>> Dax
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="4" />
