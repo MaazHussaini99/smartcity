@@ -8,6 +8,7 @@ public class User {
 
     private static User user = null;
 
+    private int userID;
     private int roleID;
     private String firstName;
     private String lastName;
@@ -34,17 +35,19 @@ public class User {
      * @param phoneNumber phone number
      * @param roleID role ID
      */
-    private User(String firstName,
-                String lastName,
-                String streetAddress,
-                String city,
-                String zipcode,
-                String state,
-                String email,
-                String password,
-                String phoneNumber,
-                int roleID) {
+    private User(int userID,
+                 String firstName,
+                 String lastName,
+                 String streetAddress,
+                 String city,
+                 String zipcode,
+                 String state,
+                 String email,
+                 String password,
+                 String phoneNumber,
+                 int roleID) {
 
+        this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.streetAddress = streetAddress;
@@ -73,18 +76,20 @@ public class User {
      * @param roleID role ID
      * @return a User object
      */
-    public static synchronized User initializeUser(String firstName,
-                                                String lastName,
-                                                String streetAddress,
-                                                String city,
-                                                String zipcode,
-                                                String state,
-                                                String email,
-                                                String password,
-                                                String phoneNumber,
-                                                int roleID) {
+    public static synchronized User initializeUser(int userID,
+                                                   String firstName,
+                                                   String lastName,
+                                                   String streetAddress,
+                                                   String city,
+                                                   String zipcode,
+                                                   String state,
+                                                   String email,
+                                                   String password,
+                                                   String phoneNumber,
+                                                   int roleID) {
         if (user == null)
-            user = new User(firstName,
+            user = new User(userID,
+                    firstName,
                     lastName,
                     streetAddress,
                     city,
@@ -119,6 +124,15 @@ public class User {
     //public void createResumeProfile() {}
 
     // Getters
+
+    /**
+     * getUserID
+     * Returns the user's ID
+     * @return int userID
+     */
+    public int getUserID() {
+        return userID;
+    }
 
     /**
      * getFirstName
