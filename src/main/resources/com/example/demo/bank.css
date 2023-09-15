@@ -2,7 +2,6 @@
     -fx-background-color: #f0f0f0; /* Background color */
     -fx-padding: 20px; /* Padding around the VBox */
 }
-
 .button {
     -fx-background-color: #e3b256; /* Green background color */
     -fx-font-weight: Bold;
@@ -10,9 +9,16 @@
     -fx-font-size: 14px; /* Font size */
     -fx-padding: 5px 10px; /* Padding (top/bottom, left/right) */
 }
-
 .button:hover {
-    -fx-background-color: #005f9e; /* Button background color on hover */
+    -fx-background-color: linear-gradient(to bottom, #fac869, #e3b256);
+            -fx-text-fill: white;
+            -fx-font-weight: bold;
+            -fx-font-size: 14px;
+            -fx-padding: 5px 10px;
+
+            -fx-scale-x: .95;
+            -fx-scale-y: .95;
+            -fx-scale-z: .95;
 }
 
 .label {
