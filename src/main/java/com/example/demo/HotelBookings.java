@@ -1,79 +1,110 @@
 package com.example.demo;
 
 public class HotelBookings {
-    private int hotel_booking_id;
-    private int hotel_id;
-    private int user_id;
-    private int account_id;
+    private int hotelBookingId;
+    private int hotelId;
+    private int userId;
+    private int accountId;
+    private String hotelNamee;
+    private String checkInTime;
+    private String checkOutTime;
+    private int hotelTotalCost;
 
-    public HotelBookings(int hotel_booking_id, int account_id, String check_in_time, String check_out_time, int hotel_total_cost) {
-        this.hotel_booking_id = hotel_booking_id;
-        this.account_id = account_id;
-        this.check_in_time = check_in_time;
-        this.check_out_time = check_out_time;
-        this.hotel_total_cost = hotel_total_cost;
-    }
-
-    public int getHotel_booking_id() {
-        return hotel_booking_id;
+    public int getHotelBookingId() {
+        return hotelBookingId;
     }
 
-    public void setHotel_booking_id(int hotel_booking_id) {
-        this.hotel_booking_id = hotel_booking_id;
+    public void setHotelBookingId(int hotelBookingId) {
+        this.hotelBookingId = hotelBookingId;
     }
 
-    public int getHotel_id() {
-        return hotel_id;
+    public int getHotelId() {
+        return hotelId;
     }
 
-    public void setHotel_id(int hotel_id) {
-        this.hotel_id = hotel_id;
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getAccount_id() {
-        return account_id;
+    public int getAccountId() {
+        return accountId;
     }
 
-    public void setAccount_id(int account_id) {
-        this.account_id = account_id;
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 
-    public String getCheck_in_time() {
-        return check_in_time;
+    public String getHotelNamee() {
+        return hotelNamee;
     }
 
-    public void setCheck_in_time(String check_in_time) {
-        this.check_in_time = check_in_time;
+    public void setHotelNamee(String hotelNamee) {
+        this.hotelNamee = hotelNamee;
     }
 
-    public String getCheck_out_time() {
-        return check_out_time;
+    public String getCheckInTime() {
+        return checkInTime;
     }
 
-    public void setCheck_out_time(String check_out_time) {
-        this.check_out_time = check_out_time;
+    public void setCheckInTime(String checkInTime) {
+        this.checkInTime = checkInTime;
     }
 
-    public int getHotel_total_cost() {
-        return hotel_total_cost;
+    public String getCheckOutTime() {
+        return checkOutTime;
     }
 
-    public void setHotel_total_cost(int hotel_total_cost) {
-        this.hotel_total_cost = hotel_total_cost;
+    public void setCheckOutTime(String checkOutTime) {
+        this.checkOutTime = checkOutTime;
     }
-    @Override
-    public String toString() {
-        return hotel_booking_id + " "+account_id+" "+check_in_time+" "+check_out_time+" "+hotel_total_cost;
+
+    public int getHotelTotalCost() {
+        return hotelTotalCost;
     }
-    private String check_in_time;
-    private String check_out_time;
-    private int hotel_total_cost;
+
+    public void setHotelTotalCost(int hotelTotalCost) {
+        this.hotelTotalCost = hotelTotalCost;
+    }
+
+    public String getHotelLocationn() {
+        return hotelLocationn;
+    }
+
+    public void setHotelLocationn(String hotelLocationn) {
+        this.hotelLocationn = hotelLocationn;
+    }
+
+    private String hotelLocationn;
+
+    public HotelBookings(int hotelBookingId, String hotelNamee, String hotelLocationn, String checkInTime, String checkOutTime, int hotelTotalCost) {
+        this.hotelBookingId = hotelBookingId;
+        this.hotelNamee = hotelNamee;
+        this.hotelLocationn = hotelLocationn;
+        this.checkInTime = checkInTime;
+        this.checkOutTime = checkOutTime;
+        this.hotelTotalCost = hotelTotalCost;
+    }
+
+/*public HotelBookings(int hotel_booking_id, int account_id, String check_in_time, String check_out_time, int hotel_total_cost) {
+            this.hotel_booking_id = hotel_booking_id;
+            this.account_id = account_id;
+            this.check_in_time = check_in_time;
+            this.check_out_time = check_out_time;
+            this.hotel_total_cost = hotel_total_cost;
+        }*/
+
+
+
+   // @Override
+   // public String toString() {
+     //   return hotel_booking_id + " "+account_id+" "+check_in_time+" "+check_out_time+" "+hotel_total_cost;
+    //}
 }

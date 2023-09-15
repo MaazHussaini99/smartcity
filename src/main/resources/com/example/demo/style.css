@@ -34,16 +34,12 @@
 
 
 
+
 .custom-dialog-header .header-panel {
     -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-font-family: "Utopia";
-}
-
-.custom-dialog-header .header-panel-normal {
-    -fx-font-size: 14px;
-    -fx-font-weight: normal;
+    -fx-font-weight: bolder;
     -fx-font-family: "Spectral";
+    -fx-text-fill:  #2a51ad;
 }
 
 .custom-dialog-header .content {

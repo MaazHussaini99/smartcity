@@ -1,0 +1,49 @@
+.bank-view {
+    -fx-background-color: #f0f0f0; /* Background color */
+    -fx-padding: 20px; /* Padding around the VBox */
+}
+
+.button {
+    -fx-font-size: 14px; /* Font size for buttons */
+    -fx-background-color: #007acc; /* Button background color */
+    -fx-text-fill: white; /* Text color */
+    -fx-padding: 10px 20px; /* Padding for buttons */
+    -fx-cursor: hand; /* Cursor style */
+}
+
+.button:hover {
+    -fx-background-color: #005f9e; /* Button background color on hover */
+}
+
+.label {
+    -fx-font-size: 18px; /* Font size for labels */
+    -fx-font-weight: bold; /* Bold text */
+}
+
+.text-field {
+    -fx-font-size: 14px; /* Font size for text fields */
+    -fx-pref-width: 200px; /* Preferred width for text fields */
+}
+
+.list-view {
+    -fx-pref-height: 200px; /* Preferred height for the ListView */
+    -fx-font-size: 14px; /* Font size for ListView items */
+    -fx-border-color: #ccc; /* Border color */
+    -fx-border-width: 1px; /* Border width */
+    -fx-padding: 5px; /* Padding inside the ListView */
+}
+
+.list-view:selected {
+    -fx-background-color: #007acc; /* Background color for selected items */
+    -fx-text-fill: white; /* Text color for selected items */
+}
+
+#createBankButton {
+    -fx-font-size: 16px; /* Font size for this specific button */
+    -fx-pref-width: 150px; /* Preferred width for this button */
+}
+
+#showBankAccountsButton {
+    -fx-font-size: 16px; /* Font size for this specific button */
+    -fx-pref-width: 150px; /* Preferred width for this button */
+}
