@@ -35,3 +35,26 @@
     -fx-alignment: CENTER;
     -fx-text-fill:  #fffd70;
 }
+
+.custom-dialog-header .header-panel{
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-font-family:"Utopia";
+}
+.custom-dialog-header .header-panel{
+    -fx-font-size: 14px;
+    -fx-font-weight: Normal;
+    -fx-font-family:"Spectral";
+}
+
+.custom-dialog-header .content {
+    -fx-line-spacing: 10px;
+    -fx-font-family:"Utopia";
+}
+Button {
+    -fx-background-color: #e3b256; /* Green background color */
+    -fx-font-weight: Bold;
+    -fx-text-fill: white; /* White text color */
+    -fx-font-size: 14px; /* Font size */
+    -fx-padding: 5px 10px; /* Padding (top/bottom, left/right) */
+}

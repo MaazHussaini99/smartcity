@@ -12,27 +12,39 @@
 <VBox fx:id="bankAccountView" xmlns="http://javafx.com/javafx/16"
       fx:controller="com.example.demo.BankAccountController"
       xmlns:fx="http://javafx.com/fxml/1"
-      prefHeight="400.0"
-      prefWidth="544.0"
-      spacing="10">
+      stylesheets="@bankaccount.css"
+      prefHeight="661.0"
+      prefWidth="1200.0"
+      spacing="20">
+
+    <styleClass>bank-account-container</styleClass> <!-- Apply CSS styling for customization -->
+
     <children>
-        <HBox alignment="TOP_RIGHT">
-            <Button text="Back to Bank" onAction="#navigateBackToBank" />
+        <!-- Header Section -->
+        <HBox alignment="TOP_RIGHT" spacing="20">
+            <Button text="Back to Bank" onAction="#navigateBackToBank" styleClass="header-button"/>
         </HBox>
-        <Label text="Bank Account Information"/>
 
-        <!-- ComboBox to select the bank when creating a new account -->
-        <ComboBox fx:id="bankSelectionComboBox" promptText="Select a Bank"/>
+        <!-- Bank Selection Section -->
+        <VBox alignment="CENTER" spacing="10">
+            <Label text="Bank Account Information" styleClass="header-label"/>
+            <!-- <Label text="Select a Bank" styleClass="section-label"/> -->
+            <ComboBox fx:id="bankSelectionComboBox" promptText="Select a Bank" styleClass="combo-box"/>
+        </VBox>
 
-        <!-- ListView to display available bank accounts -->
-        <ListView fx:id="bankListView"/>
+        <!-- Bank Account List Section -->
+        <VBox alignment="CENTER" spacing="10">
+            <Label text="Available Bank Accounts" styleClass="section-label"/>
+            <ListView fx:id="bankListView" styleClass="list-view"/>
+        </VBox>
 
-        <!-- Buttons for actions -->
-        <Button fx:id="createBankAccountButton" text="Create Bank Account" onAction="#createNewBankAccount"/>
-        <Button fx:id="deleteBankButton" text="Delete Bank Account" onAction="#deleteSelectedBank"/>
-      <!--  <Button fx:id="updateBankButton" text="Update Bank Account" onAction="#updateSelectedBank"/> -->
-        <Button fx:id="depositButton" text="Deposit" onAction="#depositMoney"/>
-        <Button fx:id="withdrawButton" text="Withdraw" onAction="#withdrawMoney"/>
-        <Button fx:id="showBalanceButton" text="Show Balance" onAction="#showBalance"/>
+        <!-- Bank Account Actions Section -->
+        <HBox alignment="CENTER" spacing="20">
+            <Button fx:id="createBankAccountButton" text="Create Account" onAction="#createNewBankAccount" styleClass="action-button"/>
+            <Button fx:id="deleteBankButton" text="Delete Account" onAction="#deleteSelectedBank" styleClass="action-button"/>
+            <Button fx:id="depositButton" text="Deposit" onAction="#depositMoney" styleClass="action-button"/>
+            <Button fx:id="withdrawButton" text="Withdraw" onAction="#withdrawMoney" styleClass="action-button"/>
+            <Button fx:id="showBalanceButton" text="Show Balance" onAction="#showBalance" styleClass="action-button"/>
+        </HBox>
     </children>
 </VBox>

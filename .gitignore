@@ -25,8 +25,16 @@ Thumbs.db
 
 # Generated files
 bin/
-.idea/misc.xml
-.idea/workspace.xml
 target/classes/com/example/demo/LoggedinController.class
 target/classes/module-info.class
 *.xml
+*.xml
+*.xml
+src/main/java/com/example/demo/TransportTest.java
+src/main/resources/com/example/files/stop_times.txt
+src/main/resources/com/example/demo/transportSample.fxml
+src/main/java/com/example/demo/TransportTest.java
+.idea/workspace.xml
+.idea/workspace.xml
+src/main/java/com/example/demo/TransportTest.java
+src/main/resources/com/example/demo/transportSample.fxml

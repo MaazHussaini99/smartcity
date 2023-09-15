@@ -1,37 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import com.example.demo.LoggedinController?>
 
-
-<VBox fx:id="bankView" xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
+<VBox fx:id="bankView"
+      prefHeight="661.0"
+      prefWidth="1200.0"
+      spacing="10"
+      xmlns="http://javafx.com/javafx/11.0.14-internal"
+      xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.demo.BankController"
-      prefHeight="400.0"
-      prefWidth="544.0"
-      spacing="10">
+      stylesheets="@bank.css">
+
         <AnchorPane>
                 <!-- The Back to Landing Page button, anchored to the top right corner -->
-                <Button text="Back to Landing Page" onAction="#navigateBackToLandingPage" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10"/>
+                <Button onAction="#navigateBackToLandingPage" text="Back to Landing Page" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10" styleClass="button"/>
         </AnchorPane>
-        <Label text="Bank Information"/>
+
+        <Label text="Bank Information" styleClass="label" />
+
         <!-- Display the ListView and TextField initially -->
-        <ListView fx:id="bankListView" onMouseClicked="#bankSelected"/>
-        <TextField fx:id="newBankNameField" promptText="Enter new bank name"/>
+        <ListView fx:id="bankListView" onMouseClicked="#bankSelected" styleClass="list-view"/>
+        <TextField fx:id="newBankNameField" promptText="Enter new bank name" styleClass="text-field"/>
+
         <!-- Display the Create Bank button -->
-        <Button text="Create Bank" onAction="#createNewBank"/>
+        <Button onAction="#createNewBank" text="Create Bank" styleClass="button" id="createBankButton" />
+
         <!-- Hide the Delete and Update sections initially -->
         <VBox fx:id="deleteAndUpdateContainer" visible="false">
-                <Label text="Delete Bank"/>
-                <Button fx:id="deleteBankButton" text="Delete Bank" onAction="#deleteSelectedBank" />
-                <Label text="Update Bank Name"/>
-                <TextField fx:id="updateBankNameField" promptText="Enter updated bank name"/>
-                <Button text="Update Bank" onAction="#updateSelectedBank"/>
+                <Label text="Delete Bank" styleClass="label" />
+                <Button fx:id="deleteBankButton" onAction="#deleteSelectedBank" text="Delete Bank" styleClass="button" />
+                <Label text="Update Bank Name" styleClass="label" />
+                <TextField fx:id="updateBankNameField" promptText="Enter updated bank name" styleClass="text-field" />
+                <Button onAction="#updateSelectedBank" text="Update Bank" styleClass="button" />
         </VBox>
+
         <!-- Add a "Bank Accounts" button -->
-        <Button text="Bank Accounts" onAction="#showBankAccounts"/>
+        <Button onAction="#showBankAccounts" text="Bank Accounts" styleClass="button" id="showBankAccountsButton"/>
+
+        <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+        </padding>
 </VBox>
