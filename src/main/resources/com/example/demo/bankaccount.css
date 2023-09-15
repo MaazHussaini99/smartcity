@@ -1,0 +1,41 @@
+.bank-account-container {
+    -fx-background-color: #f5f5f5;
+    -fx-padding: 20px;
+}
+
+.header-button {
+    -fx-background-color: #3498db; /* Button background color */
+    -fx-text-fill: white; /* Button text color */
+    -fx-font-size: 14px; /* Button font size */
+}
+
+.header-label {
+    -fx-font-size: 18px; /* Header label font size */
+    -fx-font-weight: bold; /* Bold font weight */
+}
+
+.section-label {
+    -fx-font-size: 16px; /* Section label font size */
+    -fx-font-weight: bold; /* Bold font weight */
+}
+
+.combo-box {
+    -fx-pref-width: 200px; /* Preferred width of the combo box */
+    -fx-font-size: 14px; /* Font size */
+}
+
+.list-view {
+    -fx-pref-width: 400px; /* Preferred width of the list view */
+    -fx-pref-height: 200px; /* Preferred height of the list view */
+}
+
+.action-button {
+    -fx-background-color: #27ae60; /* Button background color */
+    -fx-text-fill: white; /* Button text color */
+    -fx-font-size: 14px; /* Button font size */
+    -fx-pref-width: 120px; /* Preferred width of action buttons */
+}
+
+.action-button:hover {
+    -fx-background-color: #218c53; /* Button background color on hover */
+}
