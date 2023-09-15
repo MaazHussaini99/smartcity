@@ -5,21 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9abf6f9a-f2d9-487e-8319-d7fb36438d43" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/demo/bank.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/demo/bankaccount.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/images/Map-of-Albany.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/HotelBooking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/HotelBooking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/HotelBookingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/HotelBookingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/HotelBookings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/HotelBookings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/LoggedinController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/LoggedinController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/demo/bank.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/demo/bank.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/demo/bankAccount.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/demo/bankAccount.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/LandingPageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/LandingPageController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/demo/landing-page.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/demo/landing-page.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/demo/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/demo/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/LoggedinController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/LoggedinController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/User.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,11 +68,11 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "git-widget-placeholder": "Merging Dax"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;git-widget-placeholder&quot;: &quot;Merging Dax&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\StevThePowerful\IdeaProjects\smartcity\target\classes\com\example\demo" />
@@ -205,7 +193,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/demo/LandingPageController.java</url>
-          <line>20</line>
+          <line>21</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
