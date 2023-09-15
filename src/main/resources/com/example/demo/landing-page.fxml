@@ -2,24 +2,35 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<HBox prefHeight="661.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LandingPageController">
+<HBox prefHeight="661.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to bottom, #ffffff, #e1e4e6);" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LandingPageController">
    <children>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="300.0" style="-fx-background-color: #ffffff;">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="300.0">
          <children>
-            <ImageView fitHeight="84.0" fitWidth="211.0" layoutX="62.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="84.0" fitWidth="211.0" layoutX="74.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/new-york-state-vector-logo.png" />
                </image></ImageView>
             <Button fx:id="profileLink" layoutX="110.0" layoutY="572.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="81.0" text="Profile" />
             <Button fx:id="logOut" layoutX="109.0" layoutY="608.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="26.0" prefWidth="82.0" text="Log Out" />
             <StackPane fx:id="userDataStackPane" layoutX="33.0" layoutY="281.0" prefHeight="280.0" prefWidth="234.0" />
-            <Pane fx:id="weatherPane" layoutX="13.0" layoutY="150.0" prefHeight="90.0" prefWidth="200.0">
-
-            </Pane>
+            <Pane fx:id="weatherPane" layoutX="21.0" layoutY="147.0" prefHeight="112.0" prefWidth="260.0" style="-fx-background-color: #87aede; -fx-background-radius: 20; -fx-opacity: 90%;">
+               <effect>
+                  <Glow level="0.49">
+                     <input>
+                        <DropShadow offsetX="2.0" offsetY="2.0">
+                           <color>
+                              <Color red="0.1316000074148178" green="0.24865689873695374" blue="0.2800000011920929" />
+                           </color>
+                        </DropShadow>
+                     </input>
+                  </Glow>
+               </effect></Pane>
          </children>
          <HBox.margin>
             <Insets right="10.0" />
@@ -47,7 +58,7 @@
             <content>
 
                 <AnchorPane prefHeight="180.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-                <VBox layoutX="25.0" layoutY="25.0" spacing="10">
+                <VBox layoutX="10.0" layoutY="25.0" prefHeight="595.0" prefWidth="850.0" spacing="10">
                     <MenuBar>
                         <menus>
                             <Menu text="Manage Hotel Booking">
@@ -56,19 +67,19 @@
                             </Menu>
                         </menus>
                     </MenuBar>
-                    <!--<ListView fx:id="hotelListView" onMouseClicked="#handleHotelSelection" prefHeight="300.0" prefWidth="550.0" visible="false" />-->
-
+                        <SplitPane dividerPositions="0.4997643732327992" prefHeight="452.0" prefWidth="850.0">
+                           <items>
+                           <ListView fx:id="hotelBookingListView" onMouseClicked="#handleHotelBookingSelection" prefHeight="300.0" prefWidth="123.0" visible="true" />
+                           <ListView fx:id="hotelListView" onMouseClicked="#handleHotelSelection" prefHeight="300.0" prefWidth="422.0" visible="true" />
+                           </items>
+                        </SplitPane>
                     <StackPane>
-                        <ListView fx:id="hotelListView" onMouseClicked="#handleHotelSelection" prefHeight="300.0" prefWidth="550.0" visible="false" />
-                        <ListView fx:id="hotelBookingListView" onMouseClicked="#handleHotelBookingSelection" prefHeight="300.0" prefWidth="550.0" visible="false" />
+                        <Button fx:id="bookButton" onAction="#onBookButtonClicked" text="Book Hotel" visible="true" />
                     </StackPane>
-                    <StackPane>
-                        <Button fx:id="bookButton" onAction="#onBookButtonClicked" text="Book Hotel" visible="false" />
-                    </StackPane>
-                    <HBox spacing="10">
-                        <Button fx:id="editButton" onAction="#oneditButtonClicked" text="Edit Hotel Booking" visible="false" />
-                        <Button fx:id="extendButton" onAction="#extendButtonClicked" text="Extend Hotel Booking" visible="false" />
-                        <Button fx:id="cancelButton" onAction="#cancelButtonClicked" text="Cancel Hotel Booking" visible="false" />
+                    <HBox alignment="CENTER" prefHeight="30.0" prefWidth="506.0" spacing="10">
+                        <Button fx:id="editButton" onAction="#oneditButtonClicked" text="Edit Hotel Booking" visible="true" />
+                        <Button fx:id="extendButton" onAction="#extendButtonClicked" text="Extend Hotel Booking" visible="true" />
+                        <Button fx:id="cancelButton" alignment="CENTER" contentDisplay="RIGHT" onAction="#cancelButtonClicked" text="Cancel Hotel Booking" visible="true" />
                     </HBox>
 
 
@@ -112,6 +123,7 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </DialogPane>
+                              <Hyperlink fx:id="newsLink1" layoutX="30.0" layoutY="516.0" text="Go to Source" textFill="#7e6666" underline="true" />
                            </children>
                         </Pane>
                         <Pane fx:id="articlePane2" layoutX="298.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
@@ -122,6 +134,7 @@
                                  </padding>
                               </DialogPane>
                               <ImageView fx:id="newsImage2" fitHeight="150.0" fitWidth="255.0" layoutX="10.0" layoutY="400.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
+                              <Hyperlink fx:id="newsLink2" layoutX="29.0" layoutY="351.0" text="Go to Source" textFill="#7e6666" underline="true" />
                            </children>
                         </Pane>
                         <Pane fx:id="articlePane3" layoutX="585.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
@@ -132,13 +145,14 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </DialogPane>
+                              <Hyperlink fx:id="newsLink3" layoutX="30.0" layoutY="517.0" text="Go to Source" textFill="#7e6666" underline="true" />
                            </children>
                         </Pane>
-                         <Button fx:id="previousButton" layoutX="377.0" layoutY="590.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" text="&lt;&lt;">
+                         <Button fx:id="previousButton" layoutX="10.0" layoutY="585.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" text="&lt;&lt;">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                         <Button fx:id="nextButton" layoutX="441.0" layoutY="590.0" mnemonicParsing="false" prefWidth="60.0" text="&gt;&gt;">
+                         <Button fx:id="nextButton" layoutX="805.0" layoutY="584.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="54.0" text="&gt;&gt;">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>

@@ -75,7 +75,7 @@ public class LoggedinController {
     @FXML
     public void goToSignUp(ActionEvent event) throws SQLException, IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("sign-up.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 544, 400);
+        Scene scene = new Scene(fxmlLoader.load(), 535, 400);
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         stage.setTitle("Smart City - Sign up");
