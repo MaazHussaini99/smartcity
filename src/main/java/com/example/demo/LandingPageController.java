@@ -259,7 +259,9 @@ public class LandingPageController extends HotelBookingController implements Ini
                 + "\nZipcode: " + User.getInstance().getZipcode()
                 + "\nState: " + User.getInstance().getState()
                 + "\nEmail: " + User.getInstance().getEmail()
-                + "\nPhone number: " + User.getInstance().getPhoneNumber()); // Replace with your user data components
+                + "\nPhone number: " + User.getInstance().getPhoneNumber()
+                + "\n\nUse role ID to check if a user is an admin or not.\n1 = User, 2 = Admin"
+                + "\nUser role ID: " + User.getInstance().getRoleID()); // Replace with your user data components
         userDataText.setLayoutX(10);
         userDataText.setLayoutY(10);
 

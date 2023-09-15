@@ -220,6 +220,9 @@ public class User {
     /**
      * getRoleID
      * Returns the user's role
+     *
+     * If roleID = 1: User is a User
+     * if roleID = 2: User is an Admin
      * @return int roleID
      */
     public int getRoleID() {
