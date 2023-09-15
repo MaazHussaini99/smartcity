@@ -113,6 +113,7 @@ public class LoggedinController {
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
 
+            // 1 = user ID
             // 2 = first name
             // 3 = last name
             // 4 = street Add
@@ -122,7 +123,7 @@ public class LoggedinController {
             // 8 = email
             // 9 = password
             // 10 = phone
-            // 11 = role
+            // 11 = role ID
             if (resultSet.next() == true) {
 
                 // Save login data to User object

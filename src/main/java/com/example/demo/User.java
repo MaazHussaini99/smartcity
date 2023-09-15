@@ -24,6 +24,7 @@ public class User {
      * private User constructor
      * Only called in initializeUser when user is null
      *
+     * @param userID user ID
      * @param firstName first name
      * @param lastName last name
      * @param streetAddress street address
@@ -64,6 +65,7 @@ public class User {
      * initializeUser
      * Used to initialize user if the object is null
      *
+     * @param userID user ID
      * @param firstName first name
      * @param lastName last name
      * @param streetAddress street address
@@ -121,7 +123,7 @@ public class User {
         return user;
     }
 
-    //public void createResumeProfile() {}
+
 
     // Getters
 
