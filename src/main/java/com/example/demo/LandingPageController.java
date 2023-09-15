@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -23,6 +24,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.util.StringConverter;
 
@@ -83,20 +85,34 @@ public class LandingPageController extends HotelBookingController implements Ini
 
 
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
-        titleColumn.setMaxWidth(249);
+        titleColumn.setMinWidth(425);
         gradeColumn.setCellValueFactory(cellData -> cellData.getValue().JobGradeProperty());
 
         agencyColumn.setCellValueFactory(cellData -> cellData.getValue().JobAgencyProperty());
         locationColumn.setCellValueFactory(cellData -> cellData.getValue().JobLocationProperty());
         applyColumn.setCellFactory(column -> new TableCell<Job, String>() {
-            private final Button applyButton = new Button("Apply");
+            final Button applyButton = new Button("Apply");
 
             {
+                // Set the action for the apply button
                 applyButton.setOnAction(event -> {
-                    // Handle the button click event here
-                    // You can access the job information associated with this row
+                    // Here, you can handle the logic for applying to the job
+                    // You can access the Job object associated with this row using getItem()
                     Job job = getTableView().getItems().get(getIndex());
-                    // Perform actions like applying for the job using the job information
+                    if (job != null) {
+                        // Display a confirmation dialog
+                        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                        confirmationAlert.setTitle("Confirmation");
+                        confirmationAlert.setHeaderText("Apply for the Job");
+                        confirmationAlert.setContentText("Are you sure you want to apply for this job?");
+
+                        Optional<ButtonType> result = confirmationAlert.showAndWait();
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            // User clicked OK, so you can call the apply method here
+                            //job.apply(); // Call the apply method on your Job object
+                            System.out.println("Applied!");
+                        }
+                    }
                 });
             }
 
@@ -104,15 +120,18 @@ public class LandingPageController extends HotelBookingController implements Ini
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
 
-                if (empty || item == null) {
-                    setGraphic(null);
+                if (empty) {
+                    setGraphic(null); // No button in empty cells
                     setText(null);
                 } else {
                     setGraphic(applyButton);
-                    setText(null);
+                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY); // Display only the button
+                    setAlignment(Pos.CENTER); // Center-align the button
                 }
             }
         });
+
+
 
         // Populate the TableView with job listings from JobListing class
         jobTableView.getItems().addAll(JobListing.getAllJobs());
