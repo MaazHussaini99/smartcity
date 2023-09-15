@@ -13,8 +13,8 @@
       fx:controller="com.example.demo.BankAccountController"
       xmlns:fx="http://javafx.com/fxml/1"
       stylesheets="@bankaccount.css"
-      prefHeight="661.0"
-      prefWidth="1200.0"
+      prefHeight="500.0"
+      prefWidth="700.0"
       spacing="20">
 
     <styleClass>bank-account-container</styleClass> <!-- Apply CSS styling for customization -->
@@ -22,9 +22,11 @@
     <children>
         <!-- Header Section -->
         <HBox alignment="TOP_RIGHT" spacing="20">
-            <Button text="Back to Bank" onAction="#navigateBackToBank" styleClass="header-button"/>
+            <Button fx:id="backToBankButton" text="Back to Bank" onAction="#navigateBackToBank" styleClass="header-button"/>
         </HBox>
-
+        <HBox alignment="TOP_RIGHT" spacing="20">
+            <Button fx:id="backToLandingPageButton" text="Back to Landing Page" onAction="#navigateBackToLandingPage" styleClass="header-button"/>
+        </HBox>
         <!-- Bank Selection Section -->
         <VBox alignment="CENTER" spacing="10">
             <Label text="Bank Account Information" styleClass="header-label"/>
