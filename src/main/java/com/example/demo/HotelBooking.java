@@ -288,4 +288,44 @@ public class HotelBooking {
             return false;
         }
     }
+
+    public int getHotelId(int hotelBookingId) {
+        int hotelId=1;
+        try (Connection connection = DBConn.connectDB()) {
+            connection.setAutoCommit(false); // Disable auto-commit
+
+            String sql = "select hotel_id from hotel_booking WHERE hotel_booking_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, hotelBookingId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                hotelId = resultSet.getInt("hotel_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return hotelId;
+    }
+
+    public int getHotelPrice(int hotelId) {
+        int hotelPrice=1;
+        try (Connection connection = DBConn.connectDB()) {
+            connection.setAutoCommit(false); // Disable auto-commit
+
+            String sql = "select hotel_price from hotel WHERE hotel_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, hotelId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                hotelPrice= resultSet.getInt("hotel_price");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return hotelPrice;
+    }
 }
