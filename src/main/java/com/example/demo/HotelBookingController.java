@@ -359,8 +359,13 @@ public class HotelBookingController {
                 // Get the selected check-in and check-out dates from the DatePicker controls
                 LocalDate checkInDate = checkInDatePicker.getValue();
                 LocalDate checkOutDate = checkOutDatePicker.getValue();
+                LocalDate today = LocalDate.now();
                 if (checkInDate == null || checkOutDate == null || checkInDate.isAfter(checkOutDate)) {
                     showAlert(AlertType.ERROR, "Invalid Dates", "Please select valid check-in and check-out dates.");
+                    return null;
+                }
+                else if (checkInDate.isBefore(today)) {
+                    showAlert(AlertType.ERROR, "Invalid Check-In Date", "Check-in date should be from today or later.");
                     return null;
                 }
                 // Calculate the number of days between check-in and check-out
