@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -41,12 +42,24 @@ public class BankAccountController {
     // Create an ObservableList to hold bank account data
     private ObservableList<String> bankAccountData = FXCollections.observableArrayList();
     @FXML
+    private Button backToBankButton;
+    @FXML
+    private Button backToLandingPageButton;
+    private static int userRole = User.getInstance().getRoleID();;
+    @FXML
     public void initialize() {
         // Bind the ListView to the ObservableList
         bankListView.setItems(bankAccountData);
         // Call loadBankNames when the controller is initialized
         loadBankNames();
         loadBankAccounts();
+        if (userRole == 1) {
+            backToBankButton.setVisible(false);
+            backToLandingPageButton.setVisible(true);
+        } else if(userRole == 2){
+            backToBankButton.setVisible(true);
+            backToLandingPageButton.setVisible(false);
+        }
     }
     public void initData(String selectedBank) {
         bankNameLabel.setText("Bank Name: " + selectedBank);
@@ -407,32 +420,75 @@ public class BankAccountController {
             e.printStackTrace();
         }
     }
+    @FXML
+    public void navigateBackToLandingPage() {
+        try {
+            // Load the LandingPage.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("landing-page.fxml"));
+            Parent root = loader.load();
+
+            // Create a new scene
+            Scene scene = new Scene(root);
+
+            // Get the current stage and set the new scene
+            Stage stage = (Stage) bankAccountView.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void loadBankAccounts() {
         bankListView.getItems().clear(); // Clear the ListView before loading new accounts
+        if(userRole == 1){
+            try (Connection connection = DBConn.connectDB()) {
+                String sql = "SELECT ba.account_no, ba.user_id, ba.bank_id, ba.routing_no, ba.balance, b.bank_name " +
+                        "FROM bank_account ba " +
+                        "JOIN bank b ON ba.bank_id = b.bank_id " +
+                        "WHERE ba.user_id = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, getUserId());
+                ResultSet resultSet = preparedStatement.executeQuery();
 
-        try (Connection connection = DBConn.connectDB()) {
-            String sql = "SELECT ba.account_no, ba.user_id, ba.bank_id, ba.routing_no, ba.balance, b.bank_name " +
-                    "FROM bank_account ba " +
-                    "JOIN bank b ON ba.bank_id = b.bank_id " +
-                    "WHERE ba.user_id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, getUserId());
-            ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    int accountNumber = resultSet.getInt("account_no");
+                    int userId = resultSet.getInt("user_id");
+                    String bankName = resultSet.getString("bank_name");
+                    int routingNumber = resultSet.getInt("routing_no");
+                    double balance = resultSet.getDouble("balance");
 
-            while (resultSet.next()) {
-                int accountNumber = resultSet.getInt("account_no");
-                int userId = resultSet.getInt("user_id");
-                String bankName = resultSet.getString("bank_name");
-                int routingNumber = resultSet.getInt("routing_no");
-                double balance = resultSet.getDouble("balance");
-
-                // Create a formatted account text with bank name
-                String accountText = "Bank: " + bankName + " - Account No: "
-                        + accountNumber + " - User ID: " + userId + " - Routing No: " + routingNumber + " - Balance:$" + balance;
-                bankListView.getItems().add(accountText); // Add the account to the ListView
+                    // Create a formatted account text with bank name
+                    String accountText = "Bank: " + bankName + " - Account No: "
+                            + accountNumber + " - User ID: " + userId + " - Routing No: " + routingNumber + " - Balance:$" + balance;
+                    bankListView.getItems().add(accountText); // Add the account to the ListView
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } else if (userRole == 2){
+            try (Connection connection = DBConn.connectDB()) {
+                String sql = "SELECT ba.account_no, ba.user_id, ba.bank_id, ba.routing_no, ba.balance, b.bank_name " +
+                        "FROM bank_account ba " +
+                        "JOIN bank b ON ba.bank_id = b.bank_id ";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+              //  preparedStatement.setInt(1, getUserId());
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    int accountNumber = resultSet.getInt("account_no");
+                    int userId = resultSet.getInt("user_id");
+                    String bankName = resultSet.getString("bank_name");
+                    int routingNumber = resultSet.getInt("routing_no");
+                    double balance = resultSet.getDouble("balance");
+
+                    // Create a formatted account text with bank name
+                    String accountText = "Bank: " + bankName + " - Account No: "
+                            + accountNumber + " - User ID: " + userId + " - Routing No: " + routingNumber + " - Balance:$" + balance;
+                    bankListView.getItems().add(accountText); // Add the account to the ListView
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
