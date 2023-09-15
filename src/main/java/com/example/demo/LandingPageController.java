@@ -5,10 +5,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
@@ -18,11 +21,16 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.util.StringConverter;
 
@@ -42,6 +50,8 @@ public class LandingPageController extends HotelBookingController implements Ini
     private ImageView newsImage1,newsImage2,newsImage3;
     @FXML
     private DialogPane descriptionPane1,descriptionPane2,descriptionPane3;
+    @FXML
+    private Hyperlink newsLink1,newsLink2,newsLink3;
     @FXML
     private TableView<Job> jobTableView;
     @FXML
@@ -83,20 +93,35 @@ public class LandingPageController extends HotelBookingController implements Ini
 
 
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
-        titleColumn.setMaxWidth(249);
+        titleColumn.setMinWidth(425);
         gradeColumn.setCellValueFactory(cellData -> cellData.getValue().JobGradeProperty());
 
         agencyColumn.setCellValueFactory(cellData -> cellData.getValue().JobAgencyProperty());
         locationColumn.setCellValueFactory(cellData -> cellData.getValue().JobLocationProperty());
         applyColumn.setCellFactory(column -> new TableCell<Job, String>() {
-            private final Button applyButton = new Button("Apply");
+            final Button applyButton = new Button("Apply");
 
             {
+                // Set the action for the apply button
                 applyButton.setOnAction(event -> {
-                    // Handle the button click event here
-                    // You can access the job information associated with this row
+                    // Here, you can handle the logic for applying to the job
+                    // You can access the Job object associated with this row using getItem()
                     Job job = getTableView().getItems().get(getIndex());
-                    // Perform actions like applying for the job using the job information
+                    if (job != null) {
+                        // Display a confirmation dialog
+                        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                        confirmationAlert.setTitle("Confirmation");
+                        confirmationAlert.setHeaderText("Apply for the Job");
+                        confirmationAlert.setContentText("Are you sure you want to apply for this job?");
+
+                        Optional<ButtonType> result = confirmationAlert.showAndWait();
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            // User clicked OK, so you can call the apply method here
+                            //job.apply(); // Call the apply method on your Job object
+                            JobListing.applyJob(job.getJobId());
+
+                        }
+                    }
                 });
             }
 
@@ -104,15 +129,18 @@ public class LandingPageController extends HotelBookingController implements Ini
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
 
-                if (empty || item == null) {
-                    setGraphic(null);
+                if (empty) {
+                    setGraphic(null); // No button in empty cells
                     setText(null);
                 } else {
                     setGraphic(applyButton);
-                    setText(null);
+                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY); // Display only the button
+                    setAlignment(Pos.CENTER); // Center-align the button
                 }
             }
         });
+
+
 
         // Populate the TableView with job listings from JobListing class
         jobTableView.getItems().addAll(JobListing.getAllJobs());
@@ -145,7 +173,20 @@ public class LandingPageController extends HotelBookingController implements Ini
                     // Set a placeholder image or display an error message
                     imageView.setImage(null); // Set to a placeholder or null
                 }
-
+                Hyperlink newsLink = getNewsLinkForIndex(i);
+                newsLink.setText("Go to Source");
+                newsLink.setUnderline(true);
+                newsLink.setOnAction(event -> {
+                    // Open the URL in a web browser when the hyperlink is clicked
+                    String url = news.getUrl();
+                    if (Desktop.isDesktopSupported()) {
+                        try {
+                            Desktop.getDesktop().browse(new URI(url));
+                        } catch (IOException | URISyntaxException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
                 descriptionPane.setContentText(news.getDescription());
                 descriptionPane.setHeaderText(news.getTitle());
             } else {
@@ -155,6 +196,7 @@ public class LandingPageController extends HotelBookingController implements Ini
                 imageView.setImage(null);
                 descriptionPane.setContentText("");
                 descriptionPane.setHeaderText("");
+
             }
         }
     }
@@ -213,12 +255,18 @@ public class LandingPageController extends HotelBookingController implements Ini
             temperatureLabel.setLayoutY(10.0);
             temperatureLabel.setFont(new Font(30));
 
-
-            double temperatureLabelWidth = new Text(temperatureLabel.getText()).getLayoutBounds().getWidth();
             Label conditionLabel = new Label(weather.getConditionText());
-            double conditionLabelX = 105.0; // Adjust as needed
-            double conditionLabelY = 45.0; // Align vertically with temperatureLabel
+
+// Calculate the X position to center the condition label with respect to temperatureLabel
+            double temperatureLabelWidth = new Text(temperatureLabel.getText()).getLayoutBounds().getWidth();
+            double conditionLabelWidth = new Text(conditionLabel.getText()).getLayoutBounds().getWidth();
+            double conditionLabelX = temperatureLabel.getLayoutX() + (temperatureLabelWidth - conditionLabelWidth) / 2;
+
+// Set the calculated X position
             conditionLabel.setLayoutX(conditionLabelX);
+
+// Align vertically with temperatureLabel
+            double conditionLabelY = 45.0; // Align vertically with temperatureLabel
             conditionLabel.setLayoutY(conditionLabelY);
 
             Label humidityLabel = new Label("Humidity: " + weather.getHumidity());
@@ -335,6 +383,18 @@ public class LandingPageController extends HotelBookingController implements Ini
                 return null;
         }
     }
-
+    public Hyperlink getNewsLinkForIndex(int index) {
+        switch (index) {
+            case 0:
+                return newsLink1;
+            case 1:
+                return newsLink2;
+            case 2:
+                return newsLink3;
+            // Add more cases if you have more Hyperlink fields in your layout
+            default:
+                throw new IllegalArgumentException("Invalid index: " + index);
+        }
+    }
 
 }
