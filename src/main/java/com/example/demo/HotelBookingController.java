@@ -128,6 +128,7 @@ public class HotelBookingController {
         dialogPane.setContent(createBookingDialogContent());
         ButtonType bookButtonType = new ButtonType("Extend");
         dialogPane.getButtonTypes().addAll(bookButtonType, ButtonType.CANCEL);
+        LocalDate today = LocalDate.now();
         dialog.setResultConverter(buttonType -> {
             if (buttonType == bookButtonType) {
                 // Perform the booking process
@@ -135,6 +136,10 @@ public class HotelBookingController {
                 LocalDate checkOutDate = checkOutDatePicker.getValue();
                 if (checkInDate == null || checkOutDate == null || checkInDate.isAfter(checkOutDate)) {
                     showAlert(AlertType.ERROR, "Invalid Dates", "Please select valid check-in and check-out dates.");
+                    return null;
+                }
+                else if (checkInDate.isBefore(today)) {
+                    showAlert(AlertType.ERROR, "Invalid Check-In Date", "Check-in date should be from today or later.");
                     return null;
                 }
                 long daysBetween = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
@@ -208,6 +213,7 @@ public class HotelBookingController {
         dialogPane.setContent(createBookingDialogContent());
         ButtonType bookButtonType = new ButtonType("Edit");
         dialogPane.getButtonTypes().addAll(bookButtonType, ButtonType.CANCEL);
+        LocalDate today = LocalDate.now();
         dialog.setResultConverter(buttonType -> {
             if (buttonType == bookButtonType) {
                 // Perform the booking process
@@ -215,6 +221,10 @@ public class HotelBookingController {
                 LocalDate checkOutDate = checkOutDatePicker.getValue();
                 if (checkInDate == null || checkOutDate == null || checkInDate.isAfter(checkOutDate)) {
                     showAlert(AlertType.ERROR, "Invalid Dates", "Please select valid check-in and check-out dates.");
+                    return null;
+                }
+                else if (checkInDate.isBefore(today)) {
+                    showAlert(AlertType.ERROR, "Invalid Check-In Date", "Check-in date should be from today or later.");
                     return null;
                 }
                 // Calculate the number of days between check-in and check-out
