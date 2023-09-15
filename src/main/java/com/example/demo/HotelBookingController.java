@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.collections.FXCollections;
@@ -56,6 +57,8 @@ public class HotelBookingController {
     @FXML
     private Button editButton;
     @FXML
+    private HBox manageHotels;
+    @FXML
     private DatePicker checkInDatePicker;
     @FXML
     private DatePicker checkOutDatePicker;
@@ -63,7 +66,11 @@ public class HotelBookingController {
     @FXML
     private Button extendButton;
     @FXML
+    private Button bookHotels;
+    @FXML
     private Button cancelButton;
+    @FXML
+    private Button manageHotelsBookings;
     String emailId;
     int userId;
     public String getEmailId() {
@@ -276,21 +283,27 @@ public class HotelBookingController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        manageHotels.setVisible(false);
         hotelBookingListView.setVisible(false);
         editButton.setVisible(false);
+        bookHotels.setVisible(false);
         extendButton.setVisible(false);
         cancelButton.setVisible(false);
         hotelTableView.setVisible(true);
         bookButton.setVisible(true);
+        manageHotelsBookings.setVisible(true);
     }
     @FXML
     private void viewButtonClicked() {
+        manageHotels.setVisible(false);
+        manageHotelsBookings.setVisible(false);
         hotelTableView.setVisible(false);
         bookButton.setVisible(false);
         hotelBookingListView.setVisible(true);
         editButton.setVisible(true);
         extendButton.setVisible(true);
         cancelButton.setVisible(true);
+        bookHotels.setVisible(true);
         String emailId = HotelBooking.getInstance().getEmailId();
         HotelBooking c = new HotelBooking();
         int userId = c.getUserdetails(emailId);

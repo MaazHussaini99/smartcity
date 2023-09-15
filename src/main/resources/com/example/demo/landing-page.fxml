@@ -91,7 +91,7 @@
                             </columns>
                         </TableView>
 
-                        <TableView fx:id="hotelBookingListView" onMouseClicked="#handleHotelBookingSelection" prefHeight="300.0" prefWidth="550.0" visible="false" >
+                        <TableView fx:id="hotelBookingListView" onMouseClicked="#handleHotelBookingSelection" prefHeight="300.0" prefWidth="550.0" visible="false">
                             <columns>
                                 <TableColumn text="Hotel Booking Id">
                                 <cellValueFactory>
@@ -127,12 +127,20 @@
                         </TableView>
                     </StackPane>
                     <StackPane>
+                        <HBox spacing="30">
                         <Button fx:id="bookButton" onAction="#onBookButtonClicked" text="Book Hotel" visible="false" />
+                        <Button fx:id="manageHotelsBookings" onAction="#viewButtonClicked" mnemonicParsing="false" text="View Hotel Bookings" visible="false" />
+                        </HBox>
+                        <HBox fx:id="manageHotels" spacing="10" >
+                           <Button  onAction="#createBookingClicked" mnemonicParsing="false" text="Book Hotels" />
+                        <Button onAction="#viewButtonClicked" mnemonicParsing="false" text="View Hotel Bookings" />
+                        </HBox>
                     </StackPane>
-                    <HBox spacing="10">
+                    <HBox spacing="15">
                         <Button fx:id="editButton" onAction="#oneditButtonClicked" text="Edit Hotel Booking" visible="false" />
                         <Button fx:id="extendButton" onAction="#extendButtonClicked" text="Extend Hotel Booking" visible="false" />
                         <Button fx:id="cancelButton" onAction="#cancelButtonClicked" text="Cancel Hotel Booking" visible="false" />
+                        <Button fx:id="bookHotels" onAction="#createBookingClicked" mnemonicParsing="false" text="Book Hotels" visible="false" />
                     </HBox>
 
 
