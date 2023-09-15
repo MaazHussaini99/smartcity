@@ -16,6 +16,7 @@
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/LoggedinController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/LoggedinController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/logged-in.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/logged-in.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,12 +68,25 @@
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2Ufb8zTFM2crj9NFA2nfsHZDzMw" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Owen&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\StevThePowerful\IdeaProjects\smartcity\target\classes\com\example\demo" />
@@ -106,6 +120,9 @@
       <option name="presentableId" value="Default" />
       <updated>1693333429736</updated>
       <workItem from="1694611846395" duration="2501000" />
+      <workItem from="1694702453265" duration="1666000" />
+      <workItem from="1694717361800" duration="605000" />
+      <workItem from="1694785077724" duration="658000" />
     </task>
     <task id="LOCAL-00001" summary="Started setting up User file">
       <option name="closed" value="true" />
@@ -163,7 +180,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694612372872</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Forgot to save userID to user">
+      <option name="closed" value="true" />
+      <created>1694785719931</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1694785719931</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,7 +211,8 @@
     <MESSAGE value="Merged master branch into Owen's branch" />
     <MESSAGE value="Restoring LoggedinController" />
     <MESSAGE value="Changed the User constructor to be private and fixed the log out system so it actually logs the user out." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed the User constructor to be private and fixed the log out system so it actually logs the user out." />
+    <MESSAGE value="Forgot to save userID to user" />
+    <option name="LAST_COMMIT_MESSAGE" value="Forgot to save userID to user" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
