@@ -321,5 +321,9 @@ public class User {
         this.roleID = roleID;
     }
 
-
+    public String toString() {
+        String address = "";
+        address = this.streetAddress + " " + this.city + ",\n" + this.state + " " + this.zipcode;
+        return address;
+    }
 }

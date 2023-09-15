@@ -300,16 +300,13 @@ public class LandingPageController extends HotelBookingController implements Ini
         Pane userDataPane = new Pane();
 
         // Populate the user data Pane with user-specific content
-        Text userDataText = new Text("First name: " + User.getInstance().getFirstName()
-                + "\nLast name: " + User.getInstance().getLastName()
-                + "\nStreet address: " + User.getInstance().getStreetAddress()
-                + "\nCity: " + User.getInstance().getCity()
-                + "\nZipcode: " + User.getInstance().getZipcode()
-                + "\nState: " + User.getInstance().getState()
+        Text userDataText = new Text("Name: " + User.getInstance().getFirstName()
+                + " " + User.getInstance().getLastName()
+                + "\nAddress: " + User.getInstance().toString()
                 + "\nEmail: " + User.getInstance().getEmail()
                 + "\nPhone number: " + User.getInstance().getPhoneNumber()
                 + "\n\nUse role ID to check if a user is an admin or not.\n1 = User, 2 = Admin"
-                + "\nUser role ID: " + User.getInstance().getRoleID()); // Replace with your user data components
+                + "\nUser role ID: " + User.getInstance().getRoleID());
         userDataText.setLayoutX(10);
         userDataText.setLayoutY(10);
 
