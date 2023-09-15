@@ -118,7 +118,8 @@ public class LandingPageController extends HotelBookingController implements Ini
                         if (result.isPresent() && result.get() == ButtonType.OK) {
                             // User clicked OK, so you can call the apply method here
                             //job.apply(); // Call the apply method on your Job object
-                            System.out.println("Applied!");
+                            JobListing.applyJob(job.getJobId());
+
                         }
                     }
                 });
