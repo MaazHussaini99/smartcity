@@ -1,7 +1,9 @@
 package com.example.demo;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
@@ -14,18 +16,17 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-
-import javafx.scene.layout.VBox;
 
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,13 +44,14 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
 import javafx.util.StringConverter;
 
 public class LandingPageController extends HotelBookingController implements Initializable {
 
 
     @FXML
-    private Button profileLink,newCard,nextButton,previousButton;
+    private Button profileLink, newCard, nextButton, previousButton;
     @FXML
     private StackPane userDataStackPane;
     private boolean isProfilePaneOpen = false;
@@ -58,21 +60,26 @@ public class LandingPageController extends HotelBookingController implements Ini
     @FXML
     private Pane weatherPane;
     @FXML
-    private ImageView newsImage1,newsImage2,newsImage3;
+    private ImageView newsImage1, newsImage2, newsImage3;
     @FXML
-    private DialogPane descriptionPane1,descriptionPane2,descriptionPane3;
+    private DialogPane descriptionPane1, descriptionPane2, descriptionPane3;
     @FXML
-    private Hyperlink newsLink1,newsLink2,newsLink3;
+    private Hyperlink newsLink1, newsLink2, newsLink3;
     @FXML
     private TableView<Job> jobTableView;
     @FXML
-    private TableColumn<Job, String> titleColumn,gradeColumn,agencyColumn,locationColumn,applyColumn;
+    private TableColumn<Job, String> titleColumn, gradeColumn, agencyColumn, locationColumn, applyColumn;
 
     @FXML
     private VBox transport;
 
+    @FXML
+    private HBox editJobRow;
+
     private int currentNewsIndex = 0; // Initialize to 0
     private int newsPerPage = 3; // Number of news articles to display at a time
+
+    private int flag = 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -84,15 +91,15 @@ public class LandingPageController extends HotelBookingController implements Ini
 
             // Add an event handler for the "Next" button
             nextButton.setOnAction(event -> {
-                if (currentNewsIndex + 1 < newsItems.size()-2) {
+                if (currentNewsIndex + 1 < newsItems.size() - 2) {
                     currentNewsIndex++;
                     populateNewsPanes(newsItems, currentNewsIndex);
                 }
             });
             previousButton.setOnAction(event -> {
-                if (currentNewsIndex - 1 < newsItems.size()-2) {
-                    if(currentNewsIndex==0){
-                        currentNewsIndex=1;
+                if (currentNewsIndex - 1 < newsItems.size() - 2) {
+                    if (currentNewsIndex == 0) {
+                        currentNewsIndex = 1;
                     }
                     currentNewsIndex--;
                     populateNewsPanes(newsItems, currentNewsIndex);
@@ -156,7 +163,107 @@ public class LandingPageController extends HotelBookingController implements Ini
         });
         // Populate the TableView with job listings from JobListing class
         jobTableView.getItems().addAll(JobListing.getAllJobs());
+
+        setJobEditRowBehavior();
     }
+
+    private void setJobEditRowBehavior() {
+        //what does this do?
+        //spawn 3 button on load
+        //change it to text box with 2 buttons
+        //invoke the various commands in Job Controller or something
+        Button b1 = new Button("Edit");
+        Button b2 = new Button("Add");
+        Button b3 = new Button("Delete");
+        editJobRow.getChildren().addAll(b1, b2, b3);
+        Button[] buttons = {b1, b2, b3};
+
+        b1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                flag = 1;
+                System.out.println("hello");
+
+                editJobRow.getChildren().removeAll(b1, b2, b3);
+
+                jobEditTransition();
+            }
+        });
+
+        b2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                flag = 2;
+                System.out.println("hello");
+
+                editJobRow.getChildren().removeAll(b1, b2, b3);
+
+                jobEditTransition();
+            }
+        });
+
+        b3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                flag = 3;
+                System.out.println("hello");
+                editJobRow.getChildren().removeAll(b1, b2, b3);
+
+                jobEditTransition();
+
+            }
+        });
+    }
+
+    private void jobEditTransition() {
+        TextField title = new TextField();
+        TextField grade = new TextField();
+        TextField agency = new TextField();
+        TextField city = new TextField();
+        Button ok = new Button("Confirm");
+        Button cancel = new Button("Cancel");
+
+        title.setPromptText("Job Title");
+        title.setFocusTraversable(false);
+
+        grade.setPromptText("Grade");
+        grade.setFocusTraversable(false);
+
+        agency.setPromptText("Agency");
+        agency.setFocusTraversable(false);
+
+        city.setPromptText("City");
+        city.setFocusTraversable(false);
+
+        cancel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                editJobRow.getChildren().removeAll(title, grade, agency, city, ok, cancel);
+                setJobEditRowBehavior();
+            }
+        });
+
+        ok.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modJobListing(title.getText(), grade.getText(), agency.getText(), city.getText());
+                editJobRow.getChildren().removeAll(title, grade, agency, city, ok, cancel);
+                jobEditTransition();
+
+            }
+        });
+
+        editJobRow.getChildren().addAll(title, grade, agency, city, ok, cancel);
+
+        //get random job id
+        //title grade agency city
+    }
+
+
+    private void modJobListing(String title, String grade, String agency, String city) {
+
+    }
+
     private void populateNewsPanes(ObservableList<News> newsItems, int startIndex) {
         for (int i = 0; i < newsPerPage; i++) {
             int newsIndex = startIndex + i;
@@ -212,6 +319,7 @@ public class LandingPageController extends HotelBookingController implements Ini
             }
         }
     }
+
     private void handleProfileButtonClick(ActionEvent event) {
         if (!isProfilePaneOpen) {
             // Create and populate the user data pane
@@ -230,6 +338,7 @@ public class LandingPageController extends HotelBookingController implements Ini
             isProfilePaneOpen = false;
         }
     }
+
     private void displayWeather() {
         Weather weather = Weather.getWeather();
 
@@ -302,11 +411,12 @@ public class LandingPageController extends HotelBookingController implements Ini
 
 
             // Add these labels to the weatherPane
-            weatherPane.getChildren().addAll(temperatureLabel, conditionLabel,humidityLabel,percipLabel,windLabel,uvLabel, iconImageView);
+            weatherPane.getChildren().addAll(temperatureLabel, conditionLabel, humidityLabel, percipLabel, windLabel, uvLabel, iconImageView);
         } else {
             System.out.println("Failed to fetch weather data.");
         }
     }
+
     // Implement this method to create and populate the user data pane
     private Pane createUserProfilePane() {
         // Create a Pane for user data
@@ -338,9 +448,11 @@ public class LandingPageController extends HotelBookingController implements Ini
         userDataPane.getChildren().add(newCard);
         return userDataPane;
     }
+
     private void onProfileLinkClicked() {
         loadBankFXML();
     }
+
     private void loadBankFXML() {
         try {
             // Load the Bank.fxml file
@@ -359,6 +471,7 @@ public class LandingPageController extends HotelBookingController implements Ini
             e.printStackTrace();
         }
     }
+
     public void LogOut(ActionEvent event) throws SQLException, IOException {
 
         // Log user out of account
@@ -372,6 +485,7 @@ public class LandingPageController extends HotelBookingController implements Ini
         stage.setScene(scene);
         stage.show();
     }
+
     public ImageView getImagePaneForIndex(int index) {
         switch (index) {
             case 0:

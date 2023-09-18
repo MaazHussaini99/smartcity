@@ -6,7 +6,6 @@
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
@@ -44,17 +43,18 @@
                     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="630.0" prefWidth="869.0" styleClass="anchor-pane">
                         <children>
 
-                            <TableView fx:id="jobTableView" layoutX="10.0" layoutY="20.0" prefHeight="600.0" prefWidth="852.0" style="-fx-background-color: #87aede;">
+                            <TableView fx:id="jobTableView" layoutX="10.0" layoutY="20.0" prefHeight="553.0" prefWidth="851.0" style="-fx-background-color: #87aede;">
                                 <columns>
                                     <TableColumn fx:id="titleColumn" styleClass="TitleTabStyle" text="Title" />
                                     <TableColumn fx:id="gradeColumn" text="Grade" />
                                     <TableColumn fx:id="agencyColumn" text="Agency" />
                                     <TableColumn fx:id="locationColumn" text="City" />
 
-                                    <TableColumn prefWidth="125.0" fx:id="applyColumn" text="Apply" />
+                                    <TableColumn fx:id="applyColumn" prefWidth="125.0" text="Apply" />
 
                                 </columns>
                             </TableView>
+                        <HBox fx:id= "editJobRow" layoutX="9.0" layoutY="579.0" prefHeight="40.0" prefWidth="852.0" />
                         </children>
                     </AnchorPane>
                 </content>
@@ -142,18 +142,18 @@
                     <StackPane>
                         <HBox spacing="30">
                         <Button fx:id="bookButton" onAction="#onBookButtonClicked" text="Book Hotel" visible="false" />
-                        <Button fx:id="manageHotelsBookings" onAction="#viewButtonClicked" mnemonicParsing="false" text="View Hotel Bookings" visible="false" />
+                        <Button fx:id="manageHotelsBookings" mnemonicParsing="false" onAction="#viewButtonClicked" text="View Hotel Bookings" visible="false" />
                         </HBox>
-                        <HBox fx:id="manageHotels" spacing="10" >
-                           <Button  onAction="#createBookingClicked" mnemonicParsing="false" text="Book Hotels" />
-                        <Button onAction="#viewButtonClicked" mnemonicParsing="false" text="View Hotel Bookings" />
+                        <HBox fx:id="manageHotels" spacing="10">
+                           <Button mnemonicParsing="false" onAction="#createBookingClicked" text="Book Hotels" />
+                        <Button mnemonicParsing="false" onAction="#viewButtonClicked" text="View Hotel Bookings" />
                         </HBox>
                     </StackPane>
                     <HBox spacing="15">
                         <Button fx:id="editButton" onAction="#oneditButtonClicked" text="Edit Hotel Booking" visible="false" />
                         <Button fx:id="extendButton" onAction="#extendButtonClicked" text="Extend Hotel Booking" visible="false" />
                         <Button fx:id="cancelButton" onAction="#cancelButtonClicked" text="Cancel Hotel Booking" visible="false" />
-                        <Button fx:id="bookHotels" onAction="#createBookingClicked" mnemonicParsing="false" text="Book Hotels" visible="false" />
+                        <Button fx:id="bookHotels" mnemonicParsing="false" onAction="#createBookingClicked" text="Book Hotels" visible="false" />
 
                     </HBox>
 
