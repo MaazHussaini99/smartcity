@@ -1,6 +1,8 @@
 package com.example.demo;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,6 +25,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -32,6 +35,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import javafx.util.StringConverter;
 
 public class LandingPageController extends HotelBookingController implements Initializable {
@@ -56,9 +62,19 @@ public class LandingPageController extends HotelBookingController implements Ini
     private TableView<Job> jobTableView;
     @FXML
     private TableColumn<Job, String> titleColumn,gradeColumn,agencyColumn,locationColumn,applyColumn;
+    @FXML
+    private TableView<Bus> transportTable;
+    @FXML
+    TableColumn<Bus, String> busNo, busName, routeDescription;
+
+    @FXML
+    private TableView<Stop> stopsTable;
+    @FXML
+    private TableColumn<Stop, String> busStop, busArrivalTime, busDepartureTime;
 
     private int currentNewsIndex = 0; // Initialize to 0
     private int newsPerPage = 3; // Number of news articles to display at a time
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -90,6 +106,49 @@ public class LandingPageController extends HotelBookingController implements Ini
         }
         profileLink.setOnAction(this::handleProfileButtonClick);
         displayWeather();
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() {
+                Platform.runLater(() -> {
+                    // Update UI elements on the JavaFX Application Thread
+                    busNo.setCellValueFactory(cellData -> cellData.getValue().getShortName());
+                    busName.setCellValueFactory(cellData -> cellData.getValue().getLongName());
+                    routeDescription.setCellValueFactory(cellData -> cellData.getValue().getRouteID());
+
+                    // Transport Table
+                    try {
+                        transportTable.getItems().addAll(TransportController.getBuses());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
+                return null;
+            }
+        };
+
+        // Execute the task in the separate thread
+        executorService.submit(task);
+
+        busStop.setCellValueFactory(cellData -> cellData.getValue().stopNameProperty());
+        busArrivalTime.setCellValueFactory(cellData -> cellData.getValue().arrivalTimeProperty());
+        busDepartureTime.setCellValueFactory(cellData -> cellData.getValue().departureTimeProperty());
+
+        transportTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        transportTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1) { // Detect a single click
+                Bus selectedBus = transportTable.getSelectionModel().getSelectedItem();
+                if (selectedBus != null) {
+                    // Clear the existing items in stopsTable
+                    stopsTable.getItems().clear();
+                    System.out.println(selectedBus.getShortName());
+                    System.out.println(selectedBus.getStops().get(1));
+                    // Get the stops from the selected Bus object and populate the stopsTable
+                    stopsTable.getItems().addAll(selectedBus.getStops());
+                }
+            }
+        });
 
 
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());

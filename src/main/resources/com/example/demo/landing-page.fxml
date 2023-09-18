@@ -48,7 +48,7 @@
                                     <TableColumn fx:id="gradeColumn" text="Grade" />
                                     <TableColumn fx:id="agencyColumn" text="Agency" />
                                     <TableColumn fx:id="locationColumn" text="City" />
-                                    <TableColumn prefWidth="125.0" fx:id="applyColumn" text="Apply" />
+                                    <TableColumn fx:id="applyColumn" prefWidth="125.0" text="Apply" />
                                 </columns>
                             </TableView>
                         </children>
@@ -139,18 +139,18 @@
                     <StackPane>
                         <HBox spacing="30">
                         <Button fx:id="bookButton" onAction="#onBookButtonClicked" text="Book Hotel" visible="false" />
-                        <Button fx:id="manageHotelsBookings" onAction="#viewButtonClicked" mnemonicParsing="false" text="View Hotel Bookings" visible="false" />
+                        <Button fx:id="manageHotelsBookings" mnemonicParsing="false" onAction="#viewButtonClicked" text="View Hotel Bookings" visible="false" />
                         </HBox>
-                        <HBox fx:id="manageHotels" spacing="10" >
-                           <Button  onAction="#createBookingClicked" mnemonicParsing="false" text="Book Hotels" />
-                        <Button onAction="#viewButtonClicked" mnemonicParsing="false" text="View Hotel Bookings" />
+                        <HBox fx:id="manageHotels" spacing="10">
+                           <Button mnemonicParsing="false" onAction="#createBookingClicked" text="Book Hotels" />
+                        <Button mnemonicParsing="false" onAction="#viewButtonClicked" text="View Hotel Bookings" />
                         </HBox>
                     </StackPane>
                     <HBox spacing="15">
                         <Button fx:id="editButton" onAction="#oneditButtonClicked" text="Edit Hotel Booking" visible="false" />
                         <Button fx:id="extendButton" onAction="#extendButtonClicked" text="Extend Hotel Booking" visible="false" />
                         <Button fx:id="cancelButton" onAction="#cancelButtonClicked" text="Cancel Hotel Booking" visible="false" />
-                        <Button fx:id="bookHotels" onAction="#createBookingClicked" mnemonicParsing="false" text="Book Hotels" visible="false" />
+                        <Button fx:id="bookHotels" mnemonicParsing="false" onAction="#createBookingClicked" text="Book Hotels" visible="false" />
 
                     </HBox>
 
@@ -166,16 +166,23 @@
               <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="599.0" prefWidth="665.0">
                       <children>
-                          <Pane layoutX="319.0" layoutY="20.0" prefHeight="600.0" prefWidth="539.0" style="-fx-background-color: #3567c4;">
+                          <Pane layoutX="488.0" layoutY="20.0" prefHeight="600.0" prefWidth="370.0" style="-fx-background-color: #3567c4;">
                               <children>
                                   <TextField layoutX="14.0" layoutY="478.0" prefHeight="25.0" prefWidth="42.0" promptText="QTY" />
                                   <Button layoutX="14.0" layoutY="511.0" mnemonicParsing="false" text="Purchase" />
-                                  <ImageView fitHeight="160.0" fitWidth="221.0" layoutX="11.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+                              <TableView fx:id="stopsTable" layoutX="14.0" layoutY="43.0" prefHeight="425.0" prefWidth="343.0">
+                                <columns>
+                                  <TableColumn fx:id="busStop" prefWidth="126.20001220703125" text="Stop" />
+                                  <TableColumn fx:id="busArrivalTime" prefWidth="100.0" text="Arrival Time" />
+                                    <TableColumn fx:id="busDepartureTime" minWidth="0.0" prefWidth="115.79998779296875" text="Departure Time" />
+                                </columns>
+                              </TableView>
                               </children></Pane>
-                        <TableView layoutX="10.0" layoutY="20.0" prefHeight="600.0" prefWidth="286.0">
+                        <TableView fx:id="transportTable" layoutX="10.0" layoutY="20.0" prefHeight="600.0" prefWidth="462.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
+                            <TableColumn fx:id="busNo" prefWidth="75.0" text="Bus #" />
+                            <TableColumn fx:id="busName" prefWidth="134.39999389648438" text="Bus Name" />
+                              <TableColumn fx:id="routeDescription" prefWidth="251.99999084472654" text="Route Description" />
                           </columns>
                         </TableView>
                       </children>
