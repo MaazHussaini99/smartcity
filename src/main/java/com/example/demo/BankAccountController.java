@@ -141,27 +141,6 @@ public class BankAccountController {
             showErrorMessage("Please select a bank.");
         }
     }
-    private int getUserIdFromUserTable(String userEmail) {
-        int userId = -1; // Initialize to -1 to indicate no user found
-
-        try (Connection connection = DBConn.connectDB()) {
-            String sql = "SELECT uid FROM user WHERE user_email = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, userEmail);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                userId = resultSet.getInt("uid");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle the SQL exception, log it, or show an error message
-        }
-
-        return userId;
-    }
-
 
     private int getBankId(String selectedBank) {
         int bankId = -1; // Default value in case of an error
