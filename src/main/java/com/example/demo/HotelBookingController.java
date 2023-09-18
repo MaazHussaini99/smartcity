@@ -423,7 +423,13 @@ public class HotelBookingController {
     private void onBookButtonClicked() {
         Hotel selectedHotel = hotelTableView.getSelectionModel().getSelectedItem();
         if (selectedHotel != null) {
-            showBookingDialog(selectedHotel);
+            try {
+                showBookingDialog(selectedHotel);
+            }
+            catch(Exception e){
+
+            }
+
         }
     }
     private void retrieveHotelsFromDatabase() throws SQLException {
@@ -449,7 +455,7 @@ public class HotelBookingController {
         }
     }
     // ...
-    private void showBookingDialog(Hotel selectedHotel) {
+    private void showBookingDialog(Hotel selectedHotel) throws Exception {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("Book Hotel");
