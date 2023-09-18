@@ -38,7 +38,7 @@ public class LandingPageController extends HotelBookingController implements Ini
 
 
     @FXML
-    private Button profileLink,newCard,nextButton,previousButton;
+    private Button profileLink,newCard,adminButton,nextButton,previousButton;
     @FXML
     private StackPane userDataStackPane;
     private boolean isProfilePaneOpen = false;
@@ -204,7 +204,7 @@ public class LandingPageController extends HotelBookingController implements Ini
         if (!isProfilePaneOpen) {
             // Create and populate the user data pane
             Pane userDataPane = createUserProfilePane(); // Implement this method
-
+            userDataStackPane.setVisible(true);
             // Add the user data pane to the StackPane
             userDataStackPane.getChildren().add(userDataPane);
 
@@ -213,6 +213,7 @@ public class LandingPageController extends HotelBookingController implements Ini
         } else {
             // Close the user data pane
             userDataStackPane.getChildren().clear();
+            userDataStackPane.setVisible(false);
 
             // Set the flag to indicate that the profile pane is closed
             isProfilePaneOpen = false;
@@ -312,6 +313,9 @@ public class LandingPageController extends HotelBookingController implements Ini
                 + "\nUser role ID: " + User.getInstance().getRoleID()); // Replace with your user data components
         userDataText.setLayoutX(10);
         userDataText.setLayoutY(10);
+        adminButton = new Button("Add new Admin"); // Replace with your user data components
+        adminButton.setLayoutX(10);
+        adminButton.setLayoutY(200);
 
         newCard = new Button("Add a New Payment Method"); // Replace with your user data components
         newCard.setLayoutX(10);
@@ -322,6 +326,7 @@ public class LandingPageController extends HotelBookingController implements Ini
 
         userDataPane.getChildren().add(userDataText);
         userDataPane.getChildren().add(newCard);
+        userDataPane.getChildren().add(adminButton);
         return userDataPane;
     }
     private void onProfileLinkClicked() {
