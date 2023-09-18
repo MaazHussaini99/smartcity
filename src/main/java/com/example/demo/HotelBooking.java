@@ -328,4 +328,52 @@ public class HotelBooking {
 
         return hotelPrice;
     }
+
+    public boolean deleteHotel(int hotelId) {
+        String sql = "DELETE FROM hotel WHERE hotel_id = ?";
+        try (Connection connection = DBConn.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, hotelId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean addHotel(String hotelNamee, String hotelLocationn, String hotelPricee, int roomNoo, int hotelAvailabilityy) {
+        String sql = "INSERT INTO hotel (hotel_name, hotel_location, hotel_price,hotel_room_no, hotel_availibility) VALUES ( ?, ?, ?, ?, ?)";
+        try (Connection connection = DBConn.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setString(1, hotelNamee);
+            preparedStatement.setString(2, hotelLocationn);
+            preparedStatement.setString(3, hotelPricee);
+            preparedStatement.setInt(4, roomNoo);
+            preparedStatement.setInt(5, hotelAvailabilityy);
+            int rowsAffected= preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public int getRoleDetails(String emailId) {
+        String sql = "SELECT role_id FROM user where user_email= ?";
+        try (Connection connection = DBConn.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1,emailId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                final int roleId=resultSet.getInt("role_id");
+                return roleId;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 1;
+    }
 }

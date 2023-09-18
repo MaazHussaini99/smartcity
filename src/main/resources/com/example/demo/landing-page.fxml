@@ -63,8 +63,6 @@
                     <MenuBar>
                         <menus>
                             <Menu text="Manage Hotel Booking">
-                                <MenuItem onAction="#createBookingClicked" text="Create Bookings" />
-                                <MenuItem onAction="#viewButtonClicked" text="View Bookings" />
                             </Menu>
                         </menus>
                     </MenuBar>
@@ -140,10 +138,13 @@
                         <HBox spacing="30">
                         <Button fx:id="bookButton" onAction="#onBookButtonClicked" text="Book Hotel" visible="false" />
                         <Button fx:id="manageHotelsBookings" onAction="#viewButtonClicked" mnemonicParsing="false" text="View Hotel Bookings" visible="false" />
+                        <Button fx:id="addHotel" onAction="#addHotelButtonClicked" mnemonicParsing="false" text="Add Hotel" visible="false"/>
+                        <Button fx:id="deleteHotel" onAction="#deleteHotelButtonClicked" mnemonicParsing="false" text="Delete Hotel" visible="false"/>
                         </HBox>
                         <HBox fx:id="manageHotels" spacing="10" >
-                           <Button  onAction="#createBookingClicked" mnemonicParsing="false" text="Book Hotels" />
+                            <Button onAction="#createBookingClicked" mnemonicParsing="false" text="Book Hotels" />
                         <Button onAction="#viewButtonClicked" mnemonicParsing="false" text="View Hotel Bookings" />
+                            <Button fx:id="addDeleteHotels" onAction="#createBookingClicked" mnemonicParsing="false" text="Add or Delete Hotels" visible="false"/>
                         </HBox>
                     </StackPane>
                     <HBox spacing="15">
