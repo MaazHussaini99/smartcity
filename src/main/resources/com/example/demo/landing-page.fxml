@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <HBox prefHeight="661.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to bottom, #ffffff, #e1e4e6);" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LandingPageController">
    <children>
@@ -70,12 +71,12 @@
                         <ImageView fitHeight="484.0" fitWidth="748.0" pickOnBounds="true" preserveRatio="true"> <image> <Image url="@../images/Map-of-Albany.jpg" /> </image> </ImageView>
                         <TableView fx:id="hotelTableView" onMouseClicked="#handleHotelSelection" prefHeight="300.0" prefWidth="750.0" visible="false">
                             <columns>
-                                <TableColumn text="Hotel Name">
+                                <TableColumn prefWidth="150.0" text="Hotel Name">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="hotelName" />
                                     </cellValueFactory>
                                 </TableColumn>
-                                <TableColumn text="Location">
+                                <TableColumn prefWidth="200.0" text="Location">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="hotelLocation" />
                                     </cellValueFactory>
@@ -110,17 +111,17 @@
                                         <PropertyValueFactory property="hotelNamee" />
                                     </cellValueFactory>
                                 </TableColumn>
-                                <TableColumn text="Location">
+                                <TableColumn prefWidth="200.0" text="Location">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="hotelLocationn" />
                                     </cellValueFactory>
                                 </TableColumn>
-                                <TableColumn text="Check In Time">
+                                <TableColumn prefWidth="200.0" text="Check In Time">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="checkInTime" />
                                     </cellValueFactory>
                                 </TableColumn>
-                                <TableColumn text="Check Out Time">
+                                <TableColumn prefWidth="200.0" text="Check Out Time">
                                     <cellValueFactory>
                                         <PropertyValueFactory property="checkOutTime" />
                                     </cellValueFactory>
@@ -132,26 +133,25 @@
                                 </TableColumn>
                             </columns>
                         </TableView>
-
                     </StackPane>
                     <StackPane>
                         <HBox spacing="30">
                         <Button fx:id="bookButton" onAction="#onBookButtonClicked" text="Book Hotel" visible="false" />
-                        <Button fx:id="manageHotelsBookings" onAction="#viewButtonClicked" mnemonicParsing="false" text="View Hotel Bookings" visible="false" />
-                        <Button fx:id="addHotel" onAction="#addHotelButtonClicked" mnemonicParsing="false" text="Add Hotel" visible="false"/>
-                        <Button fx:id="deleteHotel" onAction="#deleteHotelButtonClicked" mnemonicParsing="false" text="Delete Hotel" visible="false"/>
+                        <Button fx:id="manageHotelsBookings" mnemonicParsing="false" onAction="#viewButtonClicked" text="View Hotel Bookings" visible="false" />
+                        <Button fx:id="addHotel" mnemonicParsing="false" onAction="#addHotelButtonClicked" text="Add Hotel" visible="false" />
+                        <Button fx:id="deleteHotel" mnemonicParsing="false" onAction="#deleteHotelButtonClicked" text="Delete Hotel" visible="false" />
                         </HBox>
-                        <HBox fx:id="manageHotels" spacing="10" >
-                            <Button onAction="#createBookingClicked" mnemonicParsing="false" text="Book Hotels" />
-                        <Button onAction="#viewButtonClicked" mnemonicParsing="false" text="View Hotel Bookings" />
-                            <Button fx:id="addDeleteHotels" onAction="#createBookingClicked" mnemonicParsing="false" text="Add or Delete Hotels" visible="false"/>
+                        <HBox fx:id="manageHotels" spacing="10">
+                            <Button mnemonicParsing="false" onAction="#createBookingClicked" text="Book Hotels" />
+                        <Button mnemonicParsing="false" onAction="#viewButtonClicked" text="View Hotel Bookings" />
+                            <Button fx:id="addDeleteHotels" mnemonicParsing="false" onAction="#createBookingClicked" text="Add or Delete Hotels" visible="false" />
                         </HBox>
                     </StackPane>
                     <HBox spacing="15">
                         <Button fx:id="editButton" onAction="#oneditButtonClicked" text="Edit Hotel Booking" visible="false" />
                         <Button fx:id="extendButton" onAction="#extendButtonClicked" text="Extend Hotel Booking" visible="false" />
                         <Button fx:id="cancelButton" onAction="#cancelButtonClicked" text="Cancel Hotel Booking" visible="false" />
-                        <Button fx:id="bookHotels" onAction="#createBookingClicked" mnemonicParsing="false" text="Book Hotels" visible="false" />
+                        <Button fx:id="bookHotels" mnemonicParsing="false" onAction="#createBookingClicked" text="Book Hotels" visible="false" />
 
                     </HBox>
 
