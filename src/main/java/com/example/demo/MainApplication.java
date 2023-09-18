@@ -20,6 +20,12 @@ public class MainApplication extends Application {
 
 
     public static void main(String[] args) {
-        launch();
+        boolean flag = false;
+        if(flag)
+        {
+        launch();}
+        else{
+            new adminShell();
+        }
     }
 }
