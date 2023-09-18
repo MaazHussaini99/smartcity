@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.collections.FXCollections;
@@ -56,6 +57,8 @@ public class HotelBookingController {
     @FXML
     private Button editButton;
     @FXML
+    private HBox manageHotels;
+    @FXML
     private DatePicker checkInDatePicker;
     @FXML
     private DatePicker checkOutDatePicker;
@@ -63,7 +66,13 @@ public class HotelBookingController {
     @FXML
     private Button extendButton;
     @FXML
+    private Button bookHotels;
+    @FXML
     private Button cancelButton;
+    @FXML
+    private Button manageHotelsBookings;
+    @FXML
+    private TextField numberofRooms;
     String emailId;
     int userId;
     public String getEmailId() {
@@ -128,13 +137,19 @@ public class HotelBookingController {
         dialogPane.setContent(createBookingDialogContent());
         ButtonType bookButtonType = new ButtonType("Extend");
         dialogPane.getButtonTypes().addAll(bookButtonType, ButtonType.CANCEL);
+        LocalDate today = LocalDate.now();
         dialog.setResultConverter(buttonType -> {
             if (buttonType == bookButtonType) {
                 // Perform the booking process
+               int rooms = Integer.parseInt(numberofRooms.getText());
                 LocalDate checkInDate = checkInDatePicker.getValue();
                 LocalDate checkOutDate = checkOutDatePicker.getValue();
                 if (checkInDate == null || checkOutDate == null || checkInDate.isAfter(checkOutDate)) {
                     showAlert(AlertType.ERROR, "Invalid Dates", "Please select valid check-in and check-out dates.");
+                    return null;
+                }
+                else if (checkInDate.isBefore(today)) {
+                    showAlert(AlertType.ERROR, "Invalid Check-In Date", "Check-in date should be from today or later.");
                     return null;
                 }
                 long daysBetween = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
@@ -149,8 +164,10 @@ public class HotelBookingController {
                 if (days == 0) {
                     days = days + 1;
                 }
-                int hotelPrice = hotelBookings.getHotelTotalCost() / (int) days;
-                int totalCost = hotelPrice * (int) daysBetween;
+                HotelBooking b=new HotelBooking();
+                int hotelId=b.getHotelId(hotelBookings.getHotelBookingId());
+                int hotelPrice =b.getHotelPrice(hotelId);
+                int totalCost = hotelPrice * (int) daysBetween *rooms;
                 HotelBooking hb = new HotelBooking();
                 int previousHotelBookingCost = hb.getHotelBookingCost(hotelBookings.getHotelBookingId());
                 boolean bookingSuccess = false;
@@ -208,13 +225,19 @@ public class HotelBookingController {
         dialogPane.setContent(createBookingDialogContent());
         ButtonType bookButtonType = new ButtonType("Edit");
         dialogPane.getButtonTypes().addAll(bookButtonType, ButtonType.CANCEL);
+        LocalDate today = LocalDate.now();
         dialog.setResultConverter(buttonType -> {
             if (buttonType == bookButtonType) {
                 // Perform the booking process
+                int rooms = Integer.parseInt(numberofRooms.getText());
                 LocalDate checkInDate = checkInDatePicker.getValue();
                 LocalDate checkOutDate = checkOutDatePicker.getValue();
                 if (checkInDate == null || checkOutDate == null || checkInDate.isAfter(checkOutDate)) {
                     showAlert(AlertType.ERROR, "Invalid Dates", "Please select valid check-in and check-out dates.");
+                    return null;
+                }
+                else if (checkInDate.isBefore(today)) {
+                    showAlert(AlertType.ERROR, "Invalid Check-In Date", "Check-in date should be from today or later.");
                     return null;
                 }
                 // Calculate the number of days between check-in and check-out
@@ -230,8 +253,10 @@ public class HotelBookingController {
                 if (days == 0) {
                     days = days + 1;
                 }
-                int hotelPrice = hotelBookings.getHotelTotalCost() / (int) days;
-                int totalCost = hotelPrice * (int) daysBetween;
+                HotelBooking b=new HotelBooking();
+                int hotelId=b.getHotelId(hotelBookings.getHotelBookingId());
+                int hotelPrice =b.getHotelPrice(hotelId);
+                int totalCost = hotelPrice * (int) daysBetween * rooms;
                 HotelBooking hb = new HotelBooking();
                 int previousHotelBookingCost = hb.getHotelBookingCost(hotelBookings.getHotelBookingId());
                 boolean bookingSuccess = false;
@@ -266,21 +291,27 @@ public class HotelBookingController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        manageHotels.setVisible(false);
         hotelBookingListView.setVisible(false);
         editButton.setVisible(false);
+        bookHotels.setVisible(false);
         extendButton.setVisible(false);
         cancelButton.setVisible(false);
         hotelTableView.setVisible(true);
         bookButton.setVisible(true);
+        manageHotelsBookings.setVisible(true);
     }
     @FXML
     private void viewButtonClicked() {
+        manageHotels.setVisible(false);
+        manageHotelsBookings.setVisible(false);
         hotelTableView.setVisible(false);
         bookButton.setVisible(false);
         hotelBookingListView.setVisible(true);
         editButton.setVisible(true);
         extendButton.setVisible(true);
         cancelButton.setVisible(true);
+        bookHotels.setVisible(true);
         String emailId = HotelBooking.getInstance().getEmailId();
         HotelBooking c = new HotelBooking();
         int userId = c.getUserdetails(emailId);
@@ -357,10 +388,16 @@ public class HotelBookingController {
         dialog.setResultConverter(buttonType -> {
             if (buttonType == bookButtonType) {
                 // Get the selected check-in and check-out dates from the DatePicker controls
+                int rooms = Integer.parseInt(numberofRooms.getText());
                 LocalDate checkInDate = checkInDatePicker.getValue();
                 LocalDate checkOutDate = checkOutDatePicker.getValue();
+                LocalDate today = LocalDate.now();
                 if (checkInDate == null || checkOutDate == null || checkInDate.isAfter(checkOutDate)) {
                     showAlert(AlertType.ERROR, "Invalid Dates", "Please select valid check-in and check-out dates.");
+                    return null;
+                }
+                else if (checkInDate.isBefore(today)) {
+                    showAlert(AlertType.ERROR, "Invalid Check-In Date", "Check-in date should be from today or later.");
                     return null;
                 }
                 // Calculate the number of days between check-in and check-out
@@ -369,7 +406,7 @@ public class HotelBookingController {
                     daysBetween = daysBetween + 1;
                 }
                 // Calculate the total cost based on the hotel's price and the number of days
-                int totalCost = selectedHotel.getHotelPrice() * (int) daysBetween;
+                int totalCost = selectedHotel.getHotelPrice() * (int) daysBetween*rooms;
                 // Perform the booking process
                 String emailId = HotelBooking.getInstance().getEmailId();
                 HotelBooking c = new HotelBooking();
@@ -410,9 +447,10 @@ public class HotelBookingController {
         DialogPane dialogPane = new DialogPane();
         this.checkInDatePicker = new DatePicker();
         this.checkOutDatePicker = new DatePicker();
+        this.numberofRooms=new TextField();
         // Customize the layout of the dialog content
         VBox content = new VBox(10); // Vertical layout with spacing
-        content.getChildren().addAll(new Label("Check-In Date:"), checkInDatePicker, new Label("Check-Out Date:"),
+        content.getChildren().addAll(new Label("Enter number of rooms:"),numberofRooms,new Label("Check-In Date:"), checkInDatePicker, new Label("Check-Out Date:"),
                 checkOutDatePicker);
         dialogPane.setContent(content);
         return dialogPane;

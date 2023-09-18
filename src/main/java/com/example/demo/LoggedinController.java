@@ -33,7 +33,6 @@ public class LoggedinController {
 
     @FXML
     private Button signUp;
-    //private String userEmail;
 
     @FXML
     public void login(ActionEvent event) throws SQLException, IOException {
@@ -58,7 +57,6 @@ public class LoggedinController {
         boolean flag = validate(emailId, password);
         System.out.println("Flag: "+flag);
         if (flag == true) {
-            //userEmail = emailId;
             infoBox("Login Successful!", null, "Success");
             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("landing-page.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 1200, 681);
@@ -75,7 +73,7 @@ public class LoggedinController {
     @FXML
     public void goToSignUp(ActionEvent event) throws SQLException, IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("sign-up.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 544, 400);
+        Scene scene = new Scene(fxmlLoader.load(), 535, 400);
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         stage.setTitle("Smart City - Sign up");
@@ -113,6 +111,7 @@ public class LoggedinController {
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
 
+            // 1 = user ID
             // 2 = first name
             // 3 = last name
             // 4 = street Add
@@ -122,7 +121,7 @@ public class LoggedinController {
             // 8 = email
             // 9 = password
             // 10 = phone
-            // 11 = role
+            // 11 = role ID
             if (resultSet.next() == true) {
 
                 // Save login data to User object

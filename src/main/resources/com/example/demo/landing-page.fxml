@@ -2,8 +2,11 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<<<<<<< HEAD
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 
@@ -12,15 +15,40 @@
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="300.0" style="-fx-background-color: #ffffff;">
          <children>
             <ImageView fitHeight="84.0" fitWidth="211.0" layoutX="62.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+=======
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<HBox prefHeight="661.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to bottom, #ffffff, #e1e4e6);" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LandingPageController">
+   <children>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="300.0">
+         <children>
+            <ImageView fitHeight="84.0" fitWidth="211.0" layoutX="74.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+>>>>>>> master
                <image>
                   <Image url="@../images/new-york-state-vector-logo.png" />
                </image></ImageView>
             <Button fx:id="profileLink" layoutX="110.0" layoutY="572.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="81.0" text="Profile" />
             <Button fx:id="logOut" layoutX="109.0" layoutY="608.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="26.0" prefWidth="82.0" text="Log Out" />
             <StackPane fx:id="userDataStackPane" layoutX="33.0" layoutY="281.0" prefHeight="280.0" prefWidth="234.0" />
+<<<<<<< HEAD
             <Pane fx:id="weatherPane" layoutX="50.0" layoutY="137.0" prefHeight="90.0" prefWidth="200.0">
 
             </Pane>
+=======
+            <Pane fx:id="weatherPane" layoutX="21.0" layoutY="147.0" prefHeight="112.0" prefWidth="260.0" style="-fx-background-color: #87aede; -fx-background-radius: 20; -fx-opacity: 90%;">
+               <effect>
+                  <Glow level="0.49">
+                     <input>
+                        <DropShadow offsetX="2.0" offsetY="2.0">
+                           <color>
+                              <Color red="0.1316000074148178" green="0.24865689873695374" blue="0.2800000011920929" />
+                           </color>
+                        </DropShadow>
+                     </input>
+                  </Glow>
+               </effect></Pane>
+>>>>>>> master
          </children>
          <HBox.margin>
             <Insets right="10.0" />
@@ -31,13 +59,21 @@
                 <content>
                     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="630.0" prefWidth="869.0" styleClass="anchor-pane">
                         <children>
+<<<<<<< HEAD
                             <TableView fx:id="jobTableView" layoutX="10.0" layoutY="20.0" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #87aede;">
+=======
+                            <TableView fx:id="jobTableView" layoutX="10.0" layoutY="20.0" prefHeight="600.0" prefWidth="852.0" style="-fx-background-color: #87aede;">
+>>>>>>> master
                                 <columns>
                                     <TableColumn fx:id="titleColumn" styleClass="TitleTabStyle" text="Title" />
                                     <TableColumn fx:id="gradeColumn" text="Grade" />
                                     <TableColumn fx:id="agencyColumn" text="Agency" />
                                     <TableColumn fx:id="locationColumn" text="City" />
+<<<<<<< HEAD
                                     <TableColumn fx:id="applyColumn" text="Apply" />
+=======
+                                    <TableColumn prefWidth="125.0" fx:id="applyColumn" text="Apply" />
+>>>>>>> master
                                 </columns>
                             </TableView>
                         </children>
@@ -48,7 +84,7 @@
             <content>
 
                 <AnchorPane prefHeight="180.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-                <VBox layoutX="25.0" layoutY="25.0" spacing="10">
+                <VBox layoutX="10.0" layoutY="25.0" prefHeight="595.0" prefWidth="850.0" spacing="10">
                     <MenuBar>
                         <menus>
                             <Menu text="Manage Hotel Booking">
@@ -57,8 +93,74 @@
                             </Menu>
                         </menus>
                     </MenuBar>
-                    <!--<ListView fx:id="hotelListView" onMouseClicked="#handleHotelSelection" prefHeight="300.0" prefWidth="550.0" visible="false" />-->
+                    <StackPane>
+                        <ImageView fitHeight="484.0" fitWidth="748.0" pickOnBounds="true" preserveRatio="true"> <image> <Image url="@../images/Map-of-Albany.jpg" /> </image> </ImageView>
+                        <TableView fx:id="hotelTableView" onMouseClicked="#handleHotelSelection" prefHeight="300.0" prefWidth="750.0" visible="false">
+                            <columns>
+                                <TableColumn text="Hotel Name">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelName" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Location">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelLocation" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Price">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelPrice" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Room Number">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelRoomNumber" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Availability">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelAvailability" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                            </columns>
+                        </TableView>
 
+                        <TableView fx:id="hotelBookingListView" onMouseClicked="#handleHotelBookingSelection" prefHeight="300.0" prefWidth="550.0" visible="false">
+                            <columns>
+                                <TableColumn text="Hotel Booking Id">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="hotelBookingId" />
+                                </cellValueFactory>
+                            </TableColumn>
+                                <TableColumn text="Hotel Name">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelNamee" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Location">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelLocationn" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Check In Time">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="checkInTime" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Check Out Time">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="checkOutTime" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn text="Hotel Total Cost">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hotelTotalCost" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                            </columns>
+                        </TableView>
+
+<<<<<<< HEAD
                     <StackPane>
                         <ImageView fitHeight="484.0" fitWidth="748.0" pickOnBounds="true" preserveRatio="true"> <image> <Image url="@../images/Map-of-Albany.jpg" /> </image> </ImageView>
                         <TableView fx:id="hotelTableView" onMouseClicked="#handleHotelSelection" prefHeight="300.0" prefWidth="750.0" visible="false">
@@ -125,14 +227,25 @@
                                 </TableColumn>
                             </columns>
                         </TableView>
+=======
+>>>>>>> master
                     </StackPane>
                     <StackPane>
+                        <HBox spacing="30">
                         <Button fx:id="bookButton" onAction="#onBookButtonClicked" text="Book Hotel" visible="false" />
+                        <Button fx:id="manageHotelsBookings" onAction="#viewButtonClicked" mnemonicParsing="false" text="View Hotel Bookings" visible="false" />
+                        </HBox>
+                        <HBox fx:id="manageHotels" spacing="10" >
+                           <Button  onAction="#createBookingClicked" mnemonicParsing="false" text="Book Hotels" />
+                        <Button onAction="#viewButtonClicked" mnemonicParsing="false" text="View Hotel Bookings" />
+                        </HBox>
                     </StackPane>
-                    <HBox spacing="10">
+                    <HBox spacing="15">
                         <Button fx:id="editButton" onAction="#oneditButtonClicked" text="Edit Hotel Booking" visible="false" />
                         <Button fx:id="extendButton" onAction="#extendButtonClicked" text="Extend Hotel Booking" visible="false" />
                         <Button fx:id="cancelButton" onAction="#cancelButtonClicked" text="Cancel Hotel Booking" visible="false" />
+                        <Button fx:id="bookHotels" onAction="#createBookingClicked" mnemonicParsing="false" text="Book Hotels" visible="false" />
+
                     </HBox>
 
 
@@ -146,51 +259,95 @@
             <Tab text="Transport">
               <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="599.0" prefWidth="665.0">
+<<<<<<< HEAD
                      <children>
                           <Pane layoutX="608.0" layoutY="20.0" prefHeight="600.0" prefWidth="250.0" style="-fx-background-color: #3567c4;">
+=======
+                      <children>
+                          <Pane layoutX="319.0" layoutY="20.0" prefHeight="600.0" prefWidth="539.0" style="-fx-background-color: #3567c4;">
+>>>>>>> master
                               <children>
                                   <TextField layoutX="14.0" layoutY="478.0" prefHeight="25.0" prefWidth="42.0" promptText="QTY" />
                                   <Button layoutX="14.0" layoutY="511.0" mnemonicParsing="false" text="Purchase" />
                                   <ImageView fitHeight="160.0" fitWidth="221.0" layoutX="11.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
                               </children></Pane>
+<<<<<<< HEAD
                         <ScrollPane prefHeight="558.0" prefWidth="475.0">
                                     <VBox fx:id="transport" layoutX="12.0" layoutY="8.0" prefHeight="608.0" prefWidth="571.0" />
                         </ScrollPane>
                      </children></AnchorPane>
+=======
+                        <TableView layoutX="10.0" layoutY="20.0" prefHeight="600.0" prefWidth="286.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                      </children>
+
+                  </AnchorPane>
+>>>>>>> master
               </content>
             </Tab>
             <Tab text="News">
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
+<<<<<<< HEAD
                         <Pane fx:id="articlePane1" layoutX="10.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
                            <children>
                               <ImageView fx:id="newsImage1" fitHeight="150.0" fitWidth="255.0" layoutX="10.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
                               <DialogPane fx:id="descriptionPane1" layoutX="10.0" layoutY="180.0" prefHeight="370.0" prefWidth="255.0" style="-fx-background-radius: 20px; -fx-background-color: #87aede;" styleClass="custom-dialog-header">
+=======
+                        <Pane fx:id="articlePane1" layoutX="10.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-border-color: #2a51ad; -fx-border-width: 5; -fx-border-radius: 15; -fx-background-radius: 20px;">
+                           <children>
+                              <ImageView fx:id="newsImage1" fitHeight="150.0" fitWidth="255.0" layoutX="10.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
+                              <DialogPane fx:id="descriptionPane1" layoutX="10.0" layoutY="180.0" prefHeight="370.0" prefWidth="255.0" style="-fx-background-radius: 20px; -fx-border-color: #4b8ad6; -fx-border-width: 3px; -fx-border-radius: 15; -fx-background-color: #87aede;" styleClass="custom-dialog-header">
+>>>>>>> master
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </DialogPane>
+<<<<<<< HEAD
                            </children>
                         </Pane>
                         <Pane fx:id="articlePane2" layoutX="298.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
                            <children>
                               <DialogPane fx:id="descriptionPane2" layoutX="10.0" layoutY="15.0" prefHeight="370.0" prefWidth="255.0" style="-fx-background-radius: 20px; -fx-background-color: #87aede;" styleClass="custom-dialog-header">
+=======
+                              <Hyperlink fx:id="newsLink1" layoutX="30.0" layoutY="516.0" text="Go to Source" textFill="#7e6666" underline="true" />
+                           </children>
+                        </Pane>
+                        <Pane fx:id="articlePane2" layoutX="298.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-border-color: #2a51ad; -fx-border-width: 5; -fx-border-radius: 15; -fx-background-radius: 20px;">
+                           <children>
+                              <DialogPane fx:id="descriptionPane2" layoutX="10.0" layoutY="15.0" prefHeight="370.0" prefWidth="255.0" style="-fx-background-radius: 20px; -fx-border-color: #4b8ad6; -fx-border-width: 3px; -fx-border-radius: 15; -fx-background-color: #87aede;" styleClass="custom-dialog-header">
+>>>>>>> master
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </DialogPane>
                               <ImageView fx:id="newsImage2" fitHeight="150.0" fitWidth="255.0" layoutX="10.0" layoutY="400.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
+<<<<<<< HEAD
                            </children>
                         </Pane>
                         <Pane fx:id="articlePane3" layoutX="585.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
                            <children>
                               <ImageView fx:id="newsImage3" fitHeight="150.0" fitWidth="255.0" layoutX="10.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
                               <DialogPane fx:id="descriptionPane3" layoutX="10.0" layoutY="180.0" prefHeight="370.0" prefWidth="255.0" style="-fx-background-radius: 20px; -fx-background-color: #87aede;" styleClass="custom-dialog-header">
+=======
+                              <Hyperlink fx:id="newsLink2" layoutX="29.0" layoutY="351.0" text="Go to Source" textFill="#7e6666" underline="true" />
+                           </children>
+                        </Pane>
+                        <Pane fx:id="articlePane3" layoutX="585.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-border-color: #2a51ad; -fx-border-width: 5; -fx-border-radius: 15; -fx-background-radius: 20px;">
+                           <children>
+                              <ImageView fx:id="newsImage3" fitHeight="150.0" fitWidth="255.0" layoutX="10.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
+                              <DialogPane fx:id="descriptionPane3" layoutX="10.0" layoutY="180.0" prefHeight="370.0" prefWidth="255.0" style="-fx-background-radius: 20px; -fx-border-color: #4b8ad6; -fx-border-width: 3px; -fx-border-radius: 15; -fx-background-color: #87aede;" styleClass="custom-dialog-header">
+>>>>>>> master
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </DialogPane>
+<<<<<<< HEAD
                            </children>
                         </Pane>
                          <Button fx:id="previousButton" layoutX="377.0" layoutY="590.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" text="&lt;&lt;">
@@ -198,6 +355,16 @@
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
                          <Button fx:id="nextButton" layoutX="441.0" layoutY="590.0" mnemonicParsing="false" prefWidth="60.0" text="&gt;&gt;">
+=======
+                              <Hyperlink fx:id="newsLink3" layoutX="30.0" layoutY="517.0" text="Go to Source" textFill="#7e6666" underline="true" />
+                           </children>
+                        </Pane>
+                         <Button fx:id="previousButton" layoutX="10.0" layoutY="585.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" text="&lt;&lt;">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font></Button>
+                         <Button fx:id="nextButton" layoutX="805.0" layoutY="584.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="54.0" text="&gt;&gt;">
+>>>>>>> master
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>

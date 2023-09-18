@@ -5,8 +5,13 @@
 <?import com.example.demo.LoggedinController?>
 
 <VBox fx:id="bankView"
+<<<<<<< HEAD
       prefHeight="661.0"
       prefWidth="1200.0"
+=======
+      prefHeight="500.0"
+      prefWidth="700.0"
+>>>>>>> master
       spacing="10"
       xmlns="http://javafx.com/javafx/11.0.14-internal"
       xmlns:fx="http://javafx.com/fxml/1"
