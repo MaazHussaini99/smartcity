@@ -10,6 +10,15 @@ public class HotelBooking {
     private String checkOutDate;
    private static int userId;
    private String emailId;
+   private String emailIdd;
+
+    public String getEmailIdd() {
+        return emailIdd;
+    }
+
+    public void setEmailIdd(String emailIdd) {
+        this.emailIdd = emailIdd;
+    }
 
     public String getEmailId() {
         return emailId;
@@ -165,9 +174,15 @@ public class HotelBooking {
             preparedStatement.setInt(3, totalCost);
             HotelBooking hb=new HotelBooking();
             String emailId = HotelBooking.getInstance().getEmailId();
-            HotelBooking c = new HotelBooking();
-            int userId = c.getUserdetails(emailId);
-            int accountno=hb.getAccountId(userId);
+            int userIdd=0;
+            if(hb.getRoleDetails(emailId)==2){
+                String emailIdd=HotelBooking.getInstance().getEmailIdd();
+                userIdd=hb.getUserdetails(emailIdd);
+            }
+            else{
+                userIdd = hb.getUserdetails(emailId);
+            }
+            int accountno=hb.getAccountId(userIdd);
             double balance=hb.getAccountBalance(accountno);
             int rowsAffected=0;
             if(balance>=totalCost) {
@@ -207,9 +222,15 @@ public class HotelBooking {
             preparedStatement.setInt(3, totalCost);
             HotelBooking hb=new HotelBooking();
             String emailId = HotelBooking.getInstance().getEmailId();
-            HotelBooking c = new HotelBooking();
-            int userId = c.getUserdetails(emailId);
-            int accountno=hb.getAccountId(userId);
+            int userIdd=0;
+            if(hb.getRoleDetails(emailId)==2){
+                String emailIdd=HotelBooking.getInstance().getEmailIdd();
+                userIdd=hb.getUserdetails(emailIdd);
+            }
+            else{
+               userIdd = hb.getUserdetails(emailId);
+            }
+            int accountno=hb.getAccountId(userIdd);
             double balance=hb.getAccountBalance(accountno);
             int rowsAffected=0;
             if(balance>=totalCost) {
