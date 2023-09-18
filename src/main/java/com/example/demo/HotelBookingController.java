@@ -80,6 +80,8 @@ public class HotelBookingController {
     @FXML
     private TextField numberofRooms;
     @FXML
+    private TextField userDetails;
+    @FXML
     private TextField hotelName;
     @FXML
     private TextField hotelLocation;
@@ -90,6 +92,16 @@ public class HotelBookingController {
     @FXML
     private TextField hotelAvalibility;
     String emailId;
+    String emailIdd;
+
+    public String getEmailIdd() {
+        return emailIdd;
+    }
+
+    public void setEmailIdd(String emailIdd) {
+        this.emailIdd = emailIdd;
+    }
+
     int userId;
     public String getEmailId() {
         return emailId;
@@ -113,6 +125,7 @@ public class HotelBookingController {
     public HotelBookingController(String emailId) {
         this.emailId = emailId;
     }
+    int userIdd;
     public HotelBookingController() {
     }
 
@@ -196,6 +209,9 @@ public class HotelBookingController {
                     e.printStackTrace();
                 }
                 String emailId = HotelBooking.getInstance().getEmailId();
+                if(hb.getRoleDetails(emailId)==2){
+                    emailId=emailIdd;
+                }
                 int userId = hb.getUserdetails(emailId);
                 int accountId = hb.getAccountId(userId);
                 int amountt = (int) (hb.getAccountBalance(accountId));
@@ -220,6 +236,9 @@ public class HotelBookingController {
         int previousHotelBookingCost = hb.getHotelBookingCost(hotelBookings.getHotelBookingId());
         boolean bookingSuccess = hb.cancelBooking(hotelBookings.getHotelBookingId());
         String emailId = HotelBooking.getInstance().getEmailId();
+        if(hb.getRoleDetails(emailId)==2){
+            emailId=emailIdd;
+        }
         int userId = hb.getUserdetails(emailId);
         int accountId = hb.getAccountId(userId);
         int amountt = (int) (hb.getAccountBalance(accountId));
@@ -285,6 +304,9 @@ public class HotelBookingController {
                     e.printStackTrace();
                 }
                 String emailId = HotelBooking.getInstance().getEmailId();
+                if(hb.getRoleDetails(emailId)==2){
+                    emailId=emailIdd;
+                }
                 int userId = hb.getUserdetails(emailId);
                 int accountId = hb.getAccountId(userId);
                 int amountt = (int) (hb.getAccountBalance(accountId));
@@ -324,8 +346,6 @@ public class HotelBookingController {
         if(roleId==2){
             addHotel.setVisible(true);
             deleteHotel.setVisible(true);
-            bookButton.setVisible(false);
-            manageHotelsBookings.setVisible(false);
         }
     }
     @FXML
@@ -343,11 +363,34 @@ public class HotelBookingController {
         deleteHotel.setVisible(false);
         String emailId = HotelBooking.getInstance().getEmailId();
         HotelBooking c = new HotelBooking();
-        int userId = c.getUserdetails(emailId);
+        if(c.getRoleDetails(emailId)==2)
+        {
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.setTitle("User Details");
+            DialogPane dialogPane = dialog.getDialogPane();
+            dialogPane.setContent(addUserContent());
+            ButtonType bookButtonType = new ButtonType("View Bookings");
+            dialogPane.getButtonTypes().addAll(bookButtonType, ButtonType.CANCEL);
+            dialog.setResultConverter(buttonType -> {
+                if (buttonType == bookButtonType) {
+                    // Get the selected check-in and check-out dates from the DatePicker controls
+                     emailIdd = userDetails.getText();
+                    HotelBooking.getInstance().setEmailIdd(emailIdd);
+                    userIdd = c.getUserdetails(emailIdd);
+                }
+
+            return null;
+            });
+            dialog.showAndWait();
+        }
+            else{
+             userIdd = c.getUserdetails(emailId);
+        }
         String sql = "SELECT * FROM hotel_booking where user_id=?";
         try (Connection connection = DBConn.connectDB();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(1, userIdd);
             ResultSet resultSet = preparedStatement.executeQuery();
             ObservableList<HotelBookings> hotelBookings = FXCollections.observableArrayList();
             while (resultSet.next()) {
@@ -439,15 +482,38 @@ public class HotelBookingController {
                 // Perform the booking process
                 String emailId = HotelBooking.getInstance().getEmailId();
                 HotelBooking c = new HotelBooking();
-                int userId = c.getUserdetails(emailId);
+                if(c.getRoleDetails(emailId)==2){
+                    Dialog<ButtonType> dialog1 = new Dialog<>();
+                    dialog1.initModality(Modality.APPLICATION_MODAL);
+                    dialog1.setTitle("User Details");
+                    DialogPane dialogPane1 = dialog1.getDialogPane();
+                    dialogPane1.setContent(addUserContent());
+                    ButtonType bookButtonType1 = new ButtonType("Book for a User");
+                    dialogPane1.getButtonTypes().addAll(bookButtonType1, ButtonType.CANCEL);
+                    dialog1.setResultConverter(buttonType1 -> {
+                        if (buttonType1 == bookButtonType1) {
+                            // Get the selected check-in and check-out dates from the DatePicker controls
+                            emailIdd = userDetails.getText();
+                            HotelBooking.getInstance().setEmailIdd(emailIdd);
+                            userIdd = c.getUserdetails(emailIdd);
+                        }
+
+                        return null;
+                    });
+                    dialog1.showAndWait();
+
+                }
+                else {
+                    userIdd = c.getUserdetails(emailId);
+                }
                 HotelBooking hb = new HotelBooking();
-                int accountId = hb.getAccountId(userId);
+                int accountId = hb.getAccountId(userIdd);
                 if (accountId == -1) {
                     showAlert(AlertType.ERROR, "Add Payment Method", "Please add a valid payment method");
                     return null;
                 }
                 this.accountId = accountId;
-                boolean bookingSuccess = hb.createBooking(selectedHotel.getHotelId(), userId, accountId,
+                boolean bookingSuccess = hb.createBooking(selectedHotel.getHotelId(), userIdd, accountId,
                         checkInDate.toString(), checkOutDate.toString(), totalCost);
                 int amountt = (int) (hb.getAccountBalance(accountId));
                 int updatedAmount = amountt - totalCost;
@@ -494,6 +560,16 @@ public class HotelBookingController {
         // Customize the layout of the dialog content
         VBox content = new VBox(10); // Vertical layout with spacing
         content.getChildren().addAll(new Label("Enter Hotel Name:"),hotelName,new Label("Enter Hotel Location:"), hotelLocation,new Label("Enter Hotel Price:"), hotelPrice,new Label("Enter Room No:"), roomNo,new Label("Enter Hotel Availability:"), hotelAvalibility);
+        dialogPane.setContent(content);
+        return dialogPane;
+    }
+
+    private DialogPane addUserContent() {
+        DialogPane dialogPane = new DialogPane();
+        this.userDetails=new TextField();
+        // Customize the layout of the dialog content
+        VBox content = new VBox(10); // Vertical layout with spacing
+        content.getChildren().addAll(new Label("Enter User Email Id:"),userDetails);
         dialogPane.setContent(content);
         return dialogPane;
     }
