@@ -166,7 +166,11 @@ public class LandingPageController extends HotelBookingController implements Ini
         });
         // Populate the TableView with job listings from JobListing class
         jobTableView.getItems().addAll(JobListing.getAllJobs());
+        System.out.println("This is where admin check would go");
+        if(User.getInstance().getRoleID() == 2){
 
+        }
+        //todo limit to admin only 
         setJobEditRowBehavior();
     }
 
