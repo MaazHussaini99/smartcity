@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -80,6 +81,8 @@ public class LandingPageController extends HotelBookingController implements Ini
     private int newsPerPage = 3; // Number of news articles to display at a time
 
     private int flag = 0;
+
+    private Job currentJob = new Job(0);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -235,6 +238,13 @@ public class LandingPageController extends HotelBookingController implements Ini
         city.setPromptText("City");
         city.setFocusTraversable(false);
 
+        if(flag == 3){
+            title.setDisable(true);
+            grade.setDisable(true);
+            agency.setDisable(true);
+            city.setDisable(true);
+        }
+
         cancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -253,6 +263,20 @@ public class LandingPageController extends HotelBookingController implements Ini
             }
         });
 
+        //defines behavior when
+        jobTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                currentJob = jobTableView.getSelectionModel().getSelectedItem();
+                System.out.println(currentJob.getJobTitle()+" "+currentJob.getJobLocation());
+                title.setText(currentJob.getJobTitle());
+                city.setText(currentJob.getJobLocation());
+                grade.setText(currentJob.getJobGrade());
+                agency.setText(currentJob.getJobAgency());
+            }
+        });
+
+
         editJobRow.getChildren().addAll(title, grade, agency, city, ok, cancel);
 
         //get random job id
@@ -261,7 +285,23 @@ public class LandingPageController extends HotelBookingController implements Ini
 
 
     private void modJobListing(String title, String grade, String agency, String city) {
-
+        //1 edit 2 add 3 delete
+        try {
+            if (flag == 1) {
+                jobTableView.getItems().remove(currentJob);
+                Job newJob = new Job(title,currentJob.getJobId(),grade,agency,city);
+                JobListing.editJob(currentJob,newJob);
+                jobTableView.getItems().add(0,newJob);
+            } else if (flag == 2) {
+                currentJob = JobListing.addJob(title, grade, agency, city);
+                jobTableView.getItems().add(0,currentJob);
+            } else if (flag == 3) {
+                JobListing.removeJob(currentJob);
+                jobTableView.getItems().remove(currentJob);
+            }
+        } catch (SQLException e) {
+            System.out.println("sql error");
+        }
     }
 
     private void populateNewsPanes(ObservableList<News> newsItems, int startIndex) {

@@ -62,4 +62,8 @@ public class Job {
         return applyButton;
     }
 
+    public String getJobLocation(){
+        return jobLocation.get();
+    }
+
 }

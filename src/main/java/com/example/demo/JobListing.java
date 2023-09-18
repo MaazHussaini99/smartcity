@@ -12,6 +12,7 @@ import java.util.List;
 public class JobListing {
 
     static List<Job> jobs = new ArrayList<>();
+    static Connection connection=DBConn.connectDB();;
     public static List<Job> getAllJobs(){
         String sql = "SELECT * FROM jobs";
         try (Connection connection = DBConn.connectDB();
@@ -84,4 +85,90 @@ public class JobListing {
         }
     }
 
+    public static Job addJob(String title, String grade, String agency, String city ) throws SQLException {
+        int jobID = 0;
+        jobID = (int) (Math.random()*10000);
+
+        //get a random jobID
+        for(int i =0;i<jobs.size();i++){
+            if(jobID == jobs.get(i).getJobId()){
+                jobID = (int) (Math.random()*10000);
+                i =0;
+            }
+        }
+
+         //   public Job(String jobTitle, int jobId, String jobGrade, String jobAgency, String jobLocation){
+        Job job = new Job(title,jobID,grade,agency,city);
+        postJob(job);
+        return job;
+    }
+
+    public static ArrayList<Job> getJobs() throws SQLException {
+        String sql = "SELECT * FROM jobs";
+        ArrayList<Job> jobs = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            jobs.add(new Job(resultSet.getString(2), resultSet.getInt(1),
+                    resultSet.getString(3), resultSet.getString(4),
+                    resultSet.getString(5)));
+        }
+        return jobs;
+
+    }
+
+    //remove job
+
+    public static void removeJob(Job job) throws SQLException {
+        int jobID = job.getJobId();
+        String sql = String.format("DELETE FROM jobs WHERE job_id=%s", jobID);
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.executeUpdate();
+    }
+
+    public static void getJob(Job job) throws SQLException{
+        int jobID = job.getJobId();
+        String sql = String.format("SELECT * FROM jobs WHERE job_id = %s", jobID);
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+    }
+
+    public static void getAllJobs(int k) throws SQLException {
+        String sql = "SELECT * FROM jobs";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            for(int i =1;i<=5;i++){
+                System.out.print (" " + rs.getString(i));
+            }
+            System.out.println();
+
+        }
+    }
+
+
+    /***
+     * this is fine
+     * @param job
+     * @throws SQLException
+     */
+    public static void postJob(Job job) throws SQLException {
+
+        String sql = String.format("INSERT INTO jobs VALUES ('%s','%s', '%s', '%s', '%s')",
+                job.getJobId(),job.getJobTitle(),"","null",0,job.getJobAgency());
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.executeUpdate();
+        getJob(job);
+    }
+
+    /***
+     * replace an instance of old Job with new job
+     * looks good
+     * @param oldJob
+     * @param newJob
+     */
+    public static void editJob(Job oldJob, Job newJob) throws SQLException {
+        removeJob(oldJob);
+        postJob(newJob);
+    }
 }
