@@ -1,10 +1,7 @@
 package com.example.demo;
 
-<<<<<<< HEAD
-=======
-import javafx.scene.control.Alert;
 
->>>>>>> master
+import javafx.scene.control.Alert;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,8 +28,6 @@ public class JobListing {
         }
     }
 
-<<<<<<< HEAD
-=======
     public static void applyJob(int jobID) {
         // Get the user ID from User.getInstance().getUserID()
         int userID = User.getInstance().getUserID();
@@ -88,6 +83,5 @@ public class JobListing {
             }
         }
     }
->>>>>>> master
 
 }

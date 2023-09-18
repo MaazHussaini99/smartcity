@@ -10,29 +10,27 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.Parent;
-<<<<<<< HEAD
-=======
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
->>>>>>> master
+
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-<<<<<<< HEAD
+
 import javafx.scene.layout.VBox;
-=======
->>>>>>> master
+
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-<<<<<<< HEAD
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-=======
+
 
 import java.awt.*;
 import java.io.IOException;
@@ -40,7 +38,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
->>>>>>> master
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -64,21 +62,15 @@ public class LandingPageController extends HotelBookingController implements Ini
     @FXML
     private DialogPane descriptionPane1,descriptionPane2,descriptionPane3;
     @FXML
-<<<<<<< HEAD
-=======
     private Hyperlink newsLink1,newsLink2,newsLink3;
     @FXML
->>>>>>> master
     private TableView<Job> jobTableView;
     @FXML
     private TableColumn<Job, String> titleColumn,gradeColumn,agencyColumn,locationColumn,applyColumn;
 
-<<<<<<< HEAD
     @FXML
     private VBox transport;
 
-=======
->>>>>>> master
     private int currentNewsIndex = 0; // Initialize to 0
     private int newsPerPage = 3; // Number of news articles to display at a time
 
@@ -115,26 +107,14 @@ public class LandingPageController extends HotelBookingController implements Ini
 
 
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
-<<<<<<< HEAD
         titleColumn.setMaxWidth(249);
-=======
         titleColumn.setMinWidth(425);
->>>>>>> master
         gradeColumn.setCellValueFactory(cellData -> cellData.getValue().JobGradeProperty());
 
         agencyColumn.setCellValueFactory(cellData -> cellData.getValue().JobAgencyProperty());
         locationColumn.setCellValueFactory(cellData -> cellData.getValue().JobLocationProperty());
         applyColumn.setCellFactory(column -> new TableCell<Job, String>() {
-<<<<<<< HEAD
-            private final Button applyButton = new Button("Apply");
 
-            {
-                applyButton.setOnAction(event -> {
-                    // Handle the button click event here
-                    // You can access the job information associated with this row
-                    Job job = getTableView().getItems().get(getIndex());
-                    // Perform actions like applying for the job using the job information
-=======
             final Button applyButton = new Button("Apply");
 
             {
@@ -158,22 +138,12 @@ public class LandingPageController extends HotelBookingController implements Ini
 
                         }
                     }
->>>>>>> master
                 });
             }
 
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-
-<<<<<<< HEAD
-                if (empty || item == null) {
-                    setGraphic(null);
-                    setText(null);
-                } else {
-                    setGraphic(applyButton);
-                    setText(null);
-=======
                 if (empty) {
                     setGraphic(null); // No button in empty cells
                     setText(null);
@@ -181,22 +151,11 @@ public class LandingPageController extends HotelBookingController implements Ini
                     setGraphic(applyButton);
                     setContentDisplay(ContentDisplay.GRAPHIC_ONLY); // Display only the button
                     setAlignment(Pos.CENTER); // Center-align the button
->>>>>>> master
                 }
             }
         });
-
-<<<<<<< HEAD
         // Populate the TableView with job listings from JobListing class
         jobTableView.getItems().addAll(JobListing.getAllJobs());
-
-        TransportController transportC = new TransportController(transport);
-=======
-
-
-        // Populate the TableView with job listings from JobListing class
-        jobTableView.getItems().addAll(JobListing.getAllJobs());
->>>>>>> master
     }
     private void populateNewsPanes(ObservableList<News> newsItems, int startIndex) {
         for (int i = 0; i < newsPerPage; i++) {
@@ -226,9 +185,6 @@ public class LandingPageController extends HotelBookingController implements Ini
                     // Set a placeholder image or display an error message
                     imageView.setImage(null); // Set to a placeholder or null
                 }
-<<<<<<< HEAD
-
-=======
                 Hyperlink newsLink = getNewsLinkForIndex(i);
                 newsLink.setText("Go to Source");
                 newsLink.setUnderline(true);
@@ -243,7 +199,6 @@ public class LandingPageController extends HotelBookingController implements Ini
                         }
                     }
                 });
->>>>>>> master
                 descriptionPane.setContentText(news.getDescription());
                 descriptionPane.setHeaderText(news.getTitle());
             } else {
@@ -253,10 +208,7 @@ public class LandingPageController extends HotelBookingController implements Ini
                 imageView.setImage(null);
                 descriptionPane.setContentText("");
                 descriptionPane.setHeaderText("");
-<<<<<<< HEAD
-=======
 
->>>>>>> master
             }
         }
     }
@@ -315,14 +267,7 @@ public class LandingPageController extends HotelBookingController implements Ini
             temperatureLabel.setLayoutY(10.0);
             temperatureLabel.setFont(new Font(30));
 
-<<<<<<< HEAD
 
-            double temperatureLabelWidth = new Text(temperatureLabel.getText()).getLayoutBounds().getWidth();
-            Label conditionLabel = new Label(weather.getConditionText());
-            double conditionLabelX = 105.0; // Adjust as needed
-            double conditionLabelY = 45.0; // Align vertically with temperatureLabel
-            conditionLabel.setLayoutX(conditionLabelX);
-=======
             Label conditionLabel = new Label(weather.getConditionText());
 
 // Calculate the X position to center the condition label with respect to temperatureLabel
@@ -335,7 +280,6 @@ public class LandingPageController extends HotelBookingController implements Ini
 
 // Align vertically with temperatureLabel
             double conditionLabelY = 45.0; // Align vertically with temperatureLabel
->>>>>>> master
             conditionLabel.setLayoutY(conditionLabelY);
 
             Label humidityLabel = new Label("Humidity: " + weather.getHumidity());
@@ -376,13 +320,10 @@ public class LandingPageController extends HotelBookingController implements Ini
                 + "\nZipcode: " + User.getInstance().getZipcode()
                 + "\nState: " + User.getInstance().getState()
                 + "\nEmail: " + User.getInstance().getEmail()
-<<<<<<< HEAD
-                + "\nPhone number: " + User.getInstance().getPhoneNumber()); // Replace with your user data components
-=======
                 + "\nPhone number: " + User.getInstance().getPhoneNumber()
                 + "\n\nUse role ID to check if a user is an admin or not.\n1 = User, 2 = Admin"
                 + "\nUser role ID: " + User.getInstance().getRoleID()); // Replace with your user data components
->>>>>>> master
+
         userDataText.setLayoutX(10);
         userDataText.setLayoutY(10);
 
@@ -458,9 +399,7 @@ public class LandingPageController extends HotelBookingController implements Ini
                 return null;
         }
     }
-<<<<<<< HEAD
 
-=======
     public Hyperlink getNewsLinkForIndex(int index) {
         switch (index) {
             case 0:
@@ -474,6 +413,5 @@ public class LandingPageController extends HotelBookingController implements Ini
                 throw new IllegalArgumentException("Invalid index: " + index);
         }
     }
->>>>>>> master
 
 }
