@@ -141,11 +141,12 @@ public class LandingPageController extends HotelBookingController implements Ini
                 Bus selectedBus = transportTable.getSelectionModel().getSelectedItem();
                 if (selectedBus != null) {
                     // Clear the existing items in stopsTable
-                    stopsTable.getItems().clear();
-                    System.out.println(selectedBus.getShortName());
-                    System.out.println(selectedBus.getStops().get(1));
                     // Get the stops from the selected Bus object and populate the stopsTable
-                    stopsTable.getItems().addAll(selectedBus.getStops());
+                    try {
+                        stopsTable.getItems().addAll(TransportController.getStops(selectedBus.getRouteMainId()));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
