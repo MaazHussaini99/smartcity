@@ -10,6 +10,15 @@ public class HotelBooking {
     private String checkOutDate;
    private static int userId;
    private String emailId;
+   private String emailIdd;
+
+    public String getEmailIdd() {
+        return emailIdd;
+    }
+
+    public void setEmailIdd(String emailIdd) {
+        this.emailIdd = emailIdd;
+    }
 
     public String getEmailId() {
         return emailId;
@@ -165,9 +174,15 @@ public class HotelBooking {
             preparedStatement.setInt(3, totalCost);
             HotelBooking hb=new HotelBooking();
             String emailId = HotelBooking.getInstance().getEmailId();
-            HotelBooking c = new HotelBooking();
-            int userId = c.getUserdetails(emailId);
-            int accountno=hb.getAccountId(userId);
+            int userIdd=0;
+            if(hb.getRoleDetails(emailId)==2){
+                String emailIdd=HotelBooking.getInstance().getEmailIdd();
+                userIdd=hb.getUserdetails(emailIdd);
+            }
+            else{
+                userIdd = hb.getUserdetails(emailId);
+            }
+            int accountno=hb.getAccountId(userIdd);
             double balance=hb.getAccountBalance(accountno);
             int rowsAffected=0;
             if(balance>=totalCost) {
@@ -207,9 +222,15 @@ public class HotelBooking {
             preparedStatement.setInt(3, totalCost);
             HotelBooking hb=new HotelBooking();
             String emailId = HotelBooking.getInstance().getEmailId();
-            HotelBooking c = new HotelBooking();
-            int userId = c.getUserdetails(emailId);
-            int accountno=hb.getAccountId(userId);
+            int userIdd=0;
+            if(hb.getRoleDetails(emailId)==2){
+                String emailIdd=HotelBooking.getInstance().getEmailIdd();
+                userIdd=hb.getUserdetails(emailIdd);
+            }
+            else{
+               userIdd = hb.getUserdetails(emailId);
+            }
+            int accountno=hb.getAccountId(userIdd);
             double balance=hb.getAccountBalance(accountno);
             int rowsAffected=0;
             if(balance>=totalCost) {
@@ -327,5 +348,53 @@ public class HotelBooking {
         }
 
         return hotelPrice;
+    }
+
+    public boolean deleteHotel(int hotelId) {
+        String sql = "DELETE FROM hotel WHERE hotel_id = ?";
+        try (Connection connection = DBConn.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, hotelId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean addHotel(String hotelNamee, String hotelLocationn, String hotelPricee, int roomNoo, int hotelAvailabilityy) {
+        String sql = "INSERT INTO hotel (hotel_name, hotel_location, hotel_price,hotel_room_no, hotel_availibility) VALUES ( ?, ?, ?, ?, ?)";
+        try (Connection connection = DBConn.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setString(1, hotelNamee);
+            preparedStatement.setString(2, hotelLocationn);
+            preparedStatement.setString(3, hotelPricee);
+            preparedStatement.setInt(4, roomNoo);
+            preparedStatement.setInt(5, hotelAvailabilityy);
+            int rowsAffected= preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public int getRoleDetails(String emailId) {
+        String sql = "SELECT role_id FROM user where user_email= ?";
+        try (Connection connection = DBConn.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1,emailId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                final int roleId=resultSet.getInt("role_id");
+                return roleId;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 1;
     }
 }
