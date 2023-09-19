@@ -169,8 +169,6 @@
                         <Button fx:id="editButton" onAction="#oneditButtonClicked" text="Edit Hotel Booking" visible="false" />
                         <Button fx:id="extendButton" onAction="#extendButtonClicked" text="Extend Hotel Booking" visible="false" />
                         <Button fx:id="cancelButton" onAction="#cancelButtonClicked" text="Cancel Hotel Booking" visible="false" />
-                        <Button fx:id="bookHotels" mnemonicParsing="false" onAction="#createBookingClicked" text="Book Hotels" visible="false" />
-
                     </HBox>
 
 
