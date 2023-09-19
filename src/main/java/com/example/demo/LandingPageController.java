@@ -17,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -30,11 +31,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.List;
 import javafx.util.StringConverter;
 
-public class LandingPageController extends HotelBookingController implements Initializable {
+public class LandingPageController extends NightLifeController implements Initializable {
 
 
     @FXML
@@ -58,7 +61,8 @@ public class LandingPageController extends HotelBookingController implements Ini
     private TableColumn<Job, String> titleColumn,gradeColumn,agencyColumn,locationColumn,applyColumn;
 
     private int currentNewsIndex = 0; // Initialize to 0
-    private int newsPerPage = 3; // Number of news articles to display at a time
+    private int newsPerPage = 3;// Number of news articles to display at a time
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -89,8 +93,8 @@ public class LandingPageController extends HotelBookingController implements Ini
             e.printStackTrace();
         }
         profileLink.setOnAction(this::handleProfileButtonClick);
+        show();
         displayWeather();
-
 
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
         titleColumn.setMinWidth(425);
@@ -399,4 +403,5 @@ public class LandingPageController extends HotelBookingController implements Ini
         }
     }
 
-}
+
+    }
