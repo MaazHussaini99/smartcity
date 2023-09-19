@@ -63,13 +63,19 @@ Button:hover {
     -fx-scale-z: .95;
 }
 .table-view .column-header {
-    -fx-background-color: #3498db;
+    -fx-background-color: linear-gradient(to bottom,#5892d6,#357ed4);
     -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Spectral";
 }
 
 /* Styling the table cells */
-.table-row-cell {
-    -fx-background-color: #d4fffe;
+.table-row-cell:odd {
+    -fx-background-color: #dae8f7;
+    -fx-text-fill: #333;
+}
+.table-row-cell:even {
+    -fx-background-color: #bfd7f5;
     -fx-text-fill: #333;
 }
 

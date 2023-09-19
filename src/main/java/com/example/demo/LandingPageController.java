@@ -85,7 +85,7 @@ public class LandingPageController extends HotelBookingController implements Ini
 
 
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
-        titleColumn.setMinWidth(425);
+        titleColumn.setMinWidth(348);
         gradeColumn.setCellValueFactory(cellData -> cellData.getValue().JobGradeProperty());
 
         agencyColumn.setCellValueFactory(cellData -> cellData.getValue().JobAgencyProperty());
