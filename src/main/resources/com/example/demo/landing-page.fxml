@@ -64,13 +64,7 @@
                                     <TableColumn fx:id="applyColumn" prefWidth="125.0" text="Apply" />
                                 </columns>
                             </TableView>
-                        <TextField layoutX="47.0" layoutY="594.0" promptText="Title" />
-                        <TextField layoutX="207.0" layoutY="594.0" prefHeight="26.0" prefWidth="47.0" promptText="Grade" />
-                        <TextField layoutX="264.0" layoutY="594.0" promptText="Agency" />
-                        <TextField layoutX="424.0" layoutY="594.0" promptText="City" />
-                        <Button layoutX="594.0" layoutY="592.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="64.0" text="Create" />
-                        <Button layoutX="678.0" layoutY="592.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="64.0" text="Edit" />
-                        <Button layoutX="762.0" layoutY="592.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="64.0" text="Delete" />
+                            <HBox fx:id= "editJobRow" layoutX="9.0" layoutY="579.0" prefHeight="40.0" prefWidth="852.0" />
                         </children>
                     </AnchorPane>
                 </content>

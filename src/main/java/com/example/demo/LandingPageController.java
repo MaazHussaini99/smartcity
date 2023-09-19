@@ -272,7 +272,6 @@ public class LandingPageController extends HotelBookingController implements Ini
             @Override
             public void handle(MouseEvent mouseEvent) {
                 currentJob = jobTableView.getSelectionModel().getSelectedItem();
-                System.out.println(currentJob.getJobTitle()+" "+currentJob.getJobLocation());
                 title.setText(currentJob.getJobTitle());
                 city.setText(currentJob.getJobLocation());
                 grade.setText(currentJob.getJobGrade());
