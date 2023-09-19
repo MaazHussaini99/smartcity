@@ -66,3 +66,19 @@ Button:hover {
     -fx-scale-y: .95;
     -fx-scale-z: .95;
 }
+.table-view .column-header {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+}
+
+/* Styling the table cells */
+.table-row-cell {
+    -fx-background-color: #d4fffe;
+    -fx-text-fill: #333;
+}
+
+/* Styling selected rows */
+.table-row-cell:selected {
+    -fx-background-color: #66aede;
+    -fx-text-fill: white;
+}
