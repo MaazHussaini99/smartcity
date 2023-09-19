@@ -13,20 +13,33 @@
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="300.0">
          <children>
-            <ImageView fitHeight="84.0" fitWidth="211.0" layoutX="74.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="84.0" fitWidth="211.0" layoutX="74.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/new-york-state-vector-logo.png" />
                </image></ImageView>
             <Button fx:id="profileLink" layoutX="110.0" layoutY="572.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="81.0" text="Profile" />
             <Button fx:id="logOut" layoutX="109.0" layoutY="608.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="26.0" prefWidth="82.0" text="Log Out" />
-            <StackPane fx:id="userDataStackPane" layoutX="33.0" layoutY="281.0" prefHeight="280.0" prefWidth="234.0" />
-            <Pane fx:id="weatherPane" layoutX="21.0" layoutY="147.0" prefHeight="112.0" prefWidth="260.0" style="-fx-background-color: #87aede; -fx-background-radius: 20; -fx-opacity: 90%;">
+            <StackPane fx:id="userDataStackPane" layoutY="247.0" prefHeight="312.0" prefWidth="300.0" style="-fx-background-color: #87aede; -fx-background-radius: 20; -fx-opacity: 90%;" visible="false">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <effect>
+                  <DropShadow offsetX="2.0" offsetY="2.0">
+                     <input>
+                        <Glow level="0.49" />
+                     </input>
+                     <color>
+                        <Color red="0.13333334028720856" green="0.24705882370471954" blue="0.27843138575553894" />
+                     </color>
+                  </DropShadow>
+               </effect></StackPane>
+            <Pane fx:id="weatherPane" layoutX="21.0" layoutY="112.0" prefHeight="112.0" prefWidth="260.0" style="-fx-background-color: #87aede; -fx-background-radius: 20; -fx-opacity: 90%;">
                <effect>
                   <Glow level="0.49">
                      <input>
                         <DropShadow offsetX="2.0" offsetY="2.0">
                            <color>
-                              <Color red="0.1316000074148178" green="0.24865689873695374" blue="0.2800000011920929" />
+                              <Color red="0.13333334028720856" green="0.24705882370471954" blue="0.27843138575553894" />
                            </color>
                         </DropShadow>
                      </input>
@@ -42,19 +55,22 @@
                 <content>
                     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="630.0" prefWidth="869.0" styleClass="anchor-pane">
                         <children>
-
-                            <TableView fx:id="jobTableView" layoutX="10.0" layoutY="20.0" prefHeight="553.0" prefWidth="851.0" style="-fx-background-color: #87aede;">
+                            <TableView fx:id="jobTableView" layoutX="10.0" layoutY="20.0" prefHeight="566.0" prefWidth="852.0">
                                 <columns>
                                     <TableColumn fx:id="titleColumn" styleClass="TitleTabStyle" text="Title" />
                                     <TableColumn fx:id="gradeColumn" text="Grade" />
                                     <TableColumn fx:id="agencyColumn" text="Agency" />
                                     <TableColumn fx:id="locationColumn" text="City" />
-
                                     <TableColumn fx:id="applyColumn" prefWidth="125.0" text="Apply" />
-
                                 </columns>
                             </TableView>
-                        <HBox fx:id= "editJobRow" layoutX="9.0" layoutY="579.0" prefHeight="40.0" prefWidth="852.0" />
+                        <TextField layoutX="47.0" layoutY="594.0" promptText="Title" />
+                        <TextField layoutX="207.0" layoutY="594.0" prefHeight="26.0" prefWidth="47.0" promptText="Grade" />
+                        <TextField layoutX="264.0" layoutY="594.0" promptText="Agency" />
+                        <TextField layoutX="424.0" layoutY="594.0" promptText="City" />
+                        <Button layoutX="594.0" layoutY="592.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="64.0" text="Create" />
+                        <Button layoutX="678.0" layoutY="592.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="64.0" text="Edit" />
+                        <Button layoutX="762.0" layoutY="592.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="64.0" text="Delete" />
                         </children>
                     </AnchorPane>
                 </content>

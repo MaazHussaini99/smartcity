@@ -52,7 +52,7 @@ public class LandingPageController extends HotelBookingController implements Ini
 
 
     @FXML
-    private Button profileLink, newCard, nextButton, previousButton;
+    private Button profileLink,newCard,adminButton,nextButton,previousButton;
     @FXML
     private StackPane userDataStackPane;
     private boolean isProfilePaneOpen = false;
@@ -368,7 +368,7 @@ public class LandingPageController extends HotelBookingController implements Ini
         if (!isProfilePaneOpen) {
             // Create and populate the user data pane
             Pane userDataPane = createUserProfilePane(); // Implement this method
-
+            userDataStackPane.setVisible(true);
             // Add the user data pane to the StackPane
             userDataStackPane.getChildren().add(userDataPane);
 
@@ -377,6 +377,7 @@ public class LandingPageController extends HotelBookingController implements Ini
         } else {
             // Close the user data pane
             userDataStackPane.getChildren().clear();
+            userDataStackPane.setVisible(false);
 
             // Set the flag to indicate that the profile pane is closed
             isProfilePaneOpen = false;
@@ -467,19 +468,22 @@ public class LandingPageController extends HotelBookingController implements Ini
         Pane userDataPane = new Pane();
 
         // Populate the user data Pane with user-specific content
-        Text userDataText = new Text("First name: " + User.getInstance().getFirstName()
-                + "\nLast name: " + User.getInstance().getLastName()
-                + "\nStreet address: " + User.getInstance().getStreetAddress()
-                + "\nCity: " + User.getInstance().getCity()
-                + "\nZipcode: " + User.getInstance().getZipcode()
-                + "\nState: " + User.getInstance().getState()
+        Text userDataText = new Text("Name: " + User.getInstance().getFirstName() + " " + User.getInstance().getLastName()
                 + "\nEmail: " + User.getInstance().getEmail()
                 + "\nPhone number: " + User.getInstance().getPhoneNumber()
-                + "\n\nUse role ID to check if a user is an admin or not.\n1 = User, 2 = Admin"
-                + "\nUser role ID: " + User.getInstance().getRoleID()); // Replace with your user data components
-
+                + "\nUser role ID: " + User.getInstance().getRoleID() // Replace with your user data components
+                + "\nAddress: \n" + User.getInstance().getStreetAddress()
+                + "\n" + User.getInstance().getCity()
+                + ", " + User.getInstance().getZipcode()
+                + ", " + User.getInstance().getState());
         userDataText.setLayoutX(10);
         userDataText.setLayoutY(10);
+        adminButton = new Button("Add new Admin"); // Replace with your user data components
+        adminButton.setLayoutX(10);
+        adminButton.setLayoutY(200);
+
+        // Add an event handler to the button
+        adminButton.setOnAction(event -> loadAdminFXML());
 
         newCard = new Button("Add a New Payment Method"); // Replace with your user data components
         newCard.setLayoutX(10);
@@ -490,6 +494,7 @@ public class LandingPageController extends HotelBookingController implements Ini
 
         userDataPane.getChildren().add(userDataText);
         userDataPane.getChildren().add(newCard);
+        userDataPane.getChildren().add(adminButton);
         return userDataPane;
     }
 
@@ -516,6 +521,19 @@ public class LandingPageController extends HotelBookingController implements Ini
         }
     }
 
+    private void loadAdminFXML() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("adminpanel.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) adminButton.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+            stage.centerOnScreen();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void LogOut(ActionEvent event) throws SQLException, IOException {
 
         // Log user out of account
