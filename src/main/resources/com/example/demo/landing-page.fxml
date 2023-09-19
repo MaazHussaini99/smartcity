@@ -188,16 +188,28 @@
               <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="599.0" prefWidth="665.0">
                       <children>
-                          <Pane layoutX="319.0" layoutY="20.0" prefHeight="600.0" prefWidth="539.0" style="-fx-background-color: #3567c4;">
+                          <Pane layoutX="488.0" layoutY="20.0" prefHeight="600.0" prefWidth="370.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
                               <children>
-                                  <TextField layoutX="14.0" layoutY="478.0" prefHeight="25.0" prefWidth="42.0" promptText="QTY" />
-                                  <Button layoutX="14.0" layoutY="511.0" mnemonicParsing="false" text="Purchase" />
-                                  <ImageView fitHeight="160.0" fitWidth="221.0" layoutX="11.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+                                  <Button layoutX="145.0" layoutY="520.0" mnemonicParsing="false" onAction="#purchaseTransportTicket" text="Purchase" />
+                              <TableView fx:id="stopsTable" layoutX="13.0" layoutY="75.0" prefHeight="382.0" prefWidth="343.0">
+                                <columns>
+                                  <TableColumn fx:id="busStop" prefWidth="142.0" text="Stop" />
+                                  <TableColumn fx:id="busArrivalTime" prefWidth="100.0" text="Arrival" />
+                                    <TableColumn fx:id="busDepartureTime" minWidth="0.0" prefWidth="100.0" text="Departure" />
+                                </columns>
+                              </TableView>
+                              <Spinner fx:id="ticketSpinner" layoutX="144.0" layoutY="481.0" prefHeight="25.0" prefWidth="82.0" />
+                              <Label fx:id="busLabel" alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="61.0" prefWidth="342.0" text="Select a Bus" textAlignment="CENTER" textFill="#e9f4a7" wrapText="true">
+                                 <font>
+                                    <Font size="25.0" />
+                                 </font>
+                              </Label>
                               </children></Pane>
-                        <TableView layoutX="10.0" layoutY="20.0" prefHeight="600.0" prefWidth="286.0">
+                        <TableView fx:id="transportTable" layoutX="10.0" layoutY="20.0" prefHeight="600.0" prefWidth="462.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
+                            <TableColumn fx:id="busNo" prefWidth="53.200013160705566" text="Bus #" />
+                            <TableColumn fx:id="busName" prefWidth="126.79998779296875" text="Bus Name" />
+                              <TableColumn fx:id="routeDescription" prefWidth="282.00001525878906" text="Route Description" />
                           </columns>
                         </TableView>
                       </children>

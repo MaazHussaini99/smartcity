@@ -1,6 +1,9 @@
 package com.example.demo;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,6 +24,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -28,8 +32,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class LandingPageController extends HotelBookingController implements Initializable {
     @FXML
     private Button profileLink,newCard,adminButton,nextButton,previousButton;
@@ -45,16 +55,33 @@ public class LandingPageController extends HotelBookingController implements Ini
     @FXML
     private Hyperlink newsLink1,newsLink2,newsLink3;
     @FXML
+    private Label busLabel;
+    @FXML
     private TableView<Job> jobTableView;
     @FXML
     private TableColumn<Job, String> titleColumn,gradeColumn,agencyColumn,locationColumn,applyColumn;
+    @FXML
+    private TableView<Bus> transportTable;
+    @FXML
+    TableColumn<Bus, String> busNo, busName, routeDescription;
+    @FXML
+    Spinner<Integer> ticketSpinner;
+
+    @FXML
+    private TableView<Stop> stopsTable;
+    @FXML
+    private TableColumn<Stop, String> busStop, busArrivalTime, busDepartureTime;
 
     private int currentNewsIndex = 0; // Initialize to 0
     private int newsPerPage = 3; // Number of news articles to display at a time
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1);
+            ticketSpinner.setValueFactory(valueFactory);
+
             ObservableList<News> newsItems = FXCollections.observableArrayList(News.getNews());
 
             // Initialize the dialog panes and images for the first news article
@@ -82,6 +109,67 @@ public class LandingPageController extends HotelBookingController implements Ini
         }
         profileLink.setOnAction(this::handleProfileButtonClick);
         displayWeather();
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() {
+                Platform.runLater(() -> {
+                    // Update UI elements on the JavaFX Application Thread
+                    busNo.setCellValueFactory(cellData -> cellData.getValue().getShortName());
+                    busName.setCellValueFactory(cellData -> cellData.getValue().getLongName());
+                    routeDescription.setCellValueFactory(cellData -> cellData.getValue().getRouteID());
+
+                    // Transport Table
+                    try {
+                        transportTable.getItems().addAll(TransportController.getBuses());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
+                return null;
+            }
+        };
+
+        // Execute the task in the separate thread
+        executorService.submit(task);
+
+        busStop.setCellValueFactory(cellData -> cellData.getValue().stopNameProperty());
+        busArrivalTime.setCellValueFactory(cellData -> cellData.getValue().arrivalTimeProperty());
+        busDepartureTime.setCellValueFactory(cellData -> cellData.getValue().departureTimeProperty());
+
+        transportTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        transportTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1) { // Detect a single click
+                Bus selectedBus = transportTable.getSelectionModel().getSelectedItem();
+                busLabel.setText("Bus #" + selectedBus.getShortName().getValue());
+                if (selectedBus != null) {
+                    // Clear the existing items in stopsTable
+                    stopsTable.getItems().clear();
+                    // Get the stops from the selected Bus object and populate the stopsTable
+                    try {
+                        ArrayList<Stop> stopList = TransportController.getStops(selectedBus.getRouteMainId());
+                        LocalTime currentTime = LocalTime.now();
+                        int currentHour = currentTime.getHour();
+
+                        for(int i = 0; i < stopList.size(); i++){
+                            SimpleStringProperty arrivalTimeProperty = stopList.get(i).arrivalTime;
+                            String arrivalTime = arrivalTimeProperty.get();
+                            String newTime = currentHour + arrivalTime.substring(1);
+                            arrivalTimeProperty.set(newTime);
+
+                            SimpleStringProperty departureTimeProperty = stopList.get(i).departureTime;
+                            String departureTime = departureTimeProperty.get();
+                            String newDTime = currentHour + departureTime.substring(1);
+                            departureTimeProperty.set(newDTime);
+                        }
+                        stopsTable.getItems().addAll(stopList);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
 
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
@@ -409,6 +497,11 @@ public class LandingPageController extends HotelBookingController implements Ini
             default:
                 throw new IllegalArgumentException("Invalid index: " + index);
         }
+    }
+
+    @FXML
+    public void purchaseTransportTicket(){
+        TransportController.purchaseTicket(ticketSpinner.getValue());
     }
 
 }
