@@ -16,10 +16,16 @@ public class MainApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 544, 400);
         stage.setTitle("Smart City Application");
         stage.setScene(scene);
-        stage.show();
-    }
+        stage.show();}
+
 
     public static void main(String[] args) {
-        launch();
+        boolean flag = true;
+        if(flag)
+        {
+        launch();}
+        else{
+            new adminShell();
+        }
     }
 }
