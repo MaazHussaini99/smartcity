@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,7 +20,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,18 +30,12 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.util.StringConverter;
-
 public class LandingPageController extends HotelBookingController implements Initializable {
-
-
     @FXML
     private Button profileLink,newCard,adminButton,nextButton,previousButton;
     @FXML
     private StackPane userDataStackPane;
     private boolean isProfilePaneOpen = false;
-    private ListView<String> newsList;
-
     @FXML
     private Pane weatherPane;
     @FXML
@@ -151,7 +143,6 @@ public class LandingPageController extends HotelBookingController implements Ini
             if (newsIndex < newsItems.size()) {
                 News news = newsItems.get(newsIndex);
                 ImageView imageView = getImagePaneForIndex(i);
-
                 DialogPane descriptionPane = getDescriptionPaneForIndex(i);
 
                 try {
@@ -165,8 +156,9 @@ public class LandingPageController extends HotelBookingController implements Ini
 
                     // Center the image within the ImageView
                     imageView.setPreserveRatio(true);
-                    imageView.setFitWidth(255);
-                    imageView.setFitHeight(150);
+                    imageView.setFitWidth(255); // Adjust the width as needed
+                    imageView.setFitHeight(150); // Adjust the height as needed
+
 
                 } catch (IllegalArgumentException e) {
                     // Handle the case where the image URL is invalid or not found
@@ -311,11 +303,11 @@ public class LandingPageController extends HotelBookingController implements Ini
                 + ", " + User.getInstance().getState());
         userDataText.setLayoutX(10);
         userDataText.setLayoutY(10);
-        adminButton = new Button("Add new Admin"); // Replace with your user data components
+        adminButton = new Button("Add new Admin");
         adminButton.setLayoutX(10);
         adminButton.setLayoutY(200);
 
-        // Add an event handler to the button
+// Add an event handler to the button
         adminButton.setOnAction(event -> loadAdminFXML());
 
         newCard = new Button("Add a New Payment Method"); // Replace with your user data components
@@ -329,9 +321,6 @@ public class LandingPageController extends HotelBookingController implements Ini
         userDataPane.getChildren().add(newCard);
         userDataPane.getChildren().add(adminButton);
         return userDataPane;
-    }
-    private void onProfileLinkClicked() {
-        loadBankFXML();
     }
     private void loadBankFXML() {
         try {
@@ -355,7 +344,11 @@ public class LandingPageController extends HotelBookingController implements Ini
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("adminpanel.fxml"));
             Parent root = loader.load();
+
+            // Create a new scene
             Scene scene = new Scene(root);
+
+            // Get the current stage and set the new scene
             Stage stage = (Stage) adminButton.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
