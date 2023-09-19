@@ -29,16 +29,21 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import javafx.stage.Window;
 import javafx.util.StringConverter;
 
 public class LandingPageController extends HotelBookingController implements Initializable {
 
 
     @FXML
-    private Button profileLink,newCard,nextButton,previousButton;
+    private Button profileLink,newCard,nextButton,previousButton, adminButton;
     @FXML
     private StackPane userDataStackPane;
     private boolean isProfilePaneOpen = false;
@@ -310,6 +315,17 @@ public class LandingPageController extends HotelBookingController implements Ini
         userDataText.setLayoutX(10);
         userDataText.setLayoutY(10);
 
+        // Promote User to Admin button
+        if (User.getInstance().getRoleID() == 2) {
+            adminButton = new Button("Promote a User to Admin");
+            adminButton.setLayoutX(10);
+            adminButton.setLayoutY(240);
+
+            adminButton.setOnAction(event -> promoteToAdmin());
+
+            userDataPane.getChildren().add(adminButton);
+        }
+
         newCard = new Button("Add a New Payment Method"); // Replace with your user data components
         newCard.setLayoutX(10);
         newCard.setLayoutY(250);
@@ -342,6 +358,83 @@ public class LandingPageController extends HotelBookingController implements Ini
             e.printStackTrace();
         }
     }
+
+    /**
+     * promoteToAdmin()
+     * Fails if:
+     *  1) A username wasn't entered
+     *  2) The username matches the current User
+     *  3) An account with the entered username wasn't found
+     *  4) The account is already an admin
+     * Promotes a User to an Admin if successful
+     */
+    private void promoteToAdmin() {
+
+        Window owner = adminButton.getScene().getWindow();
+
+        TextInputDialog adminPane = new TextInputDialog("User name");
+        adminPane.setHeaderText("Enter the user name of the account you wish to promote.");
+
+        // Get username entered in by the admin
+        String userName = adminPane.getEditor().getText();
+
+        // Stop if user didn't enter a username
+        if ( userName == null ) {
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                    "Username wasn't entered");
+            return;
+        }
+
+        // Prevent user from promoting themselves
+        if ( userName == User.getInstance().getEmail()) {
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                    "You can't promote yourself");
+            return;
+        }
+
+        // Search for an account with that username
+        final String SELECT_QUERY = "SELECT * FROM user WHERE user_email = ?";
+        // try connecting to the database
+        try (Connection connection = DBConn.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
+            preparedStatement.setString(1, userName);
+            // execute query
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // An account wasn't found
+            if (resultSet.next() != true) {
+                showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                        "An account with that username doesn't exist");
+                return;
+            }
+
+            // The account is already an admin
+            if (Integer.parseInt(resultSet.getString(11)) == 2) {
+                showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                        "That account is already an Admin");
+                return;
+            }
+
+        } catch (SQLException e) {
+            // print SQL exception information
+            printSQLException(e);
+        }
+
+        // Everything is ok, start updating the database
+        final String UPDATE_QUERY = "UPDATE user SET role_ID = 2 WHERE user_email = ?";
+        // try connecting to the database
+        try (Connection connection = DBConn.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
+            preparedStatement.setString(1, userName);
+            // execute query
+            preparedStatement.executeQuery();
+
+        } catch (SQLException e) {
+            // print SQL exception information
+            printSQLException(e);
+        }
+    }
+
     public void LogOut(ActionEvent event) throws SQLException, IOException {
 
         // Log user out of account
@@ -393,6 +486,31 @@ public class LandingPageController extends HotelBookingController implements Ini
             // Add more cases if you have more Hyperlink fields in your layout
             default:
                 throw new IllegalArgumentException("Invalid index: " + index);
+        }
+    }
+
+    private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.initOwner(owner);
+        alert.show();
+    }
+
+    public static void printSQLException(SQLException ex) {
+        for (Throwable e: ex) {
+            if (e instanceof SQLException) {
+                e.printStackTrace(System.err);
+                System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+                System.err.println("Error Code: " + ((SQLException) e).getErrorCode());
+                System.err.println("Message: " + e.getMessage());
+                Throwable t = ex.getCause();
+                while (t != null) {
+                    System.out.println("Cause: " + t);
+                    t = t.getCause();
+                }
+            }
         }
     }
 
