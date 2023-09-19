@@ -48,7 +48,7 @@ import java.util.ResourceBundle;
 
 import javafx.util.StringConverter;
 
-public class LandingPageController extends HotelBookingController implements Initializable {
+public class LandingPageController extends NightLifeController implements Initializable {
 
 
     @FXML
@@ -78,7 +78,8 @@ public class LandingPageController extends HotelBookingController implements Ini
     private HBox editJobRow;
 
     private int currentNewsIndex = 0; // Initialize to 0
-    private int newsPerPage = 3; // Number of news articles to display at a time
+    private int newsPerPage = 3;// Number of news articles to display at a time
+
 
     private int flag = 0;
 
@@ -113,8 +114,8 @@ public class LandingPageController extends HotelBookingController implements Ini
             e.printStackTrace();
         }
         profileLink.setOnAction(this::handleProfileButtonClick);
+        show();
         displayWeather();
-
 
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
         titleColumn.setMaxWidth(249);
@@ -589,4 +590,5 @@ public class LandingPageController extends HotelBookingController implements Ini
         }
     }
 
-}
+
+    }
