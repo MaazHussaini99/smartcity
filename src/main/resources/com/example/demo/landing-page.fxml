@@ -159,11 +159,7 @@
                         <Button fx:id="addHotel" mnemonicParsing="false" onAction="#addHotelButtonClicked" text="Add Hotel" visible="false" />
                         <Button fx:id="deleteHotel" mnemonicParsing="false" onAction="#deleteHotelButtonClicked" text="Delete Hotel" visible="false" />
                         </HBox>
-                        <HBox fx:id="manageHotels" spacing="10">
-                            <Button mnemonicParsing="false" onAction="#createBookingClicked" text="Book Hotels" />
-                        <Button mnemonicParsing="false" onAction="#viewButtonClicked" text="View Hotel Bookings" />
-                            <Button fx:id="addDeleteHotels" mnemonicParsing="false" onAction="#createBookingClicked" text="Add or Delete Hotels" visible="false
-                        </HBox>
+
                     </StackPane>
                     <HBox spacing="15">
                         <Button fx:id="editButton" onAction="#oneditButtonClicked" text="Edit Hotel Booking" visible="false" />

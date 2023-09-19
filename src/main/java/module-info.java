@@ -4,6 +4,8 @@ module com.example.demo {
     requires java.sql;
     requires org.json;
     requires java.desktop;
+    requires org.simplejavamail;
+    requires org.simplejavamail.core;
 
 
     opens com.example.demo to javafx.fxml;
