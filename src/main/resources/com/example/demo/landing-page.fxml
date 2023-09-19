@@ -168,8 +168,7 @@
                       <children>
                           <Pane layoutX="488.0" layoutY="20.0" prefHeight="600.0" prefWidth="370.0" style="-fx-background-color: #3567c4;">
                               <children>
-                                  <TextField layoutX="14.0" layoutY="478.0" prefHeight="25.0" prefWidth="42.0" promptText="QTY" />
-                                  <Button layoutX="14.0" layoutY="511.0" mnemonicParsing="false" text="Purchase" />
+                                  <Button layoutX="14.0" layoutY="511.0" mnemonicParsing="false" onAction="#purchaseTransportTicket" text="Purchase" />
                               <TableView fx:id="stopsTable" layoutX="14.0" layoutY="43.0" prefHeight="425.0" prefWidth="343.0">
                                 <columns>
                                   <TableColumn fx:id="busStop" prefWidth="126.20001220703125" text="Stop" />
@@ -177,6 +176,7 @@
                                     <TableColumn fx:id="busDepartureTime" minWidth="0.0" prefWidth="115.79998779296875" text="Departure Time" />
                                 </columns>
                               </TableView>
+                              <Spinner fx:id="ticketSpinner" layoutX="14.0" layoutY="478.0" prefHeight="25.0" prefWidth="82.0" />
                               </children></Pane>
                         <TableView fx:id="transportTable" layoutX="10.0" layoutY="20.0" prefHeight="600.0" prefWidth="462.0">
                           <columns>

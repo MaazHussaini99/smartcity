@@ -1,5 +1,6 @@
 package com.example.demo;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -33,6 +34,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -66,6 +69,8 @@ public class LandingPageController extends HotelBookingController implements Ini
     private TableView<Bus> transportTable;
     @FXML
     TableColumn<Bus, String> busNo, busName, routeDescription;
+    @FXML
+    Spinner<Integer> ticketSpinner;
 
     @FXML
     private TableView<Stop> stopsTable;
@@ -79,6 +84,9 @@ public class LandingPageController extends HotelBookingController implements Ini
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1);
+            ticketSpinner.setValueFactory(valueFactory);
+
             ObservableList<News> newsItems = FXCollections.observableArrayList(News.getNews());
 
             // Initialize the dialog panes and images for the first news article
@@ -143,7 +151,22 @@ public class LandingPageController extends HotelBookingController implements Ini
                     // Clear the existing items in stopsTable
                     // Get the stops from the selected Bus object and populate the stopsTable
                     try {
-                        stopsTable.getItems().addAll(TransportController.getStops(selectedBus.getRouteMainId()));
+                        ArrayList<Stop> stopList = TransportController.getStops(selectedBus.getRouteMainId());
+                        LocalTime currentTime = LocalTime.now();
+                        int currentHour = currentTime.getHour();
+
+                        for(int i = 0; i < stopList.size(); i++){
+                            SimpleStringProperty arrivalTimeProperty = stopList.get(i).arrivalTime;
+                            String arrivalTime = arrivalTimeProperty.get();
+                            String newTime = currentHour + arrivalTime.substring(1);
+                            arrivalTimeProperty.set(newTime);
+
+                            SimpleStringProperty departureTimeProperty = stopList.get(i).departureTime;
+                            String departureTime = departureTimeProperty.get();
+                            String newDTime = currentHour + departureTime.substring(1);
+                            departureTimeProperty.set(newDTime);
+                        }
+                        stopsTable.getItems().addAll(stopList);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -457,6 +480,11 @@ public class LandingPageController extends HotelBookingController implements Ini
             default:
                 throw new IllegalArgumentException("Invalid index: " + index);
         }
+    }
+
+    @FXML
+    public void purchaseTransportTicket(){
+        TransportController.purchaseTicket(ticketSpinner.getValue());
     }
 
 }
