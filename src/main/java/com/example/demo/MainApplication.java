@@ -20,7 +20,7 @@ public class MainApplication extends Application {
 
 
     public static void main(String[] args) {
-        boolean flag = true;
+        boolean flag = false;
         if(flag)
         {
         launch();}

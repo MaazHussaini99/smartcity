@@ -6,6 +6,7 @@ module com.example.demo {
     requires java.desktop;
     requires org.simplejavamail;
     requires org.simplejavamail.core;
+    requires java.mail;
 
 
     opens com.example.demo to javafx.fxml;
