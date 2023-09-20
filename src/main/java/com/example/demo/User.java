@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  * User
  * Author: Owen Wurster
@@ -19,6 +22,15 @@ public class User {
     private String email;
     private String password;
     private String phoneNumber;
+
+
+    public User(int userID, String firstName,String lastName, String emailAddress, int roleID){
+        this.userID = userID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = emailAddress;
+        this.roleID = roleID;
+    }
 
     /**
      * private User constructor
@@ -325,5 +337,28 @@ public class User {
         String address = "";
         address = this.streetAddress + " " + this.city + ",\n" + this.state + " " + this.zipcode;
         return address;
+    }
+
+    public StringProperty firstNameProperty(){
+        return new SimpleStringProperty(firstName);
+    }
+
+    public StringProperty lastNameProperty(){
+        return new SimpleStringProperty(lastName);
+    }
+
+    public StringProperty emailProperty(){
+        return new SimpleStringProperty(email);
+    }
+
+    public StringProperty adminProperty(){
+        String admin;
+        if(roleID == 1){
+            admin = "No";
+        }
+        else{
+            admin = "Yes";
+        }
+        return new SimpleStringProperty(admin);
     }
 }
