@@ -13,7 +13,7 @@
 
 
 .tab-pane, .tab {
-    -fx-background-color: linear-gradient(to bottom, #21a676, #198a61);
+    -fx-background-color:  linear-gradient(to bottom, #e3b256, #fac869);
 }
 .tab-pane{
     -fx-background-color: #424fb3;
@@ -23,16 +23,20 @@
     -fx-background-color: linear-gradient(to bottom, #5461cc,#424fb3);
 
 }
+.tab:selected .tab-label{
+    -fx-background-color: linear-gradient(to bottom, #5461cc,#424fb3);
+    -fx-text-fill: #d9dcde;
+}
 .tab, .tab-label {
     -fx-alignment: CENTER;
-    -fx-text-fill: #fffd70;
-    -fx-font-size: 12px;
+    -fx-text-fill: #1d262b;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-font-family: "Spectral";
 }
 
 .custom-dialog-header .header-panel {
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
     -fx-font-weight: bolder;
     -fx-font-family: "Spectral";
     -fx-text-fill:  #2a51ad;
@@ -47,13 +51,13 @@
 Button {
     -fx-background-color: linear-gradient(to bottom, #e3b256, #fac869);
     -fx-font-weight: bold;
-    -fx-text-fill: white;
+    -fx-text-fill: #545a5e;
     -fx-font-size: 12px;
     -fx-padding: 5px 10px;
 }
 Button:hover {
     -fx-background-color: linear-gradient(to bottom, #fac869, #e3b256);
-    -fx-text-fill: white;
+    -fx-text-fill: #6b6e70;
     -fx-font-weight: bold;
     -fx-font-size: 12px;
     -fx-padding: 5px 10px;
@@ -64,9 +68,11 @@ Button:hover {
 }
 .table-view .column-header {
     -fx-background-color: linear-gradient(to bottom,#5892d6,#357ed4);
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-font-size: 13px;
     -fx-font-family: "Spectral";
+}
+.table-view .label {
+    -fx-text-fill: white;
 }
 
 /* Styling the table cells */
@@ -84,8 +90,14 @@ Button:hover {
     -fx-background-color: #66aede;
     -fx-text-fill: white;
 }
-.menu-bar .label{
-    -fx-text-fill: white;       /* Text color */
-    -fx-font-weight:bold;
-    -fx-font-size:30px;
+.hyperlink {
+    -fx-text-fill: blue; /* Change the text color to blue */
+    -fx-font-size: 12px; /* Change the font size to 14px */
+    -fx-underline: true; /* Underline the text */
+}
+
+/* Define a CSS style for the hovered state of all Hyperlinks */
+.hyperlink:hover {
+    -fx-text-fill: red; /* Change the text color to red when hovered */
+    -fx-cursor: hand; /* Change the cursor to a hand when hovered (optional) */
 }
