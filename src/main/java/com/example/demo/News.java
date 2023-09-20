@@ -66,7 +66,12 @@ public class News {
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject article = results.getJSONObject(i);
                     String title = article.getString("title");
-                    String description = article.getString("description");
+                    String description = "";
+                    if (article.get("description") == null){
+                        description = "Description Unavailable: Please visit source link.";
+                    }else{
+                        description = article.get("description").toString();
+                    }
                     String newsUrl = article.getString("link");
                     String newsImg = "null"; // Default value if "image_url" is not present
 

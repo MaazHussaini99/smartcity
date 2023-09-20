@@ -1,7 +1,10 @@
 package com.example.demo;
 
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -15,11 +18,11 @@ import javafx.scene.Parent;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -27,13 +30,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-
-
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,22 +41,27 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+
+import javafx.stage.Window;
 import javafx.util.StringConverter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class LandingPageController extends HotelBookingController implements Initializable {
-
-
+public class LandingPageController extends NightLifeController implements Initializable {
     @FXML
-    private Button profileLink,newCard,adminButton,nextButton,previousButton;
+    private Button profileLink,newCard,nextButton,previousButton, adminButton;
     @FXML
     private StackPane userDataStackPane;
     private boolean isProfilePaneOpen = false;
-    private ListView<String> newsList;
-
     @FXML
     private Pane weatherPane;
     @FXML
@@ -66,6 +70,8 @@ public class LandingPageController extends HotelBookingController implements Ini
     private DialogPane descriptionPane1, descriptionPane2, descriptionPane3;
     @FXML
     private Hyperlink newsLink1, newsLink2, newsLink3;
+    @FXML
+    private Label busLabel;
     @FXML
     private TableView<Job> jobTableView;
     @FXML
@@ -78,15 +84,32 @@ public class LandingPageController extends HotelBookingController implements Ini
     private HBox editJobRow;
 
     private int currentNewsIndex = 0; // Initialize to 0
-    private int newsPerPage = 3; // Number of news articles to display at a time
+    private int newsPerPage = 3;// Number of news articles to display at a time
+
 
     private int flag = 0;
 
     private Job currentJob = new Job(0);
 
+    @FXML
+    private TableView<Bus> transportTable;
+    @FXML
+    TableColumn<Bus, String> busNo, busName, routeDescription;
+    @FXML
+    Spinner<Integer> ticketSpinner;
+
+    @FXML
+    private TableView<Stop> stopsTable;
+    @FXML
+    private TableColumn<Stop, String> busStop, busArrivalTime, busDepartureTime;
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1);
+            ticketSpinner.setValueFactory(valueFactory);
+
             ObservableList<News> newsItems = FXCollections.observableArrayList(News.getNews());
 
             // Initialize the dialog panes and images for the first news article
@@ -113,12 +136,72 @@ public class LandingPageController extends HotelBookingController implements Ini
             e.printStackTrace();
         }
         profileLink.setOnAction(this::handleProfileButtonClick);
+        show();
         displayWeather();
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() {
+                Platform.runLater(() -> {
+                    // Update UI elements on the JavaFX Application Thread
+                    busNo.setCellValueFactory(cellData -> cellData.getValue().getShortName());
+                    busName.setCellValueFactory(cellData -> cellData.getValue().getLongName());
+                    routeDescription.setCellValueFactory(cellData -> cellData.getValue().getRouteID());
+
+                    // Transport Table
+                    try {
+                        transportTable.getItems().addAll(TransportController.getBuses());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
+                return null;
+            }
+        };
+
+        // Execute the task in the separate thread
+        executorService.submit(task);
+
+        busStop.setCellValueFactory(cellData -> cellData.getValue().stopNameProperty());
+        busArrivalTime.setCellValueFactory(cellData -> cellData.getValue().arrivalTimeProperty());
+        busDepartureTime.setCellValueFactory(cellData -> cellData.getValue().departureTimeProperty());
+
+        transportTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        transportTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1) { // Detect a single click
+                Bus selectedBus = transportTable.getSelectionModel().getSelectedItem();
+                busLabel.setText("Bus #" + selectedBus.getShortName().getValue());
+                if (selectedBus != null) {
+                    // Clear the existing items in stopsTable
+                    stopsTable.getItems().clear();
+                    // Get the stops from the selected Bus object and populate the stopsTable
+                    try {
+                        ArrayList<Stop> stopList = TransportController.getStops(selectedBus.getRouteMainId());
+                        LocalTime currentTime = LocalTime.now();
+                        int currentHour = currentTime.getHour();
+
+                        for(int i = 0; i < stopList.size(); i++){
+                            SimpleStringProperty arrivalTimeProperty = stopList.get(i).arrivalTime;
+                            String arrivalTime = arrivalTimeProperty.get();
+                            String newTime = currentHour + arrivalTime.substring(1);
+                            arrivalTimeProperty.set(newTime);
+
+                            SimpleStringProperty departureTimeProperty = stopList.get(i).departureTime;
+                            String departureTime = departureTimeProperty.get();
+                            String newDTime = currentHour + departureTime.substring(1);
+                            departureTimeProperty.set(newDTime);
+                        }
+                        stopsTable.getItems().addAll(stopList);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
 
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
-        titleColumn.setMaxWidth(249);
-        titleColumn.setMinWidth(425);
+        titleColumn.setMinWidth(348);
         gradeColumn.setCellValueFactory(cellData -> cellData.getValue().JobGradeProperty());
 
         agencyColumn.setCellValueFactory(cellData -> cellData.getValue().JobAgencyProperty());
@@ -313,7 +396,6 @@ public class LandingPageController extends HotelBookingController implements Ini
             if (newsIndex < newsItems.size()) {
                 News news = newsItems.get(newsIndex);
                 ImageView imageView = getImagePaneForIndex(i);
-
                 DialogPane descriptionPane = getDescriptionPaneForIndex(i);
 
                 try {
@@ -327,8 +409,9 @@ public class LandingPageController extends HotelBookingController implements Ini
 
                     // Center the image within the ImageView
                     imageView.setPreserveRatio(true);
-                    imageView.setFitWidth(255);
-                    imageView.setFitHeight(150);
+                    imageView.setFitWidth(255); // Adjust the width as needed
+                    imageView.setFitHeight(150); // Adjust the height as needed
+
 
                 } catch (IllegalArgumentException e) {
                     // Handle the case where the image URL is invalid or not found
@@ -477,12 +560,23 @@ public class LandingPageController extends HotelBookingController implements Ini
                 + ", " + User.getInstance().getState());
         userDataText.setLayoutX(10);
         userDataText.setLayoutY(10);
-        adminButton = new Button("Add new Admin"); // Replace with your user data components
+        adminButton = new Button("Add new Admin");
         adminButton.setLayoutX(10);
         adminButton.setLayoutY(200);
 
-        // Add an event handler to the button
+// Add an event handler to the button
         adminButton.setOnAction(event -> loadAdminFXML());
+
+        // Promote User to Admin button
+        if (User.getInstance().getRoleID() == 2) {
+            adminButton = new Button("Promote a User to Admin");
+            adminButton.setLayoutX(10);
+            adminButton.setLayoutY(240);
+
+            adminButton.setOnAction(event -> promoteToAdmin());
+
+            userDataPane.getChildren().add(adminButton);
+        }
 
         newCard = new Button("Add a New Payment Method"); // Replace with your user data components
         newCard.setLayoutX(10);
@@ -496,11 +590,9 @@ public class LandingPageController extends HotelBookingController implements Ini
         userDataPane.getChildren().add(adminButton);
         return userDataPane;
     }
-
     private void onProfileLinkClicked() {
         loadBankFXML();
     }
-
     private void loadBankFXML() {
         try {
             // Load the Bank.fxml file
@@ -524,7 +616,11 @@ public class LandingPageController extends HotelBookingController implements Ini
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("adminpanel.fxml"));
             Parent root = loader.load();
+
+            // Create a new scene
             Scene scene = new Scene(root);
+
+            // Get the current stage and set the new scene
             Stage stage = (Stage) adminButton.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
@@ -533,6 +629,82 @@ public class LandingPageController extends HotelBookingController implements Ini
             e.printStackTrace();
         }
     }
+    /**
+     * promoteToAdmin()
+     * Fails if:
+     *  1) A username wasn't entered
+     *  2) The username matches the current User
+     *  3) An account with the entered username wasn't found
+     *  4) The account is already an admin
+     * Promotes a User to an Admin if successful
+     */
+    private void promoteToAdmin() {
+
+        Window owner = adminButton.getScene().getWindow();
+
+        TextInputDialog adminPane = new TextInputDialog("User name");
+        adminPane.setHeaderText("Enter the user name of the account you wish to promote.");
+
+        // Get username entered in by the admin
+        String userName = adminPane.getEditor().getText();
+
+        // Stop if user didn't enter a username
+        if ( userName == null ) {
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                    "Username wasn't entered");
+            return;
+        }
+
+        // Prevent user from promoting themselves
+        if ( userName == User.getInstance().getEmail()) {
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                    "You can't promote yourself");
+            return;
+        }
+
+        // Search for an account with that username
+        final String SELECT_QUERY = "SELECT * FROM user WHERE user_email = ?";
+        // try connecting to the database
+        try (Connection connection = DBConn.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
+            preparedStatement.setString(1, userName);
+            // execute query
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // An account wasn't found
+            if (resultSet.next() != true) {
+                showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                        "An account with that username doesn't exist");
+                return;
+            }
+
+            // The account is already an admin
+            if (Integer.parseInt(resultSet.getString(11)) == 2) {
+                showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                        "That account is already an Admin");
+                return;
+            }
+
+        } catch (SQLException e) {
+            // print SQL exception information
+            printSQLException(e);
+        }
+
+        // Everything is ok, start updating the database
+        final String UPDATE_QUERY = "UPDATE user SET role_ID = 2 WHERE user_email = ?";
+        // try connecting to the database
+        try (Connection connection = DBConn.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
+            preparedStatement.setString(1, userName);
+            // execute query
+            preparedStatement.executeQuery();
+
+        } catch (SQLException e) {
+            // print SQL exception information
+            printSQLException(e);
+        }
+    }
+
     public void LogOut(ActionEvent event) throws SQLException, IOException {
 
         // Log user out of account
@@ -586,6 +758,36 @@ public class LandingPageController extends HotelBookingController implements Ini
             // Add more cases if you have more Hyperlink fields in your layout
             default:
                 throw new IllegalArgumentException("Invalid index: " + index);
+        }
+    }
+
+    @FXML
+    public void purchaseTransportTicket(){
+        TransportController.purchaseTicket(ticketSpinner.getValue());
+    }
+
+    private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.initOwner(owner);
+        alert.show();
+    }
+
+    public static void printSQLException(SQLException ex) {
+        for (Throwable e: ex) {
+            if (e instanceof SQLException) {
+                e.printStackTrace(System.err);
+                System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+                System.err.println("Error Code: " + ((SQLException) e).getErrorCode());
+                System.err.println("Message: " + e.getMessage());
+                Throwable t = ex.getCause();
+                while (t != null) {
+                    System.out.println("Cause: " + t);
+                    t = t.getCause();
+                }
+            }
         }
     }
 
