@@ -1,14 +1,18 @@
+<!-- map.html -->
+
 <!DOCTYPE html>
 <html>
 <head>
   <title>Google Maps with Filtered Locations</title>
   <script src="http://maps.google.com/maps/api/js?key=AIzaSyC-g-iwyXGl5-q_Ke0_wGMuHafKsc2fu64&sensor=false&libraries=places"></script>
-  <style>#mapcanvas { height: 500px; width: 100% }</style>
+  <style>
+    #mapcanvas { height: 550px; width: 100% }
+    #filterButtons { margin-bottom: 10px }
+  </style>
   <script>
     var map;
     var infowindow;
     var markers = [];
-    var filteredMarkers = {};
 
     function initialize() {
       var albanyCoordinates = new google.maps.LatLng(42.6526, -73.7562); // Albany, NY coordinates
@@ -33,9 +37,13 @@
         { keyword: 'Sam\'s Club', category: 'Supermarket' },
         { keyword: 'Bank', category: 'Bank' },
         { keyword: 'College', category: 'College' },
-        { keyword: 'Theater', category: 'Theater' },
-        { keyword: 'Mall', category: 'Mall' },
-        { keyword: 'Gas Station', category: 'Gas Station' }
+        { keyword: 'Theater', category: 'Entertainment' },
+        { keyword: 'Bowling Alley', category: 'Entertainment' },
+        { keyword: 'Park', category: 'Entertainment' },
+        { keyword: 'Arcade', category: 'Entertainment' },
+        { keyword: 'Hotel', category: 'Hotel' },
+        { keyword: 'Restaurant', category: 'Restaurant' },
+        { keyword: 'School', category: 'School' }
       ];
 
       var service = new google.maps.places.PlacesService(map);
@@ -55,9 +63,10 @@
       filterButtons.innerHTML = '<button onclick="filterMarkers(\'Supermarket\')">Supermarket</button>' +
                                 '<button onclick="filterMarkers(\'Bank\')">Bank</button>' +
                                 '<button onclick="filterMarkers(\'College\')">College</button>' +
-                                '<button onclick="filterMarkers(\'Theater\')">Theater</button>' +
-                                '<button onclick="filterMarkers(\'Mall\')">Mall</button>' +
-                                '<button onclick="filterMarkers(\'Gas Station\')">Gas Station</button>';
+                                '<button onclick="filterMarkers(\'Entertainment\')">Entertainment</button>' +
+                                '<button onclick="filterMarkers(\'Hotel\')">Hotel</button>' +
+                                '<button onclick="filterMarkers(\'Restaurant\')">Restaurant</button>' +
+                                '<button onclick="filterMarkers(\'School\')">School</button>';
     }
 
     function createCallback(category) {
@@ -83,7 +92,14 @@
       markers.push(marker); // Add marker to the markers array
 
       google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(place.name);
+        var content = '<strong>Name:</strong> ' + place.name + '<br>';
+        content += '<strong>Address:</strong> ' + place.vicinity + '<br>';
+        content += '<strong>Category:</strong> ' + category + '<br>';
+
+        // Add "Get Directions" link
+        content += '<a href="directions.html?lat=' + place.geometry.location.lat() + '&lng=' + place.geometry.location.lng() + '" target="_blank">Get Directions</a>';
+
+        infowindow.setContent(content);
         infowindow.open(map, this);
       });
     }
@@ -91,7 +107,7 @@
     function filterMarkers(category) {
       for (var i = 0; i < markers.length; i++) {
         var marker = markers[i];
-        if (marker.category === category || (category === 'Supermarket' && marker.category === 'Macy\'s')) {
+        if (marker.category === category || (category === 'Entertainment' && ['Theater', 'Bowling Alley', 'Park', 'Arcade'].includes(marker.category))) {
           marker.setVisible(true);
         } else {
           marker.setVisible(false);
@@ -103,8 +119,6 @@
   </script>
 </head>
 <body>
-<h1>Google Maps with Filtered Locations</h1>
 <div id="filterButtons"></div>
 <div id="mapcanvas"></div>
 </body>
-</html>

@@ -19,7 +19,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.layout.Pane;
@@ -29,14 +28,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -52,7 +49,7 @@ import java.util.ResourceBundle;
 
 
 import javafx.stage.Window;
-import javafx.util.StringConverter;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -103,6 +100,8 @@ public class LandingPageController extends NightLifeController implements Initia
     @FXML
     private TableColumn<Stop, String> busStop, busArrivalTime, busDepartureTime;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    @FXML
+    private WebView webviewMap;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -177,21 +176,27 @@ public class LandingPageController extends NightLifeController implements Initia
                     // Get the stops from the selected Bus object and populate the stopsTable
                     try {
                         ArrayList<Stop> stopList = TransportController.getStops(selectedBus.getRouteMainId());
-                        LocalTime currentTime = LocalTime.now();
-                        int currentHour = currentTime.getHour();
+
 
                         for(int i = 0; i < stopList.size(); i++){
+                            LocalTime currentTime = LocalTime.now();
+                            int currentHour = currentTime.getHour();
+                            SimpleStringProperty departureTimeProperty = stopList.get(i).departureTime;
+                            String departureTime = departureTimeProperty.get();
+                            String departureMinute = departureTime.substring(2,4);
+                            if(Integer.valueOf(departureMinute) < LocalTime.now().getMinute()){
+                                currentHour++;
+                            }
                             SimpleStringProperty arrivalTimeProperty = stopList.get(i).arrivalTime;
                             String arrivalTime = arrivalTimeProperty.get();
                             String newTime = currentHour + arrivalTime.substring(1);
                             arrivalTimeProperty.set(newTime);
 
-                            SimpleStringProperty departureTimeProperty = stopList.get(i).departureTime;
-                            String departureTime = departureTimeProperty.get();
                             String newDTime = currentHour + departureTime.substring(1);
                             departureTimeProperty.set(newDTime);
                         }
                         stopsTable.getItems().addAll(stopList);
+
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -255,6 +260,9 @@ public class LandingPageController extends NightLifeController implements Initia
         }
         //todo limit to admin only 
         setJobEditRowBehavior();
+
+        MapController maps = new MapController();
+        maps.showMap(webviewMap);
     }
 
     private void setJobEditRowBehavior() {
@@ -470,9 +478,6 @@ public class LandingPageController extends NightLifeController implements Initia
         Weather weather = Weather.getWeather();
 
         if (weather != null) {
-//            //for maaz to fix later
-
-
             // Create a URL object for the image
             URL imageUrl = null;
             try {
@@ -568,15 +573,15 @@ public class LandingPageController extends NightLifeController implements Initia
         adminButton.setOnAction(event -> loadAdminFXML());
 
         // Promote User to Admin button
-        if (User.getInstance().getRoleID() == 2) {
-            adminButton = new Button("Promote a User to Admin");
-            adminButton.setLayoutX(10);
-            adminButton.setLayoutY(240);
-
-            adminButton.setOnAction(event -> promoteToAdmin());
-
-            userDataPane.getChildren().add(adminButton);
-        }
+//        if (User.getInstance().getRoleID() == 2) {
+//            adminButton = new Button("Promote a User to Admin");
+//            adminButton.setLayoutX(10);
+//            adminButton.setLayoutY(240);
+//
+//            adminButton.setOnAction(event -> promoteToAdmin());
+//
+//            userDataPane.getChildren().add(adminButton);
+//        }
 
         newCard = new Button("Add a New Payment Method"); // Replace with your user data components
         newCard.setLayoutX(10);
@@ -708,18 +713,16 @@ public class LandingPageController extends NightLifeController implements Initia
     public void LogOut(ActionEvent event) throws SQLException, IOException {
 
         // Log user out of account
-//        User.logOut();
-//
-//        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("logged-in.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load(), 544, 400);
-//        Node node = (Node) event.getSource();
-//        Stage stage = (Stage) node.getScene().getWindow();
-//        stage.setTitle("Smart City - Sign up");
-//        stage.setScene(scene);
-//        stage.show();
-        Stage currentStage = (Stage) stopsTable.getScene().getWindow();
-        mapBoxTest maps = new mapBoxTest();
-        maps.showMap(currentStage);
+        User.logOut();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("logged-in.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 544, 400);
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.setTitle("Smart City - Sign up");
+        stage.setScene(scene);
+        stage.show();
+
 
     }
 
