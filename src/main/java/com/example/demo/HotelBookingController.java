@@ -537,7 +537,7 @@ public class HotelBookingController {
         dialog.showAndWait();
     }
     // Helper method to display an Alert
-    private void showAlert(AlertType alertType, String title, String content) {
+    public void showAlert(AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
