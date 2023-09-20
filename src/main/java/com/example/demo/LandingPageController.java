@@ -177,21 +177,27 @@ public class LandingPageController extends NightLifeController implements Initia
                     // Get the stops from the selected Bus object and populate the stopsTable
                     try {
                         ArrayList<Stop> stopList = TransportController.getStops(selectedBus.getRouteMainId());
-                        LocalTime currentTime = LocalTime.now();
-                        int currentHour = currentTime.getHour();
+
 
                         for(int i = 0; i < stopList.size(); i++){
+                            LocalTime currentTime = LocalTime.now();
+                            int currentHour = currentTime.getHour();
+                            SimpleStringProperty departureTimeProperty = stopList.get(i).departureTime;
+                            String departureTime = departureTimeProperty.get();
+                            String departureMinute = departureTime.substring(2,4);
+                            if(Integer.valueOf(departureMinute) < LocalTime.now().getMinute()){
+                                currentHour++;
+                            }
                             SimpleStringProperty arrivalTimeProperty = stopList.get(i).arrivalTime;
                             String arrivalTime = arrivalTimeProperty.get();
                             String newTime = currentHour + arrivalTime.substring(1);
                             arrivalTimeProperty.set(newTime);
 
-                            SimpleStringProperty departureTimeProperty = stopList.get(i).departureTime;
-                            String departureTime = departureTimeProperty.get();
                             String newDTime = currentHour + departureTime.substring(1);
                             departureTimeProperty.set(newDTime);
                         }
                         stopsTable.getItems().addAll(stopList);
+
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
