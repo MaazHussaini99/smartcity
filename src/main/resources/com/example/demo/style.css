@@ -31,10 +31,6 @@
     -fx-font-family: "Spectral";
 }
 
-
-
-
-
 .custom-dialog-header .header-panel {
     -fx-font-size: 14px;
     -fx-font-weight: bolder;
@@ -65,4 +61,26 @@ Button:hover {
     -fx-scale-x: .95;
     -fx-scale-y: .95;
     -fx-scale-z: .95;
+}
+.table-view .column-header {
+    -fx-background-color: linear-gradient(to bottom,#5892d6,#357ed4);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Spectral";
+}
+
+/* Styling the table cells */
+.table-row-cell:odd {
+    -fx-background-color: #dae8f7;
+    -fx-text-fill: #333;
+}
+.table-row-cell:even {
+    -fx-background-color: #bfd7f5;
+    -fx-text-fill: #333;
+}
+
+/* Styling selected rows */
+.table-row-cell:selected {
+    -fx-background-color: #66aede;
+    -fx-text-fill: white;
 }
