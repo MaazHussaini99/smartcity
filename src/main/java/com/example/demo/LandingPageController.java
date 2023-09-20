@@ -58,7 +58,7 @@ import java.util.concurrent.Executors;
 
 public class LandingPageController extends NightLifeController implements Initializable {
     @FXML
-    private Button profileLink,newCard,nextButton,previousButton, adminButton;
+    private Button profileLink,newCard,nextButton,previousButton, adminButton, editProfileButton;
     @FXML
     private StackPane userDataStackPane;
     private boolean isProfilePaneOpen = false;
@@ -560,6 +560,13 @@ public class LandingPageController extends NightLifeController implements Initia
                 + ", " + User.getInstance().getState());
         userDataText.setLayoutX(10);
         userDataText.setLayoutY(10);
+
+        // Edit profile
+        editProfileButton = new Button("Edit Profile");
+        editProfileButton.setLayoutX(10);
+        editProfileButton.setLayoutY(150);
+        editProfileButton.setOnAction(event -> goToEditProfile());
+
         adminButton = new Button("Add new Admin");
         adminButton.setLayoutX(10);
         adminButton.setLayoutY(200);
@@ -567,16 +574,16 @@ public class LandingPageController extends NightLifeController implements Initia
 // Add an event handler to the button
         adminButton.setOnAction(event -> loadAdminFXML());
 
-        // Promote User to Admin button
-        if (User.getInstance().getRoleID() == 2) {
-            adminButton = new Button("Promote a User to Admin");
-            adminButton.setLayoutX(10);
-            adminButton.setLayoutY(240);
-
-            adminButton.setOnAction(event -> promoteToAdmin());
-
-            userDataPane.getChildren().add(adminButton);
-        }
+//        // Promote User to Admin button
+//        if (User.getInstance().getRoleID() == 2) {
+//            adminButton = new Button("Promote a User to Admin");
+//            adminButton.setLayoutX(10);
+//            adminButton.setLayoutY(240);
+//
+//            adminButton.setOnAction(event -> promoteToAdmin());
+//
+//            userDataPane.getChildren().add(adminButton);
+//        }
 
         newCard = new Button("Add a New Payment Method"); // Replace with your user data components
         newCard.setLayoutX(10);
@@ -588,6 +595,7 @@ public class LandingPageController extends NightLifeController implements Initia
         userDataPane.getChildren().add(userDataText);
         userDataPane.getChildren().add(newCard);
         userDataPane.getChildren().add(adminButton);
+        userDataPane.getChildren().add(editProfileButton);
         return userDataPane;
     }
     private void onProfileLinkClicked() {
@@ -629,6 +637,7 @@ public class LandingPageController extends NightLifeController implements Initia
             e.printStackTrace();
         }
     }
+
     /**
      * promoteToAdmin()
      * Fails if:
@@ -716,6 +725,26 @@ public class LandingPageController extends NightLifeController implements Initia
         } catch (SQLException e) {
             // print SQL exception information
             printSQLException(e);
+        }
+    }
+
+    /**
+     * goToEditProfile
+     * Sends the user to the edit profile page
+     */
+    @FXML
+    public void goToEditProfile() {
+        try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("edit-profile.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 535, 400);
+            Stage stage = (Stage) editProfileButton.getScene().getWindow();
+            stage.setTitle("Smart City - Edit Profile");
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

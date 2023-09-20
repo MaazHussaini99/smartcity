@@ -213,6 +213,89 @@ public class User {
         return roleID;
     }
 
+    // Setters
+
+    /**
+     * setFirstName
+     * Sets the user's first name
+     * @param firstName first name
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * setLastName
+     * Sets the user's last name
+     * @param lastName last name
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * setStreetAddress
+     * Sets the user's street address
+     * @param address street address
+     */
+    public void setStreetAddress(String address) {
+        this.streetAddress = address;
+    }
+
+    /**
+     * setCity
+     * Sets the city that the user lives in
+     * @param city city
+     */
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    /**
+     * setZipcode
+     * Sets the user's zipcode
+     * @param zipcode zipcode
+     */
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    /**
+     * setState
+     * Sets the state that the user lives in
+     * @param state state
+     */
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    /**
+     * setEmail
+     * Sets the user's email
+     * @param email email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * setPhoneNumber
+     * Sets the user's phone number
+     * @param phoneNumber phone number
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    /**
+     * setRoleID
+     * Sets the user's role ID
+     * @param roleID
+     */
+    public void setRoleID(int roleID) {
+        this.roleID = roleID;
+    }
+
     public String toString() {
         String address = "";
         address = this.streetAddress + " " + this.city + ",\n" + this.state + " " + this.zipcode;
