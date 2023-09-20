@@ -1,9 +1,11 @@
 package com.example.demo;
 
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
 
 import java.util.ArrayList;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,12 +15,15 @@ import java.sql.SQLException;
  * Handles the button stuff for the transport tab
  */
 public class TransportController {
+
     static ArrayList<Bus> buses = new ArrayList<>();
+
 
     /***
      * generate a list of buses
      * @throws SQLException
      */
+
     public static ArrayList<Bus> getBuses() throws SQLException {
         String busQ = "SELECT route_id, route_name, route_busNumber, route_desc FROM transport_route";
         try (Connection connection = DBConn.connectDB();
@@ -35,6 +40,7 @@ public class TransportController {
             return buses;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+
         }
 
     }

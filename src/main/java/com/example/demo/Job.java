@@ -21,6 +21,16 @@ public class Job {
         this.applyButton = new Button("Apply");
     }
 
+    public Job(int jobId){
+        this.jobId = jobId;
+        this.jobTitle = new SimpleStringProperty("");
+        this.jobGrade = new SimpleStringProperty("");
+        this.jobAgency = new SimpleStringProperty("");
+        this.jobLocation = new SimpleStringProperty("");
+        this.applyButton = new Button("Apply");
+
+    }
+
     public String getJobTitle() {
         return jobTitle.get();
     }
@@ -50,6 +60,10 @@ public class Job {
     }
     public Button ApplyButtonProperty() {
         return applyButton;
+    }
+
+    public String getJobLocation(){
+        return jobLocation.get();
     }
 
 }
