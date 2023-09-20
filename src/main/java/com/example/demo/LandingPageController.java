@@ -708,15 +708,19 @@ public class LandingPageController extends NightLifeController implements Initia
     public void LogOut(ActionEvent event) throws SQLException, IOException {
 
         // Log user out of account
-        User.logOut();
+//        User.logOut();
+//
+//        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("logged-in.fxml"));
+//        Scene scene = new Scene(fxmlLoader.load(), 544, 400);
+//        Node node = (Node) event.getSource();
+//        Stage stage = (Stage) node.getScene().getWindow();
+//        stage.setTitle("Smart City - Sign up");
+//        stage.setScene(scene);
+//        stage.show();
+        Stage currentStage = (Stage) stopsTable.getScene().getWindow();
+        mapBoxTest maps = new mapBoxTest();
+        maps.showMap(currentStage);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("logged-in.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 544, 400);
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.setTitle("Smart City - Sign up");
-        stage.setScene(scene);
-        stage.show();
     }
 
     public ImageView getImagePaneForIndex(int index) {
