@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -20,6 +17,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Properties;
 
 import static com.example.demo.JobListing.jobs;
@@ -51,8 +49,11 @@ public class AdminController {
     Button cancel;
     Button sendEmail;
     HBox buttonBox;
+
+    static User user;
     public void initialize() {
         basePane = new VBox();
+        buttonBox = new HBox();
         generateTable();
         addPromotionButton();
         addEmailFunction();
@@ -80,10 +81,7 @@ public class AdminController {
             }
         });
 
-
-        buttonBox = new HBox();
         buttonBox.getChildren().addAll(writeEmail);
-
         basePane.getChildren().addAll(emailTarget,emailSubject,emailContent,buttonBox);
 
     }
@@ -175,7 +173,41 @@ public class AdminController {
      * todo add owen's promotion code
      */
     public void addPromotionButton(){
+        Button promote = new Button("Promote a user");
+        buttonBox.getChildren().add(promote);
+        userTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                user = userTable.getSelectionModel().getSelectedItem();
+                promote.setText(String.format("Promote %s %s.",user.getFirstName(),user.getLastName()));
+            }
+        });
 
+        promote.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if(user == null){
+                    return;
+                }
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setContentText(String.format("Are your sure you want to make %s %s admin?",user.getFirstName(),user.getLastName()));
+                alert.setTitle("Are you sure?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.get() == ButtonType.OK){
+                    System.out.println("Yes");
+                    String sql = "UPDATE user SET role_ID = 2 WHERE uid=  "+user.getUserID();
+
+                    try{
+                        Connection connection = DBConn.connectDB();
+                        PreparedStatement ps = connection.prepareStatement(sql);
+                        ps.executeUpdate();
+                    }
+                    catch(SQLException e){
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
     }
     public void generateTable(){
         //get users

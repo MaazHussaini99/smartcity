@@ -110,27 +110,27 @@ public class LandingPageController extends NightLifeController implements Initia
             SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1);
             ticketSpinner.setValueFactory(valueFactory);
 
-            ObservableList<News> newsItems = FXCollections.observableArrayList(News.getNews());
+           // ObservableList<News> newsItems = FXCollections.observableArrayList(News.getNews());
 
             // Initialize the dialog panes and images for the first news article
-            populateNewsPanes(newsItems, currentNewsIndex);
-
-            // Add an event handler for the "Next" button
-            nextButton.setOnAction(event -> {
-                if (currentNewsIndex + 1 < newsItems.size() - 2) {
-                    currentNewsIndex++;
-                    populateNewsPanes(newsItems, currentNewsIndex);
-                }
-            });
-            previousButton.setOnAction(event -> {
-                if (currentNewsIndex - 1 < newsItems.size() - 2) {
-                    if (currentNewsIndex == 0) {
-                        currentNewsIndex = 1;
-                    }
-                    currentNewsIndex--;
-                    populateNewsPanes(newsItems, currentNewsIndex);
-                }
-            });
+//            populateNewsPanes(newsItems, currentNewsIndex);
+//
+//            // Add an event handler for the "Next" button
+//            nextButton.setOnAction(event -> {
+//                if (currentNewsIndex + 1 < newsItems.size() - 2) {
+//                    currentNewsIndex++;
+//                    populateNewsPanes(newsItems, currentNewsIndex);
+//                }
+//            });
+//            previousButton.setOnAction(event -> {
+//                if (currentNewsIndex - 1 < newsItems.size() - 2) {
+//                    if (currentNewsIndex == 0) {
+//                        currentNewsIndex = 1;
+//                    }
+//                    currentNewsIndex--;
+//                    populateNewsPanes(newsItems, currentNewsIndex);
+//                }
+//            });
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -566,19 +566,6 @@ public class LandingPageController extends NightLifeController implements Initia
 
 // Add an event handler to the button
         adminButton.setOnAction(event -> loadAdminFXML());
-
-        //todo add this functionality in user panel
-        // Promote User to Admin button
-//        if (User.getInstance().getRoleID() == 2) {
-//            adminButton = new Button("Promote a User to Admin");
-//            adminButton.setLayoutX(10);
-//            adminButton.setLayoutY(240);
-//
-//            adminButton.setOnAction(event -> promoteToAdmin());
-//
-//            userDataPane.getChildren().add(adminButton);
-//        }
-
         newCard = new Button("Add a New Payment Method"); // Replace with your user data components
         newCard.setLayoutX(10);
         newCard.setLayoutY(250);

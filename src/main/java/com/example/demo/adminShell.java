@@ -19,9 +19,23 @@ public class adminShell {
     Connection connection;
 
     public adminShell() {
-        getUser();
+        makeAdmin();
     }
 
+
+    public void makeAdmin(){
+        String sql ="UPDATE user SET role_ID = 2 WHERE uid = 2";
+        try{
+      connection = DBConn.connectDB();
+      PreparedStatement ps = connection.prepareStatement(sql);
+      ps.executeUpdate();
+      getUser();
+
+  }catch (SQLException e){
+      throw new RuntimeException(e);
+  }
+
+    }
     public ArrayList<User> getUser(){
         String sql = "SELECT * FROM user";
         ArrayList<User> users = new ArrayList<>();
@@ -29,21 +43,21 @@ public class adminShell {
             Connection connection = DBConn.connectDB();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
-//            while(resultSet.next()){
-//                users.add(new User(
-//                        resultSet.getInt(1),
-//                        resultSet.getString(2),
-//                        resultSet.getString(3),
-//                        resultSet.getString(8),
-//                        resultSet.getInt
-//                ));
-//                System.out.printf("%s %s %s %s \n",
-//                        resultSet.getInt(1),
-//                        resultSet.getString(2),
-//                        resultSet.getString(3),
-//                        resultSet.getString(8));
-//
-//            }
+            while(resultSet.next()){
+                users.add(new User(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(8),
+                        resultSet.getInt(11)
+                ));
+                System.out.printf("%s %s %s %s %s \n",
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(8),resultSet.getInt(11));
+
+            }
             return users;
         } catch (SQLException e) {
             throw new RuntimeException(e);
