@@ -8,8 +8,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.scene.web.*?>
 
+<?import javafx.scene.web.WebView?>
 <HBox prefHeight="661.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to bottom, #ffffff, #e1e4e6);" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LandingPageController">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="300.0">
@@ -20,8 +20,8 @@
                   <Image url="@../images/new-york-state-vector-logo.png" />
                </image></ImageView>
              
-            <Button fx:id="profileLink" layoutX="110.0" layoutY="572.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="81.0" text="Profile" />
-            <Button fx:id="logOut" layoutX="109.0" layoutY="608.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="26.0" prefWidth="82.0" text="Log Out" />
+            <Button fx:id="profileLink" layoutX="109.0" layoutY="571.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="81.0" text="Profile" />
+            <Button fx:id="logOut" layoutX="108.0" layoutY="607.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="26.0" prefWidth="82.0" text="Log Out" />
             <StackPane fx:id="userDataStackPane" layoutY="247.0" prefHeight="312.0" prefWidth="300.0" style="-fx-background-color: #87aede; -fx-background-radius: 20; -fx-opacity: 90%;" visible="false">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -58,7 +58,7 @@
                 <content>
                     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="630.0" prefWidth="869.0" styleClass="anchor-pane">
                         <children>
-                            <TableView fx:id="jobTableView" layoutX="10.0" layoutY="20.0" prefHeight="566.0" prefWidth="852.0">
+                            <TableView fx:id="jobTableView" layoutX="10.0" layoutY="20.0" prefHeight="566.0" prefWidth="849.0">
                                 <columns>
                                     <TableColumn fx:id="titleColumn" styleClass="TitleTabStyle" text="Title" />
                                     <TableColumn fx:id="gradeColumn" text="Grade" />
@@ -77,39 +77,39 @@
 
                     <AnchorPane prefHeight="180.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
                         <VBox layoutX="10.0" layoutY="25.0" prefHeight="595.0" prefWidth="850.0" spacing="10">
-                        <StackPane prefHeight="59.0" prefWidth="850.0">
+                        <StackPane prefHeight="47.0" prefWidth="850.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="850.0" text="Manage Hotel Bookings" textFill="#ffffffb7">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="84.0" prefWidth="850.0" text="Manage Hotel Bookings" textFill="#ffffffb7">
                                  <font>
                                     <Font name="Bell MT Bold" size="28.0" />
                                  </font></Label>
                            </children>
                         </StackPane>
-                            <StackPane>
-                                <ImageView fitHeight="484.0" fitWidth="748.0" pickOnBounds="true" preserveRatio="true"> <image> <Image url="@../images/Map-of-Albany.jpg" /> </image> </ImageView>
+                            <StackPane prefHeight="545.0" prefWidth="850.0">
+                                <ImageView fitHeight="437.0" fitWidth="748.0" pickOnBounds="true" preserveRatio="true"> <image> <Image url="@../images/Map-of-Albany.jpg" /> </image> </ImageView>
                                 <TableView fx:id="hotelTableView" onMouseClicked="#handleHotelSelection" prefHeight="300.0" prefWidth="750.0" visible="false">
                                     <columns>
-                                        <TableColumn prefWidth="150.0" text="Hotel Name">
+                                        <TableColumn prefWidth="249.4000062942505" text="Hotel Name">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelName" />
                                             </cellValueFactory>
                                         </TableColumn>
-                                        <TableColumn prefWidth="200.0" text="Location">
+                                        <TableColumn prefWidth="332.20001220703125" text="Location">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelLocation" />
                                             </cellValueFactory>
                                         </TableColumn>
-                                        <TableColumn text="Price">
+                                        <TableColumn prefWidth="56.4000244140625" text="Price">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelPrice" />
                                             </cellValueFactory>
                                         </TableColumn>
-                                        <TableColumn text="Room Number">
+                                        <TableColumn prefWidth="109.20001220703125" text="Room Number">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelRoomNumber" />
                                             </cellValueFactory>
                                         </TableColumn>
-                                        <TableColumn text="Availability">
+                                        <TableColumn prefWidth="103.39996337890625" text="Availability">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelAvailability" />
                                             </cellValueFactory>
@@ -152,20 +152,27 @@
                                     </columns>
                                 </TableView>
                             </StackPane>
-                        <StackPane prefHeight="27.0" prefWidth="850.0">
+                        <StackPane layoutY="30.0" prefHeight="119.0" prefWidth="779.0">
                            <children>
-      
-                                      <HBox spacing="15">
-                                          <Button fx:id="bookButton" onAction="#onBookButtonClicked" text="Book Hotel" visible="false" />
-                                          <Button fx:id="manageHotelsBookings" mnemonicParsing="false" onAction="#viewButtonClicked" text="View Bookings" visible="false" />
-                                          <Button fx:id="addHotel" mnemonicParsing="false" onAction="#addHotelButtonClicked" text="Add Hotel" visible="false" />
-                                          <Button fx:id="deleteHotel" mnemonicParsing="false" onAction="#deleteHotelButtonClicked" text="Delete Hotel" visible="false" />
+
+                                      <Pane>
                                           <Button fx:id="editButton" onAction="#oneditButtonClicked" text="Edit Booking" visible="false" />
-                                          <Button fx:id="extendButton" onAction="#extendButtonClicked" text="Extend Booking" visible="false" />
-                                          <Button fx:id="cancelButton" onAction="#cancelButtonClicked" text="Cancel Booking" visible="false" />
-                                          <Button fx:id="bookHotels" mnemonicParsing="false" onAction="#createBookingClicked" text="View Hotels" visible="false" />
-                                      </HBox>
-                                      <HBox fx:id="manageHotels" spacing="10">
+                                          <Button fx:id="extendButton" layoutX="123.0" onAction="#extendButtonClicked" text="Extend Booking" visible="false" />
+                                          <Button fx:id="cancelButton" layoutX="263.0" onAction="#cancelButtonClicked" text="Cancel Booking" visible="false" />
+                                          <Button fx:id="bookHotels" layoutX="401.0" mnemonicParsing="false" onAction="#createBookingClicked" text="View Hotels" visible="false" />
+
+                                          <Button fx:id="bookButton" onAction="#onBookButtonClicked" text="Book Hotel" visible="false" />
+                                          <Button fx:id="manageHotelsBookings" layoutX="114.0" mnemonicParsing="false" onAction="#viewButtonClicked" text="View Bookings" visible="false" />
+                                          <Button fx:id="addHotel" layoutX="248.0" mnemonicParsing="false" onAction="#addHotelButtonClicked" text="Add Hotel" visible="false" />
+                                          <Button fx:id="deleteHotel" layoutX="356.0" mnemonicParsing="false" onAction="#deleteHotelButtonClicked" text="Delete Hotel" visible="false" />
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                                 <padding>
+                                    <Insets left="20.0" right="20.0" />
+                                 </padding>
+                                      </Pane>
+                                      <HBox fx:id="manageHotels" prefHeight="0.0" prefWidth="850.0" spacing="30">
                                           <Button mnemonicParsing="false" onAction="#createBookingClicked" text="View Hotels" />
                                           <Button mnemonicParsing="false" onAction="#viewButtonClicked" text="View Bookings" />
                                           <Button fx:id="addDeleteHotels" mnemonicParsing="false" onAction="#createBookingClicked" text="Add or Delete Hotels" visible="false" />
@@ -193,7 +200,7 @@
                       <children>
                           <Pane layoutX="488.0" layoutY="20.0" prefHeight="600.0" prefWidth="370.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
                               <children>
-                                  <Button layoutX="145.0" layoutY="520.0" mnemonicParsing="false" onAction="#purchaseTransportTicket" text="Purchase" />
+                                  <Button layoutX="149.0" layoutY="520.0" mnemonicParsing="false" onAction="#purchaseTransportTicket" text="Purchase" />
                                   <TableView fx:id="stopsTable" layoutX="10.0" layoutY="75.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="379.0" prefWidth="350.0">
                                     <columns>
                                       <TableColumn fx:id="busStop" prefWidth="150.0" text="Stop" />
@@ -341,6 +348,7 @@
                 <Pane>
                   <children>
                      <WebView fx:id="webviewMap" layoutX="9.0" layoutY="14.0" prefHeight="602.0" prefWidth="850.0" />
+
                   </children>
                 </Pane>
             </Tab>
