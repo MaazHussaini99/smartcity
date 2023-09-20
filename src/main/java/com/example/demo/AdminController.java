@@ -5,16 +5,21 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -49,17 +54,18 @@ public class AdminController {
     Button cancel;
     Button sendEmail;
     HBox buttonBox;
+    Button back;
 
     static User user;
     public void initialize() {
         basePane = new VBox();
         buttonBox = new HBox();
         generateTable();
-        addPromotionButton();
         addEmailFunction();
         anchorPane.getChildren().add(basePane);
 
     }
+
 
     public void addEmailFunction(){
         emailTarget = new TextField();
@@ -68,7 +74,7 @@ public class AdminController {
         emailTarget.setPromptText("To:");
         emailSubject.setPromptText("Subject");
         emailContent.setPromptText("Write here!");
-        writeEmail = new Button("write Email");
+        writeEmail = new Button("Write Email");
         emailTarget.setDisable(true);
         emailSubject.setDisable(true);
         emailContent.setDisable(true);
@@ -81,9 +87,38 @@ public class AdminController {
             }
         });
 
-        buttonBox.getChildren().addAll(writeEmail);
+        addPromotionButton();
+        addBackButton();
+        buttonBox.getChildren().add(writeEmail);
         basePane.getChildren().addAll(emailTarget,emailSubject,emailContent,buttonBox);
 
+    }
+
+    public void addBackButton(){
+        back = new Button("back");
+        buttonBox.getChildren().add(back);
+        back.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+
+
+                    // Load the LandingPage.fxml file
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("landing-page.fxml"));
+                    Parent root = loader.load();
+
+                    // Create a new scene
+                    Scene scene = new Scene(root);
+
+                    // Get the current stage and set the new scene
+                    Stage stage = (Stage) anchorPane.getScene().getWindow();
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void enableWrite(){
@@ -99,7 +134,6 @@ public class AdminController {
                 User currentUser = userTable.getSelectionModel().getSelectedItem();
                 String subjectLine ="";
                 if(subjects.contains(currentUser)){
-                    System.out.println("contins");
                     subjects.remove(currentUser);
                 }
                 else{
@@ -126,10 +160,12 @@ public class AdminController {
                 sendEmail();
             }
         });
+
         cancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                basePane.getChildren().removeAll(emailTarget,emailSubject,emailContent,buttonBox);
+                buttonBox.getChildren().clear();
+                basePane.getChildren().clear();
                 addEmailFunction();
 
             }
@@ -169,9 +205,7 @@ public class AdminController {
             throw new RuntimeException(e);
         }    }
 
-    /***
-     * todo add owen's promotion code
-     */
+
     public void addPromotionButton(){
         Button promote = new Button("Promote a user");
         buttonBox.getChildren().add(promote);
