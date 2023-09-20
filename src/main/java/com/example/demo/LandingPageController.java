@@ -574,17 +574,6 @@ public class LandingPageController extends NightLifeController implements Initia
 // Add an event handler to the button
         adminButton.setOnAction(event -> loadAdminFXML());
 
-//        // Promote User to Admin button
-//        if (User.getInstance().getRoleID() == 2) {
-//            adminButton = new Button("Promote a User to Admin");
-//            adminButton.setLayoutX(10);
-//            adminButton.setLayoutY(240);
-//
-//            adminButton.setOnAction(event -> promoteToAdmin());
-//
-//            userDataPane.getChildren().add(adminButton);
-//        }
-
         newCard = new Button("Add a New Payment Method"); // Replace with your user data components
         newCard.setLayoutX(10);
         newCard.setLayoutY(250);
@@ -635,96 +624,6 @@ public class LandingPageController extends NightLifeController implements Initia
             stage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * promoteToAdmin()
-     * Fails if:
-     *  1) A username wasn't entered
-     *  2) The username matches the current User
-     *  3) An account with the entered username wasn't found
-     *  4) The account is already an admin
-     * Promotes a User to an Admin if successful
-     */
-    private void promoteToAdmin() {
-
-        String userName;
-        Window owner = adminButton.getScene().getWindow();
-
-        TextInputDialog adminPane = new TextInputDialog("User name");
-        adminPane.setHeaderText("Enter the user name of the account you wish to promote.");
-        adminPane.showAndWait();
-
-        // Get username entered in by the admin
-        userName = adminPane.getEditor().getText();
-        System.out.println("Username " + userName);
-
-        // Stop if user didn't enter a username
-        if ( userName == null ) {
-            System.out.println("Username wasn't entered");
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                    "Username wasn't entered");
-            return;
-        }
-
-        // Prevent user from promoting themselves
-        if ( userName.equals(User.getInstance().getEmail())) {
-            System.out.println("You can't promote yourself");
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                    "You can't promote yourself");
-            return;
-        }
-
-        // Search for an account with that username
-        final String SELECT_QUERY = "SELECT * FROM user WHERE user_email = ?";
-        // try connecting to the database
-        try (Connection connection = DBConn.connectDB();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
-            preparedStatement.setString(1, userName);
-            // execute query
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            // An account wasn't found
-            if (resultSet.next() == false) {
-                showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                        "An account with that username doesn't exist");
-                return;
-            }
-
-            // The account is already an admin
-            if (Integer.parseInt(resultSet.getString(11)) == 2) {
-                showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                        "That account is already an Admin");
-                return;
-            }
-
-        } catch (SQLException e) {
-            // print SQL exception information
-            printSQLException(e);
-        }
-
-        // Everything is ok, start updating the database
-        final String UPDATE_QUERY = "UPDATE user SET role_ID = 2 WHERE user_email = ?";
-        // try connecting to the database
-        try (Connection connection = DBConn.connectDB()) {
-
-            connection.setAutoCommit(false); // Disable auto-commit
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
-            preparedStatement.setString(1, userName);
-
-            // execute query
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                connection.commit(); // Commit the transaction
-            } else {
-                connection.rollback(); // Rollback if the update fails
-            }
-
-        } catch (SQLException e) {
-            // print SQL exception information
-            printSQLException(e);
         }
     }
 
