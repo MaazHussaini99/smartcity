@@ -1,4 +1,8 @@
 package com.example.demo;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.Transport;
@@ -15,6 +19,39 @@ public class adminShell {
     Connection connection;
 
     public adminShell() {
+        getUser();
+    }
+
+    public ArrayList<User> getUser(){
+        String sql = "SELECT * FROM user";
+        ArrayList<User> users = new ArrayList<>();
+        try {
+            Connection connection = DBConn.connectDB();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+//            while(resultSet.next()){
+//                users.add(new User(
+//                        resultSet.getInt(1),
+//                        resultSet.getString(2),
+//                        resultSet.getString(3),
+//                        resultSet.getString(8),
+//                        resultSet.getInt
+//                ));
+//                System.out.printf("%s %s %s %s \n",
+//                        resultSet.getInt(1),
+//                        resultSet.getString(2),
+//                        resultSet.getString(3),
+//                        resultSet.getString(8));
+//
+//            }
+            return users;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendEmail(){
+
         final String username = "kevinzhengtwo@gmail.com"; // Your Gmail email address
         final String password = "iqly zzcf tqny taiv"; // Your Gmail password
 
@@ -43,7 +80,6 @@ public class adminShell {
             System.out.println("Email sent successfully.");
         } catch (MessagingException e) {
             throw new RuntimeException(e);
-        }
-    }
+        }    }
 
 }
