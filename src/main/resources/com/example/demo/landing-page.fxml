@@ -276,7 +276,7 @@
                         <children>
                             <Pane fx:id="nightLifePane1" layoutX="10.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-border-color: #2a51ad; -fx-border-width: 5; -fx-border-radius: 15; -fx-background-radius: 20px;">
                                 <children>
-                              <StackPane layoutX="10.0" layoutY="15.0" prefHeight="150.0" prefWidth="200.0">
+                              <StackPane layoutX="10.0" layoutY="15.0" prefHeight="150.0" prefWidth="255.0">
                                  <children>
                                           <ImageView fx:id="nightLifeImage1" fitHeight="150.0" fitWidth="255.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
                                  </children>
@@ -291,7 +291,7 @@
                             </Pane>
                             <Pane fx:id="nightLifePane2" layoutX="298.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-border-color: #2a51ad; -fx-border-width: 5; -fx-border-radius: 15; -fx-background-radius: 20px;">
                                 <children>
-                              <StackPane layoutX="10.0" layoutY="395.0" prefHeight="150.0" prefWidth="200.0">
+                              <StackPane layoutX="10.0" layoutY="395.0" prefHeight="150.0" prefWidth="255.0">
                                  <children>
                                           <ImageView fx:id="nightLifeImage2" fitHeight="150.0" fitWidth="255.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
                                  </children></StackPane>
@@ -305,7 +305,7 @@
                             </Pane>
                             <Pane fx:id="nightLifePane3" layoutX="585.0" layoutY="15.0" prefHeight="560.0" prefWidth="275.0" style="-fx-background-color: #3567c4; -fx-border-color: #2a51ad; -fx-border-width: 5; -fx-border-radius: 15; -fx-background-radius: 20px;">
                                 <children>
-                              <StackPane layoutX="10.0" layoutY="15.0" prefHeight="150.0" prefWidth="200.0">
+                              <StackPane layoutX="10.0" layoutY="15.0" prefHeight="150.0" prefWidth="255.0">
                                  <children>
                                           <ImageView fx:id="nightLifeImage3" fitHeight="150.0" fitWidth="255.0" pickOnBounds="true" preserveRatio="true" styleClass="articleImage" />
                                  </children>
