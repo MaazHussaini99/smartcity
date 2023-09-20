@@ -370,23 +370,28 @@ public class LandingPageController extends HotelBookingController implements Ini
      */
     private void promoteToAdmin() {
 
+        String userName;
         Window owner = adminButton.getScene().getWindow();
 
         TextInputDialog adminPane = new TextInputDialog("User name");
         adminPane.setHeaderText("Enter the user name of the account you wish to promote.");
+        adminPane.showAndWait();
 
         // Get username entered in by the admin
-        String userName = adminPane.getEditor().getText();
+        userName = adminPane.getEditor().getText();
+        System.out.println("Username " + userName);
 
         // Stop if user didn't enter a username
         if ( userName == null ) {
+            System.out.println("Username wasn't entered");
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "Username wasn't entered");
             return;
         }
 
         // Prevent user from promoting themselves
-        if ( userName == User.getInstance().getEmail()) {
+        if ( userName.equals(User.getInstance().getEmail())) {
+            System.out.println("You can't promote yourself");
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                     "You can't promote yourself");
             return;
@@ -402,7 +407,7 @@ public class LandingPageController extends HotelBookingController implements Ini
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // An account wasn't found
-            if (resultSet.next() != true) {
+            if (resultSet.next() == false) {
                 showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
                         "An account with that username doesn't exist");
                 return;
@@ -423,11 +428,20 @@ public class LandingPageController extends HotelBookingController implements Ini
         // Everything is ok, start updating the database
         final String UPDATE_QUERY = "UPDATE user SET role_ID = 2 WHERE user_email = ?";
         // try connecting to the database
-        try (Connection connection = DBConn.connectDB();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
+        try (Connection connection = DBConn.connectDB()) {
+
+            connection.setAutoCommit(false); // Disable auto-commit
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             preparedStatement.setString(1, userName);
+
             // execute query
-            preparedStatement.executeQuery();
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                connection.commit(); // Commit the transaction
+            } else {
+                connection.rollback(); // Rollback if the update fails
+            }
 
         } catch (SQLException e) {
             // print SQL exception information
