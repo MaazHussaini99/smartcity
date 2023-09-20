@@ -100,6 +100,7 @@
       <workItem from="1694702453265" duration="1666000" />
       <workItem from="1694717361800" duration="605000" />
       <workItem from="1694785077724" duration="658000" />
+      <workItem from="1695129358049" duration="6881000" />
     </task>
     <task id="LOCAL-00001" summary="Started setting up User file">
       <option name="closed" value="true" />
@@ -194,11 +195,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/demo/LandingPageController.java</url>
-          <line>20</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="4" />
