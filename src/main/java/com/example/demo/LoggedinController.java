@@ -124,21 +124,27 @@ public class LoggedinController {
             // 11 = role ID
             if (resultSet.next() == true) {
 
-                // Save login data to User object
-                User user = User.initializeUser(Integer.parseInt(resultSet.getString(1)),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4),
-                        resultSet.getString(5),
-                        resultSet.getString(6),
-                        resultSet.getString(7),
-                        resultSet.getString(8),
-                        resultSet.getString(9),
-                        resultSet.getString(10),
-                        Integer.parseInt(resultSet.getString(11)));
-                System.out.println("Logged in!");
-                HotelBooking.getInstance().setEmailId(emailId);
-                return true;
+                PreparedStatement preparedStatement2 = connection.prepareStatement("SELECT * FROM states WHERE state_ID = ?");
+                preparedStatement2.setInt(1, Integer.parseInt(resultSet.getString(7)));
+                ResultSet stateResultSet = preparedStatement2.executeQuery();
+
+                if (stateResultSet.next() == true) {
+                    // Save login data to User object
+                    User user = User.initializeUser(Integer.parseInt(resultSet.getString(1)),
+                            resultSet.getString(2),
+                            resultSet.getString(3),
+                            resultSet.getString(4),
+                            resultSet.getString(5),
+                            resultSet.getString(6),
+                            stateResultSet.getString(2),
+                            resultSet.getString(8),
+                            resultSet.getString(9),
+                            resultSet.getString(10),
+                            Integer.parseInt(resultSet.getString(11)));
+                    System.out.println("Logged in!");
+                    HotelBooking.getInstance().setEmailId(emailId);
+                    return true;
+                }
             }
 
 
