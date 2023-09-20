@@ -56,7 +56,7 @@ import javafx.util.StringConverter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class LandingPageController extends HotelBookingController implements Initializable {
+public class LandingPageController extends NightLifeController implements Initializable {
     @FXML
     private Button profileLink,newCard,nextButton,previousButton, adminButton;
     @FXML
@@ -136,7 +136,7 @@ public class LandingPageController extends HotelBookingController implements Ini
             e.printStackTrace();
         }
         profileLink.setOnAction(this::handleProfileButtonClick);
-//        show();
+        show();
         displayWeather();
         Task<Void> task = new Task<Void>() {
             @Override
