@@ -138,7 +138,6 @@ public class LoggedinController {
                             resultSet.getString(6),
                             stateResultSet.getString(2),
                             resultSet.getString(8),
-                            resultSet.getString(9),
                             resultSet.getString(10),
                             Integer.parseInt(resultSet.getString(11)));
                     System.out.println("Logged in!");

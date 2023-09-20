@@ -17,7 +17,6 @@ public class User {
     private String zipcode;
     private String state;
     private String email;
-    private String password;
     private String phoneNumber;
 
     /**
@@ -32,7 +31,6 @@ public class User {
      * @param zipcode zipcode
      * @param state state
      * @param email email
-     * @param password password
      * @param phoneNumber phone number
      * @param roleID role ID
      */
@@ -44,7 +42,6 @@ public class User {
                  String zipcode,
                  String state,
                  String email,
-                 String password,
                  String phoneNumber,
                  int roleID) {
 
@@ -56,7 +53,6 @@ public class User {
         this.zipcode = zipcode;
         this.state = state;
         this.email = email;
-        this.password = password;
         this.phoneNumber = phoneNumber;
         this.roleID = roleID;
     }
@@ -73,7 +69,6 @@ public class User {
      * @param zipcode zipcode
      * @param state state
      * @param email email
-     * @param password password
      * @param phoneNumber phone number
      * @param roleID role ID
      * @return a User object
@@ -86,7 +81,6 @@ public class User {
                                                    String zipcode,
                                                    String state,
                                                    String email,
-                                                   String password,
                                                    String phoneNumber,
                                                    int roleID) {
         if (user == null)
@@ -98,7 +92,6 @@ public class User {
                     zipcode,
                     state,
                     email,
-                    password,
                     phoneNumber,
                     roleID);
 
@@ -200,15 +193,6 @@ public class User {
     }
 
     /**
-     * getPassword
-     * Returns the user's password
-     * @return String password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
      * getPhoneNumber
      * Returns the user's phone number
      * @return String phoneNumber
@@ -227,98 +211,6 @@ public class User {
      */
     public int getRoleID() {
         return roleID;
-    }
-
-    // Setters
-
-    /**
-     * setFirstName
-     * Sets the user's first name
-     * @param firstName first name
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * setLastName
-     * Sets the user's last name
-     * @param lastName last name
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * setStreetAddress
-     * Sets the user's street address
-     * @param address street address
-     */
-    public void setStreetAddress(String address) {
-        this.streetAddress = address;
-    }
-
-    /**
-     * setCity
-     * Sets the city that the user lives in
-     * @param city city
-     */
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    /**
-     * setZipcode
-     * Sets the user's zipcode
-     * @param zipcode zipcode
-     */
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
-    }
-
-    /**
-     * setState
-     * Sets the state that the user lives in
-     * @param state state
-     */
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    /**
-     * setEmail
-     * Sets the user's email
-     * @param email email
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * setPassword
-     * Sets the user's password
-     * @param password password
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * setPhoneNumber
-     * Sets the user's phone number
-     * @param phoneNumber phone number
-     */
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    /**
-     * setRoleID
-     * Sets the user's role ID
-     * @param roleID
-     */
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
     }
 
     public String toString() {
