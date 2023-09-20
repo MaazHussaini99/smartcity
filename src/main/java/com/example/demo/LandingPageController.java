@@ -565,15 +565,15 @@ public class LandingPageController extends NightLifeController implements Initia
         adminButton.setOnAction(event -> loadAdminFXML());
 
         // Promote User to Admin button
-        if (User.getInstance().getRoleID() == 2) {
-            adminButton = new Button("Promote a User to Admin");
-            adminButton.setLayoutX(10);
-            adminButton.setLayoutY(240);
-
-            adminButton.setOnAction(event -> promoteToAdmin());
-
-            userDataPane.getChildren().add(adminButton);
-        }
+//        if (User.getInstance().getRoleID() == 2) {
+//            adminButton = new Button("Promote a User to Admin");
+//            adminButton.setLayoutX(10);
+//            adminButton.setLayoutY(240);
+//
+//            adminButton.setOnAction(event -> promoteToAdmin());
+//
+//            userDataPane.getChildren().add(adminButton);
+//        }
 
         newCard = new Button("Add a New Payment Method"); // Replace with your user data components
         newCard.setLayoutX(10);
