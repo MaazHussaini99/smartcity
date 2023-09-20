@@ -4,23 +4,40 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class NightLifeController extends HotelBookingController {
 
     @FXML
-    private Button nextButtonn,previousButtonn;
+    private Button nextButtonn,previousButtonn,addNightLifeInfo,deleteNightLifeInfo;
+    @FXML
+    private TextField name;
+    @FXML
+    private TextField description;
+    @FXML
+    private TextField imageUrl;
+    @FXML
+    private TextField moreInfoUrl;
+    @FXML
+    private TextField namee;
     private int currentNightLifeIndex = 0;
 
     @FXML
@@ -33,6 +50,14 @@ public class NightLifeController extends HotelBookingController {
 
     public void show() {
         try {
+            String emailId = HotelBooking.getInstance().getEmailId();
+            HotelBooking hotelBooking=new HotelBooking();
+            int roleId = hotelBooking.getRoleDetails(emailId);
+            if(roleId==2){
+                addNightLifeInfo.setVisible(true);
+                deleteNightLifeInfo.setVisible(true);
+            }
+
             ObservableList<NightLife> nightLifeItems = FXCollections.observableArrayList(NightLife.getNightlifeInfo());
 
             // Initialize the dialog panes and images for the first news article
@@ -98,6 +123,108 @@ public class NightLifeController extends HotelBookingController {
             default:
                 throw new IllegalArgumentException("Invalid index: " + index);
         }
+    }
+    private DialogPane addNightLifeDialogContent() {
+        DialogPane dialogPane = new DialogPane();
+        this.name=new TextField();
+        this.description=new TextField();
+        this.imageUrl=new TextField();
+        this.moreInfoUrl=new TextField();
+        // Customize the layout of the dialog content
+        VBox content = new VBox(10); // Vertical layout with spacing
+        content.getChildren().addAll(new javafx.scene.control.Label("Enter Night Life Name:"),name,new javafx.scene.control.Label("Enter Night Life address and description:"), description,new javafx.scene.control.Label("Enter Image URL:"),imageUrl,new javafx.scene.control.Label("Enter Website URL:"), moreInfoUrl);
+        dialogPane.setContent(content);
+        return dialogPane;
+    }
+    private DialogPane deleteNightLifeDialogContent() {
+        DialogPane dialogPane = new DialogPane();
+        this.namee=new TextField();
+        // Customize the layout of the dialog content
+        VBox content = new VBox(10); // Vertical layout with spacing
+        content.getChildren().addAll(new javafx.scene.control.Label("Enter Night Life Title Name:"),namee);
+        dialogPane.setContent(content);
+        return dialogPane;
+    }
+    @FXML
+    private void addNightLife() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setTitle("Add Night Life Information");
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.setContent(addNightLifeDialogContent());
+        ButtonType addButtonType = new ButtonType("Add");
+        dialogPane.getButtonTypes().addAll(addButtonType, ButtonType.CANCEL);
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == addButtonType) {
+                // Get the selected check-in and check-out dates from the DatePicker controls
+                String nightLifename = name.getText();
+                String nightLifedescription = description.getText();
+                String nightLifeimageUrl = imageUrl.getText();
+                String nightLifeWebsiteUrl = moreInfoUrl.getText();
+                boolean querySuccess=false;
+                String sql = "INSERT INTO nightlife (name, description, imageUrl,moreInfoUrl) VALUES ( ?, ?, ?, ?)";
+                try (Connection connection = DBConn.connectDB();
+                     PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                    preparedStatement.setString(1, nightLifename);
+                    preparedStatement.setString(2, nightLifedescription);
+                    preparedStatement.setString(3, nightLifeimageUrl);
+                    preparedStatement.setString(4, nightLifeWebsiteUrl);
+                    int rowsAffected= preparedStatement.executeUpdate();
+                   if(rowsAffected > 0){
+                   querySuccess=true;
+                   }
+                }
+                catch(SQLException e){
+                    e.printStackTrace();
+                }
+                if (querySuccess) {
+                    // Show a success message using an Alert
+                    showAlert(Alert.AlertType.INFORMATION, "Action Success",
+                            "Night Life information added successfully!");
+                } else {
+                    // Show an error message using an Alert
+                    showAlert(Alert.AlertType.ERROR, "Action Error", "Action failed");
+                }
+            }
+            return null;
+        });
+        dialog.showAndWait();
+    }
+    @FXML
+    private void deleteNightLife() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setTitle("Delete Night Life Information");
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.setContent(deleteNightLifeDialogContent());
+        ButtonType addButtonType = new ButtonType("Delete");
+        dialogPane.getButtonTypes().addAll(addButtonType, ButtonType.CANCEL);
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == addButtonType) {
+                // Get the selected check-in and check-out dates from the DatePicker controls
+                String nightLifename = namee.getText();
+                String sql = "delete from nightlife where name=?";
+                try (Connection connection = DBConn.connectDB();
+                     PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+                    preparedStatement.setString(1, nightLifename);
+
+                    int rowsAffected = preparedStatement.executeUpdate();
+                    if(rowsAffected > 0){
+                        showAlert(Alert.AlertType.INFORMATION, "Query Success",
+                                "Night Life information deleted successfully!");
+                    }
+                    else{
+                        showAlert(Alert.AlertType.INFORMATION, "Action failed",
+                                "Action Failed!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        });
+        dialog.showAndWait();
     }
     private void populateNightLifePanes(ObservableList<NightLife> nightLifeItems, int startIndex) {
         for (int i = 0; i < nightLifePerPage; i++) {

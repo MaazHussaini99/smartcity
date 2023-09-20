@@ -5,6 +5,8 @@ module com.example.demo {
     requires org.json;
     requires java.desktop;
     requires java.mail;
+    requires javafx.web;
+
 
 
     opens com.example.demo to javafx.fxml;

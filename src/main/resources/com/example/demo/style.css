@@ -48,14 +48,14 @@ Button {
     -fx-background-color: linear-gradient(to bottom, #e3b256, #fac869);
     -fx-font-weight: bold;
     -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
     -fx-padding: 5px 10px;
 }
 Button:hover {
     -fx-background-color: linear-gradient(to bottom, #fac869, #e3b256);
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
     -fx-padding: 5px 10px;
 
     -fx-scale-x: .95;
@@ -83,4 +83,9 @@ Button:hover {
 .table-row-cell:selected {
     -fx-background-color: #66aede;
     -fx-text-fill: white;
+}
+.menu-bar .label{
+    -fx-text-fill: white;       /* Text color */
+    -fx-font-weight:bold;
+    -fx-font-size:30px;
 }

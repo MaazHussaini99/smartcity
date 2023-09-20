@@ -68,7 +68,6 @@ public class TransportController {
                 SimpleStringProperty stopName = new SimpleStringProperty(resultSet.getString("stop_name"));
                 SimpleStringProperty arrivalTime = new SimpleStringProperty(resultSet.getString("arrival_time"));
                 SimpleStringProperty departureTime = new SimpleStringProperty(resultSet.getString("departure_time"));
-                System.out.println(routeId + ": " + stopName);
                 stops.add(new Stop(stopName, arrivalTime, departureTime));
             }
 
