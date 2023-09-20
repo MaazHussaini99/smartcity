@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  * User
  * Author: Owen Wurster
@@ -17,8 +20,16 @@ public class User {
     private String zipcode;
     private String state;
     private String email;
-    private String password;
     private String phoneNumber;
+
+
+    public User(int userID, String firstName,String lastName, String emailAddress, int roleID){
+        this.userID = userID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = emailAddress;
+        this.roleID = roleID;
+    }
 
     /**
      * private User constructor
@@ -32,7 +43,6 @@ public class User {
      * @param zipcode zipcode
      * @param state state
      * @param email email
-     * @param password password
      * @param phoneNumber phone number
      * @param roleID role ID
      */
@@ -44,7 +54,6 @@ public class User {
                  String zipcode,
                  String state,
                  String email,
-                 String password,
                  String phoneNumber,
                  int roleID) {
 
@@ -56,7 +65,6 @@ public class User {
         this.zipcode = zipcode;
         this.state = state;
         this.email = email;
-        this.password = password;
         this.phoneNumber = phoneNumber;
         this.roleID = roleID;
     }
@@ -73,7 +81,6 @@ public class User {
      * @param zipcode zipcode
      * @param state state
      * @param email email
-     * @param password password
      * @param phoneNumber phone number
      * @param roleID role ID
      * @return a User object
@@ -86,7 +93,6 @@ public class User {
                                                    String zipcode,
                                                    String state,
                                                    String email,
-                                                   String password,
                                                    String phoneNumber,
                                                    int roleID) {
         if (user == null)
@@ -98,7 +104,6 @@ public class User {
                     zipcode,
                     state,
                     email,
-                    password,
                     phoneNumber,
                     roleID);
 
@@ -200,15 +205,6 @@ public class User {
     }
 
     /**
-     * getPassword
-     * Returns the user's password
-     * @return String password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
      * getPhoneNumber
      * Returns the user's phone number
      * @return String phoneNumber
@@ -295,15 +291,6 @@ public class User {
     }
 
     /**
-     * setPassword
-     * Sets the user's password
-     * @param password password
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
      * setPhoneNumber
      * Sets the user's phone number
      * @param phoneNumber phone number
@@ -325,5 +312,28 @@ public class User {
         String address = "";
         address = this.streetAddress + " " + this.city + ",\n" + this.state + " " + this.zipcode;
         return address;
+    }
+
+    public StringProperty firstNameProperty(){
+        return new SimpleStringProperty(firstName);
+    }
+
+    public StringProperty lastNameProperty(){
+        return new SimpleStringProperty(lastName);
+    }
+
+    public StringProperty emailProperty(){
+        return new SimpleStringProperty(email);
+    }
+
+    public StringProperty adminProperty(){
+        String admin;
+        if(roleID == 1){
+            admin = "No";
+        }
+        else{
+            admin = "Yes";
+        }
+        return new SimpleStringProperty(admin);
     }
 }

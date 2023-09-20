@@ -148,7 +148,7 @@ public class JobListing {
 
 
     /***
-     * this is fine
+     * update a job into the database
      * @param job
      * @throws SQLException
      */

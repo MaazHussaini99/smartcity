@@ -19,7 +19,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.layout.Pane;
@@ -34,9 +33,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -52,13 +48,13 @@ import java.util.ResourceBundle;
 
 
 import javafx.stage.Window;
-import javafx.util.StringConverter;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class LandingPageController extends NightLifeController implements Initializable {
     @FXML
-    private Button profileLink,newCard,nextButton,previousButton, adminButton;
+    private Button profileLink,newCard,nextButton,previousButton, adminButton, editProfileButton;
     @FXML
     private StackPane userDataStackPane;
     private boolean isProfilePaneOpen = false;
@@ -103,6 +99,8 @@ public class LandingPageController extends NightLifeController implements Initia
     @FXML
     private TableColumn<Stop, String> busStop, busArrivalTime, busDepartureTime;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    @FXML
+    private WebView webviewMap;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -261,6 +259,9 @@ public class LandingPageController extends NightLifeController implements Initia
         }
         //todo limit to admin only 
         setJobEditRowBehavior();
+
+        MapController maps = new MapController();
+        maps.showMap(webviewMap);
     }
 
     private void setJobEditRowBehavior() {
@@ -563,23 +564,19 @@ public class LandingPageController extends NightLifeController implements Initia
                 + ", " + User.getInstance().getState());
         userDataText.setLayoutX(10);
         userDataText.setLayoutY(10);
+
+        // Edit profile
+        editProfileButton = new Button("Edit Profile");
+        editProfileButton.setLayoutX(10);
+        editProfileButton.setLayoutY(150);
+        editProfileButton.setOnAction(event -> goToEditProfile());
+
         adminButton = new Button("Add new Admin");
         adminButton.setLayoutX(10);
         adminButton.setLayoutY(200);
 
 // Add an event handler to the button
         adminButton.setOnAction(event -> loadAdminFXML());
-
-        // Promote User to Admin button
-//        if (User.getInstance().getRoleID() == 2) {
-//            adminButton = new Button("Promote a User to Admin");
-//            adminButton.setLayoutX(10);
-//            adminButton.setLayoutY(240);
-//
-//            adminButton.setOnAction(event -> promoteToAdmin());
-//
-//            userDataPane.getChildren().add(adminButton);
-//        }
 
         newCard = new Button("Add a New Payment Method"); // Replace with your user data components
         newCard.setLayoutX(10);
@@ -591,6 +588,7 @@ public class LandingPageController extends NightLifeController implements Initia
         userDataPane.getChildren().add(userDataText);
         userDataPane.getChildren().add(newCard);
         userDataPane.getChildren().add(adminButton);
+        userDataPane.getChildren().add(editProfileButton);
         return userDataPane;
     }
     private void onProfileLinkClicked() {
@@ -632,79 +630,24 @@ public class LandingPageController extends NightLifeController implements Initia
             e.printStackTrace();
         }
     }
+
     /**
-     * promoteToAdmin()
-     * Fails if:
-     *  1) A username wasn't entered
-     *  2) The username matches the current User
-     *  3) An account with the entered username wasn't found
-     *  4) The account is already an admin
-     * Promotes a User to an Admin if successful
+     * goToEditProfile
+     * Sends the user to the edit profile page
      */
-    private void promoteToAdmin() {
+    @FXML
+    public void goToEditProfile() {
+        try {
 
-        Window owner = adminButton.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("edit-profile.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 535, 400);
+            Stage stage = (Stage) editProfileButton.getScene().getWindow();
+            stage.setTitle("Smart City - Edit Profile");
+            stage.setScene(scene);
+            stage.show();
 
-        TextInputDialog adminPane = new TextInputDialog("User name");
-        adminPane.setHeaderText("Enter the user name of the account you wish to promote.");
-
-        // Get username entered in by the admin
-        String userName = adminPane.getEditor().getText();
-
-        // Stop if user didn't enter a username
-        if ( userName == null ) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                    "Username wasn't entered");
-            return;
-        }
-
-        // Prevent user from promoting themselves
-        if ( userName == User.getInstance().getEmail()) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                    "You can't promote yourself");
-            return;
-        }
-
-        // Search for an account with that username
-        final String SELECT_QUERY = "SELECT * FROM user WHERE user_email = ?";
-        // try connecting to the database
-        try (Connection connection = DBConn.connectDB();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
-            preparedStatement.setString(1, userName);
-            // execute query
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            // An account wasn't found
-            if (resultSet.next() != true) {
-                showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                        "An account with that username doesn't exist");
-                return;
-            }
-
-            // The account is already an admin
-            if (Integer.parseInt(resultSet.getString(11)) == 2) {
-                showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                        "That account is already an Admin");
-                return;
-            }
-
-        } catch (SQLException e) {
-            // print SQL exception information
-            printSQLException(e);
-        }
-
-        // Everything is ok, start updating the database
-        final String UPDATE_QUERY = "UPDATE user SET role_ID = 2 WHERE user_email = ?";
-        // try connecting to the database
-        try (Connection connection = DBConn.connectDB();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
-            preparedStatement.setString(1, userName);
-            // execute query
-            preparedStatement.executeQuery();
-
-        } catch (SQLException e) {
-            // print SQL exception information
-            printSQLException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -720,6 +663,8 @@ public class LandingPageController extends NightLifeController implements Initia
         stage.setTitle("Smart City - Sign up");
         stage.setScene(scene);
         stage.show();
+
+
     }
 
     public ImageView getImagePaneForIndex(int index) {

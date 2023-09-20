@@ -9,6 +9,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.scene.web.WebView?>
 <HBox prefHeight="661.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to bottom, #ffffff, #e1e4e6);" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LandingPageController">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="300.0">
@@ -337,6 +338,8 @@
                                 <font>
                                     <Font name="System Bold" size="15.0" />
                                 </font></Button>
+                        <Button fx:id="addNightLifeInfo" layoutX="316.0" layoutY="587.0" mnemonicParsing="false" onAction="#addNightLife" prefHeight="28.0" prefWidth="130.0" text="Add Night Life Info" visible="false" />
+                        <Button fx:id="deleteNightLifeInfo" layoutX="486.0" layoutY="587.0" mnemonicParsing="false" onAction="#deleteNightLife" prefHeight="28.0" prefWidth="145.0" text="Delete Night Life Info" visible="false" />
                         </children>
                     </AnchorPane>
                 </content>
@@ -344,7 +347,8 @@
             <Tab text="City Map">
                 <Pane>
                   <children>
-<!--                     <WebView layoutX="10.0" layoutY="15.0" prefHeight="602.0" prefWidth="850.0" />-->
+                     <WebView fx:id="webviewMap" layoutX="9.0" layoutY="14.0" prefHeight="602.0" prefWidth="850.0" />
+
                   </children>
                 </Pane>
             </Tab>
