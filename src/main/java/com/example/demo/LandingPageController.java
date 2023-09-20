@@ -268,8 +268,8 @@ public class LandingPageController extends NightLifeController implements Initia
         //spawn 3 button on load
         //change it to text box with 2 buttons
         //invoke the various commands in Job Controller or something
-        Button b1 = new Button("Edit");
         Button b2 = new Button("Add");
+        Button b1 = new Button("Edit");
         Button b3 = new Button("Delete");
         editJobRow.getChildren().addAll(b1, b2, b3);
         Button[] buttons = {b1, b2, b3};
