@@ -8,8 +8,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
 
-<?import javafx.scene.web.WebView?>
 <HBox prefHeight="661.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to bottom, #ffffff, #e1e4e6);" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.LandingPageController">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="300.0">
@@ -79,13 +79,28 @@
                         <VBox layoutX="10.0" layoutY="25.0" prefHeight="595.0" prefWidth="850.0" spacing="10">
                         <StackPane prefHeight="47.0" prefWidth="850.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="84.0" prefWidth="850.0" text="Manage Hotel Bookings" textFill="#ffffffb7">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="105.0" prefWidth="850.0" text="Manage Hotel Bookings" textFill="#ffffba">
                                  <font>
-                                    <Font name="Bell MT Bold" size="28.0" />
-                                 </font></Label>
+                                    <Font name="Bell MT Bold" size="36.0" />
+                                 </font>
+                                 <effect>
+                                    <DropShadow offsetY="4.0">
+                                       <input>
+                                          <Lighting bumpInput="$null">
+                                             <light>
+                                                <Light.Distant>
+                                                   <color>
+                                                      <Color red="0.6352941393852234" green="0.8901960849761963" blue="0.9882352948188782" />
+                                                   </color>
+                                                </Light.Distant>
+                                             </light>
+                                          </Lighting>
+                                       </input>
+                                    </DropShadow>
+                                 </effect></Label>
                            </children>
                         </StackPane>
-                            <StackPane prefHeight="545.0" prefWidth="850.0">
+                            <StackPane prefHeight="482.0" prefWidth="850.0">
                                 <ImageView fitHeight="437.0" fitWidth="748.0" pickOnBounds="true" preserveRatio="true"> <image> <Image url="@../images/Map-of-Albany.jpg" /> </image> </ImageView>
                                 <TableView fx:id="hotelTableView" onMouseClicked="#handleHotelSelection" prefHeight="300.0" prefWidth="750.0" visible="false">
                                     <columns>
@@ -104,11 +119,11 @@
                                                 <PropertyValueFactory property="hotelPrice" />
                                             </cellValueFactory>
                                         </TableColumn>
-                                        <TableColumn prefWidth="109.20001220703125" text="Room Number">
+                                       <!-- <TableColumn prefWidth="109.20001220703125" text="Room Number">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelRoomNumber" />
                                             </cellValueFactory>
-                                        </TableColumn>
+                                        </TableColumn> -->
                                         <TableColumn prefWidth="103.39996337890625" text="Availability">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelAvailability" />
@@ -211,7 +226,7 @@
                               <Spinner fx:id="ticketSpinner" layoutX="144.0" layoutY="481.0" prefHeight="25.0" prefWidth="82.0" />
                               <Label fx:id="busLabel" alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="61.0" prefWidth="342.0" text="Select a Bus" textAlignment="CENTER" textFill="#e9f4a7" wrapText="true">
                                  <font>
-                                    <Font size="25.0" />
+                                    <Font name="Yu Gothic Regular" size="25.0" />
                                  </font>
                               </Label>
                               </children></Pane>
@@ -344,33 +359,31 @@
                     </AnchorPane>
                 </content>
             </Tab>
-            <Tab xmlns="http://javafx.com/javafx"
-                 xmlns:fx="http://javafx.com/fxml/1" text="Events">
+            <Tab text="Events" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
                 <content>
                     <AnchorPane styleClass="anchor-pane">
                         <children>
-                            <StackPane prefWidth="700">
+                            <StackPane layoutX="59.0" layoutY="39.0" prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20; -fx-border-color: #2a51ad; -fx-border-radius: 15; -fx-border-width: 5px;">
                                 <!-- First TableView for Event 1 -->
-                                <VBox fx:id="event1Details" spacing="10" visible="false" layoutX="10.0" layoutY="20.0">
-                                    <TableView fx:id="eventsTableView1" onMouseClicked="#handleEventSelection1"
-                                               prefHeight="300.0" prefWidth="900.0" style="-fx-background-color: #87aede;">
+                                <VBox fx:id="event1Details" layoutX="10.0" layoutY="20.0" spacing="10" visible="false">
+                                    <TableView fx:id="eventsTableView1" onMouseClicked="#handleEventSelection1" prefHeight="460.0" prefWidth="900.0" style="-fx-background-color: #87aede;">
                                         <columns>
-                                            <TableColumn text="Event Name">
+                                            <TableColumn prefWidth="300.0" text="Event Name">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventName" />
                                                 </cellValueFactory>
                                             </TableColumn>
-                                            <TableColumn text="Date">
+                                            <TableColumn prefWidth="100.0" text="Date">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventDate" />
                                                 </cellValueFactory>
                                             </TableColumn>
-                                            <TableColumn text="Location">
+                                            <TableColumn prefWidth="200.0" text="Location">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventLocation" />
                                                 </cellValueFactory>
                                             </TableColumn>
-                                            <TableColumn text="Price">
+                                            <TableColumn prefWidth="100.0" text="Price">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventPrice" />
                                                 </cellValueFactory>
@@ -378,35 +391,34 @@
                                         </columns>
                                     </TableView>
                                     <HBox spacing="20">
-                                        <Button text="Go Back" onAction="#mainContentView" />
-                                        <Button text="Create Booking" onAction="#createBooking" />
-                                        <Button text="View Bookings" onAction="#viewBookings"/>
-                                        <Button text="Create Event" fx:id="event1createEventButton" onAction="#createEvent" />
-                                        <Button text="Delete Event" fx:id="event1deleteEventButton" onAction="#deleteEvent"/>
+                                        <Button onAction="#mainContentView" text="Go Back" />
+                                        <Button onAction="#createBooking" text="Create Booking" />
+                                        <Button onAction="#viewBookings" text="View Bookings" />
+                                        <Button fx:id="event1createEventButton" onAction="#createEvent" text="Create Event" />
+                                        <Button fx:id="event1deleteEventButton" onAction="#deleteEvent" text="Delete Event" />
                                     </HBox>
                                 </VBox>
 
                                 <!-- Second TableView for Event 2 -->
-                                <VBox fx:id="event2Details" spacing="10" visible="false" layoutX="10.0" layoutY="20.0">
-                                    <TableView fx:id="eventsTableView2" onMouseClicked="#handleEventSelection2"
-                                               prefHeight="300.0" prefWidth="900.0" style="-fx-background-color: #87aede;">
+                                <VBox fx:id="event2Details" layoutX="10.0" layoutY="20.0" spacing="10" visible="false">
+                                    <TableView fx:id="eventsTableView2" onMouseClicked="#handleEventSelection2" prefHeight="460.0" prefWidth="900.0" style="-fx-background-color: #87aede;">
                                         <columns>
-                                            <TableColumn text="Event Name">
+                                            <TableColumn prefWidth="300.0" text="Event Name">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventName" />
                                                 </cellValueFactory>
                                             </TableColumn>
-                                            <TableColumn text="Date">
+                                            <TableColumn prefWidth="100.0" text="Date">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventDate" />
                                                 </cellValueFactory>
                                             </TableColumn>
-                                            <TableColumn text="Location">
+                                            <TableColumn prefWidth="200.0" text="Location">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventLocation" />
                                                 </cellValueFactory>
                                             </TableColumn>
-                                            <TableColumn text="Price">
+                                            <TableColumn prefWidth="100.0" text="Price">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventPrice" />
                                                 </cellValueFactory>
@@ -414,35 +426,34 @@
                                         </columns>
                                     </TableView>
                                     <HBox spacing="20">
-                                        <Button text="Go Back" onAction="#mainContentView" />
-                                        <Button text="Create Booking" onAction="#createBooking" />
-                                        <Button text="View Bookings" onAction="#viewBookings"/>
-                                        <Button text="Create Event" fx:id="event2createEventButton" onAction="#createEvent"/>
-                                        <Button text="Delete Event" fx:id="event2deleteEventButton" onAction="#deleteEvent"/>
+                                        <Button onAction="#mainContentView" text="Go Back" />
+                                        <Button onAction="#createBooking" text="Create Booking" />
+                                        <Button onAction="#viewBookings" text="View Bookings" />
+                                        <Button fx:id="event2createEventButton" onAction="#createEvent" text="Create Event" />
+                                        <Button fx:id="event2deleteEventButton" onAction="#deleteEvent" text="Delete Event" />
                                     </HBox>
                                 </VBox>
 
                                 <!-- Third TableView for Event 3 -->
-                                <VBox fx:id="event3Details" spacing="10" visible="false" layoutX="10.0" layoutY="20.0">
-                                    <TableView fx:id="eventsTableView3" onMouseClicked="#handleEventSelection3"
-                                               prefHeight="300.0" prefWidth="900.0" style="-fx-background-color: #87aede;">
+                                <VBox fx:id="event3Details" layoutX="10.0" layoutY="20.0" spacing="10" visible="false">
+                                    <TableView fx:id="eventsTableView3" onMouseClicked="#handleEventSelection3" prefHeight="460.0" prefWidth="900.0" style="-fx-background-color: #87aede;">
                                         <columns>
-                                            <TableColumn text="Event Name">
+                                            <TableColumn prefWidth="300.0" text="Event Name">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventName" />
                                                 </cellValueFactory>
                                             </TableColumn>
-                                            <TableColumn text="Date">
+                                            <TableColumn prefWidth="100.0" text="Date">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventDate" />
                                                 </cellValueFactory>
                                             </TableColumn>
-                                            <TableColumn text="Location">
+                                            <TableColumn prefWidth="200.0" text="Location">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventLocation" />
                                                 </cellValueFactory>
                                             </TableColumn>
-                                            <TableColumn text="Price">
+                                            <TableColumn prefWidth="100.0" text="Price">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventPrice" />
                                                 </cellValueFactory>
@@ -450,33 +461,32 @@
                                         </columns>
                                     </TableView>
                                     <HBox spacing="20">
-                                        <Button text="Go Back" onAction="#mainContentView" />
-                                        <Button text="Create Booking" onAction="#createBooking" />
-                                        <Button text="View Bookings" onAction="#viewBookings"/>
-                                        <Button text="Create Event" fx:id="event3createEventButton" onAction="#createEvent"/>
-                                        <Button text="Delete Event" fx:id="event3deleteEventButton" onAction="#deleteEvent"/>
+                                        <Button onAction="#mainContentView" text="Go Back" />
+                                        <Button onAction="#createBooking" text="Create Booking" />
+                                        <Button onAction="#viewBookings" text="View Bookings" />
+                                        <Button fx:id="event3createEventButton" onAction="#createEvent" text="Create Event" />
+                                        <Button fx:id="event3deleteEventButton" onAction="#deleteEvent" text="Delete Event" />
                                     </HBox>
                                 </VBox>
-                                <VBox fx:id="bookingDetails" spacing="10" visible="false" layoutX="10.0" layoutY="20.0">
-                                    <TableView fx:id="bookingTableView" onMouseClicked="#handleBookingSelection"
-                                               prefHeight="300.0" prefWidth="900.0" style="-fx-background-color: #87aede;">
+                                <VBox fx:id="bookingDetails" layoutX="10.0" layoutY="20.0" spacing="10" visible="false">
+                                    <TableView fx:id="bookingTableView" onMouseClicked="#handleBookingSelection" prefHeight="460.0" prefWidth="702.0" style="-fx-background-color: #87aede;">
                                         <columns>
-                                            <TableColumn text="Event Name">
+                                            <TableColumn prefWidth="300.0" text="Event Name">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventName" />
                                                 </cellValueFactory>
                                             </TableColumn>
-                                            <TableColumn text="Date">
+                                            <TableColumn prefWidth="100.0" text="Date">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventDate" />
                                                 </cellValueFactory>
                                             </TableColumn>
-                                            <TableColumn text="Location">
+                                            <TableColumn prefWidth="200.0" text="Location">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventLocation" />
                                                 </cellValueFactory>
                                             </TableColumn>
-                                            <TableColumn text="Cost">
+                                            <TableColumn prefWidth="100.0" text="Cost">
                                                 <cellValueFactory>
                                                     <PropertyValueFactory property="eventPrice" />
                                                 </cellValueFactory>
@@ -484,18 +494,42 @@
                                         </columns>
                                     </TableView>
                                     <HBox spacing="20">
-                                        <Button text="Go Back" onAction="#mainContentView2" />
-                                        <Button text="Delete Booking" onAction="#deleteBooking" />
+                                        <Button onAction="#mainContentView2" text="Go Back" />
+                                        <Button onAction="#deleteBooking" text="Delete Booking" />
                                     </HBox>
                                 </VBox>
                                 <!-- Description and Images -->
-                                <VBox fx:id="mainContentView" spacing="20" alignment="CENTER">
+                                <VBox fx:id="mainContentView" alignment="CENTER" spacing="20.0">
                                 <!-- Description -->
-                                <Label styleClass="description-label">Events Calendar</Label>
-                                <Label styleClass="description-label">From annual festivals and parades, to award-winning performances, to museum exhibits, to holiday festivities,</Label>
-                                <Label styleClass="description-label">there is always something exciting happening in Albany!</Label>
-                                <Label styleClass="description-label">Browse our Events Calendar to find ongoing and special events occurring in Albany County.</Label>
-                                <Label styleClass="description-label">Have an event you would like to see on our Calendar?</Label>
+                                <Label styleClass="description-label" text="Events Calendar" textFill="#ffffb8">
+                                 <font>
+                                    <Font name="Bell MT" size="30.0" />
+                                 </font>
+                                 <effect>
+                                    <DropShadow offsetY="2.0">
+                                       <input>
+                                          <Lighting>
+                                             <bumpInput>
+                                                <Shadow />
+                                             </bumpInput>
+                                             <light>
+                                                <Light.Distant>
+                                                   <color>
+                                                      <Color red="0.6352941393852234" green="0.8901960849761963" blue="0.9882352948188782" />
+                                                   </color>
+                                                </Light.Distant>
+                                             </light>
+                                          </Lighting>
+                                       </input>
+                                       <color>
+                                          <Color red="0.031578946858644485" green="0.031228071078658104" blue="0.031228071078658104" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect></Label>
+                                <Label styleClass="description-label" textFill="WHITE">From annual festivals and parades, to award-winning performances, to museum exhibits, to holiday festivities,</Label>
+                                <Label styleClass="description-label" textFill="WHITE">there is always something exciting happening in Albany!</Label>
+                                <Label styleClass="description-label" textFill="WHITE">Browse our Events Calendar to find ongoing and special events occurring in Albany County.</Label>
+                                <Label styleClass="description-label" textFill="WHITE">Have an event you would like to see on our Calendar?</Label>
                                 <!-- Images in a Horizontal Layout -->
                                 <HBox spacing="50">
                                 <!-- First Image with More Details Button -->
@@ -507,11 +541,11 @@
                                 </ImageView>
                                     <Label style="-fx-text-fill: #fffd70;"> ANNUAL EVENTS AND FESTIVALS </Label>
                                     <Label style="-fx-text-fill: #fffd70;"> Discover Albany's annual events and festivals!</Label>
-                                    <Button text="More Details" onAction="#showMoreDetails1" styleClass="more-button"/>
+                                    <Button onAction="#showMoreDetails1" styleClass="more-button" text="More Details" />
                                 </VBox>
 
                                 <!-- Second Image with More Details Button -->
-                                <VBox spacing="10" >
+                                <VBox spacing="10">
                                     <ImageView fitHeight="150.0" fitWidth="200.0">
                                         <image>
                                             <Image url="@../images/events2.jpeg" />
@@ -519,10 +553,10 @@
                                     </ImageView>
                                     <Label style="-fx-text-fill: #fffd70;">LIVE MUSIC </Label>
                                     <Label style="-fx-text-fill: #fffd70;">Find great live music in Albany County.</Label>
-                                    <Button text="More Details" onAction="#showMoreDetails2" styleClass="more-button"/>
+                                    <Button onAction="#showMoreDetails2" styleClass="more-button" text="More Details" />
                                 </VBox>
                                     <!-- Third Image with More Details Button -->
-                                    <VBox spacing="10" >
+                                    <VBox spacing="10">
                                         <ImageView fitHeight="150.0" fitWidth="200.0">
                                             <image>
                                                 <Image url="@../images/events3.jpeg" />
@@ -530,13 +564,16 @@
                                         </ImageView>
                                         <Label style="-fx-text-fill: #fffd70;">TEAM SPORTS</Label>
                                         <Label style="-fx-text-fill: #fffd70;">Cheer on Albany's hometown teams.</Label>
-                                        <Button text="More Details" onAction="#showMoreDetails3" styleClass="more-button"/>
+                                        <Button onAction="#showMoreDetails3" styleClass="more-button" text="More Details" />
                                     </VBox>
                                 </HBox>
                                     <VBox>
-                                        <Button text="View Bookings" onAction="#viewBookings"/>
+                                        <Button onAction="#viewBookings" text="View Bookings" />
                                     </VBox>
                                 </VBox>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
                             </StackPane>
                         </children>
                     </AnchorPane>

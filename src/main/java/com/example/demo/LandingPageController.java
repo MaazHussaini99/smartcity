@@ -638,7 +638,7 @@ public class LandingPageController extends NightLifeController implements Initia
             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("adminpanel2.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 700, 550);
             Stage stage = (Stage) editProfileButton.getScene().getWindow();
-            stage.setTitle("Smart City - Edit Profile");
+            stage.setTitle("Smart City - Admin Panel");
             stage.setScene(scene);
             stage.show();
             stage.centerOnScreen();

@@ -233,6 +233,7 @@ public class HotelBookingController extends EventsController{
     private void cancelButtonClicked() {
         hotelBookings = hotelBookingListView.getSelectionModel().getSelectedItem();
         HotelBooking hb = new HotelBooking();
+        int hotelId=hb.getHotelId(hotelBookings.getHotelBookingId());
         int previousHotelBookingCost = hb.getHotelBookingCost(hotelBookings.getHotelBookingId());
         boolean bookingSuccess = hb.cancelBooking(hotelBookings.getHotelBookingId());
         String emailId = HotelBooking.getInstance().getEmailId();
@@ -245,6 +246,8 @@ public class HotelBookingController extends EventsController{
         int balance = amountt + previousHotelBookingCost;
         if (bookingSuccess) {
             hb.updateAccountBalance(accountId, balance);
+            int availibility=hb.getHotelAvalibility(hotelId)+1;
+            hb.updatedAvailability(hotelId,availibility);
             // Show a success message using an Alert
             showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booking cancelled successfully! Amount Refunded: $"
                     + previousHotelBookingCost);
@@ -519,17 +522,26 @@ public class HotelBookingController extends EventsController{
                     return null;
                 }
                 this.accountId = accountId;
-                boolean bookingSuccess = hb.createBooking(selectedHotel.getHotelId(), userIdd, accountId,
-                        checkInDate.toString(), checkOutDate.toString(), totalCost);
                 int amountt = (int) (hb.getAccountBalance(accountId));
                 int updatedAmount = amountt - totalCost;
-                if (bookingSuccess && (hb.updateAccountBalance(accountId, updatedAmount))) {
-                    // Show a success message using an Alert
-                    showAlert(AlertType.INFORMATION, "Booking Success",
-                            "Hotel booked successfully! Total Cost: $" + totalCost);
-                } else {
-                    // Show an error message using an Alert
-                    showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed. Please check balance");
+                if(hb.getHotelAvalibility(selectedHotel.getHotelId())>=rooms) {
+                    boolean bookingSuccess = hb.createBooking(selectedHotel.getHotelId(), userIdd, accountId,
+                            checkInDate.toString(), checkOutDate.toString(), totalCost);
+                    if (bookingSuccess && (hb.updateAccountBalance(accountId, updatedAmount))) {
+                        // Show a success message using an Alert
+
+                        int availibilityy = selectedHotel.getHotelAvailability() - rooms;
+                        hb.updatedAvailability(selectedHotel.getHotelId(), availibilityy);
+                        showAlert(AlertType.INFORMATION, "Booking Success",
+                                "Hotel booked successfully! Total Cost: $" + totalCost);
+                    } else {
+                        // Show an error message using an Alert
+                        showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed. Please check balance");
+                    }
+                }
+                else{
+                    showAlert(AlertType.INFORMATION, "Booking failed",
+                            "Hotel is not available ");
                 }
             }
             return null;
