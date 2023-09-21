@@ -488,6 +488,55 @@
                                         <Button text="Delete Booking" onAction="#deleteBooking" />
                                     </HBox>
                                 </VBox>
+                                <!-- Description and Images -->
+                                <VBox fx:id="mainContentView" spacing="20" alignment="CENTER">
+                                <!-- Description -->
+                                <Label styleClass="description-label">Events Calendar</Label>
+                                <Label styleClass="description-label">From annual festivals and parades, to award-winning performances, to museum exhibits, to holiday festivities,</Label>
+                                <Label styleClass="description-label">there is always something exciting happening in Albany!</Label>
+                                <Label styleClass="description-label">Browse our Events Calendar to find ongoing and special events occurring in Albany County.</Label>
+                                <Label styleClass="description-label">Have an event you would like to see on our Calendar?</Label>
+                                <!-- Images in a Horizontal Layout -->
+                                <HBox spacing="50">
+                                <!-- First Image with More Details Button -->
+                                <VBox spacing="10">
+                                <ImageView fitHeight="150.0" fitWidth="200.0">
+                                    <image>
+                                        <Image url="@../images/events1.jpeg" />
+                                    </image>
+                                </ImageView>
+                                    <Label style="-fx-text-fill: #fffd70;"> ANNUAL EVENTS AND FESTIVALS </Label>
+                                    <Label style="-fx-text-fill: #fffd70;"> Discover Albany's annual events and festivals!</Label>
+                                    <Button text="More Details" onAction="#showMoreDetails1" styleClass="more-button"/>
+                                </VBox>
+
+                                <!-- Second Image with More Details Button -->
+                                <VBox spacing="10" >
+                                    <ImageView fitHeight="150.0" fitWidth="200.0">
+                                        <image>
+                                            <Image url="@../images/events2.jpeg" />
+                                        </image>
+                                    </ImageView>
+                                    <Label style="-fx-text-fill: #fffd70;">LIVE MUSIC </Label>
+                                    <Label style="-fx-text-fill: #fffd70;">Find great live music in Albany County.</Label>
+                                    <Button text="More Details" onAction="#showMoreDetails2" styleClass="more-button"/>
+                                </VBox>
+                                    <!-- Third Image with More Details Button -->
+                                    <VBox spacing="10" >
+                                        <ImageView fitHeight="150.0" fitWidth="200.0">
+                                            <image>
+                                                <Image url="@../images/events3.jpeg" />
+                                            </image>
+                                        </ImageView>
+                                        <Label style="-fx-text-fill: #fffd70;">TEAM SPORTS</Label>
+                                        <Label style="-fx-text-fill: #fffd70;">Cheer on Albany's hometown teams.</Label>
+                                        <Button text="More Details" onAction="#showMoreDetails3" styleClass="more-button"/>
+                                    </VBox>
+                                </HBox>
+                                    <VBox>
+                                        <Button text="View Bookings" onAction="#viewBookings"/>
+                                    </VBox>
+                                </VBox>
                             </StackPane>
                         </children>
                     </AnchorPane>
