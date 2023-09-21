@@ -522,11 +522,11 @@ public class HotelBookingController {
                     return null;
                 }
                 this.accountId = accountId;
-                boolean bookingSuccess = hb.createBooking(selectedHotel.getHotelId(), userIdd, accountId,
-                        checkInDate.toString(), checkOutDate.toString(), totalCost);
                 int amountt = (int) (hb.getAccountBalance(accountId));
                 int updatedAmount = amountt - totalCost;
                 if(hb.getHotelAvalibility(selectedHotel.getHotelId())>=rooms) {
+                    boolean bookingSuccess = hb.createBooking(selectedHotel.getHotelId(), userIdd, accountId,
+                            checkInDate.toString(), checkOutDate.toString(), totalCost);
                     if (bookingSuccess && (hb.updateAccountBalance(accountId, updatedAmount))) {
                         // Show a success message using an Alert
 
