@@ -40,12 +40,12 @@ public class AdminController {
     @FXML
     private TextField emailContent;
     @FXML
-    private Button sendEmailButton,back,accept,reject,promote;
+    private Button sendEmailButton,back,accept,reject,promote,demote;
     static User user;
     public void initialize() {
         // Initialize your UI components and set event handlers here.
         // The UI components are already injected via @FXML annotations.
-        generateTable();
+        generateRoleTable();
         addEmailFunction();
     }
 
@@ -90,58 +90,6 @@ public class AdminController {
         });
     }
 
-//    public void enableWrite(){
-//        emailContent.setDisable(false);
-//        emailSubject.setDisable(false);
-//        emailTarget.setDisable(false);
-//
-//        ArrayList<User> subjects = new ArrayList<>();
-//        //give table bonus function
-//        userTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                User currentUser = userTable.getSelectionModel().getSelectedItem();
-//                String subjectLine ="";
-//                if(subjects.contains(currentUser)){
-//                    subjects.remove(currentUser);
-//                }
-//                else{
-//                    subjects.add(currentUser);
-//                }
-//                for(int i =0;i< subjects.size();i++){
-//                    subjectLine+=subjects.get(i).getEmail();
-//                    System.out.println(subjectLine + "i");
-//                    if(i!=subjectLine.length()-1){
-//                        subjectLine+=",";
-//                    }
-//                }
-//                emailTarget.setText(subjectLine);
-//            }
-//        });
-//
-//        cancel = new Button("cancel");
-//        sendEmail = new Button("Send");
-//        buttonBox.getChildren().addAll(cancel,sendEmail);
-//
-//        sendEmail.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                sendEmail();
-//            }
-//        });
-//
-//        cancel.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                buttonBox.getChildren().clear();
-//                basePane.getChildren().clear();
-//                addEmailFunction();
-//
-//            }
-//        });
-//
-//    }
-
     public void sendEmail(){
 
         final String username = "kevinzhengtwo@gmail.com"; // Your Gmail email address
@@ -175,20 +123,19 @@ public class AdminController {
         }    }
 
 
-    public void PromotionButton(){
-        promote.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                if(user == null){
-                    return;
-                }
+    public void PromotionButton() {
+        promote.setOnAction(event -> {
+            User selectedUser = userTable.getSelectionModel().getSelectedItem();
+            if (selectedUser != null) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setContentText(String.format("Are your sure you want to make %s %s admin?",user.getFirstName(),user.getLastName()));
-                alert.setTitle("Are you sure?");
+                alert.setContentText(String.format("Are you sure you want to make %s %s an admin?", selectedUser.getFirstName(), selectedUser.getLastName()));
+                alert.setTitle("Confirm Promotion");
                 Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK){
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    int userID = selectedUser.getUserID();
+
                     System.out.println("Yes");
-                    String sql = "UPDATE user SET role_ID = 2 WHERE uid=  "+user.getUserID();
+                    String sql = "UPDATE user SET role_ID = 2 WHERE uid=  "+userID;
 
                     try{
                         Connection connection = DBConn.connectDB();
@@ -199,10 +146,40 @@ public class AdminController {
                         throw new RuntimeException(e);
                     }
                 }
+                userTable.getItems().clear();
+                generateRoleTable();
             }
         });
     }
-    public void generateTable(){
+    public void DemotionButton() {
+        demote.setOnAction(event -> {
+            User selectedUser = userTable.getSelectionModel().getSelectedItem();
+            if (selectedUser != null) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setContentText(String.format("Are you sure you want to make %s %s a user?", selectedUser.getFirstName(), selectedUser.getLastName()));
+                alert.setTitle("Confirm Demotion");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    int userID = selectedUser.getUserID();
+
+                    System.out.println("Yes");
+                    String sql = "UPDATE user SET role_ID = 1 WHERE uid=  "+userID;
+
+                    try{
+                        Connection connection = DBConn.connectDB();
+                        PreparedStatement ps = connection.prepareStatement(sql);
+                        ps.executeUpdate();
+                    }
+                    catch(SQLException e){
+                        throw new RuntimeException(e);
+                    }
+                }
+                userTable.getItems().clear();
+                generateRoleTable();
+            }
+        });
+    }
+    public void generateRoleTable(){
         //get users
         ObservableList<User> users = FXCollections.observableArrayList(getUser());
         TableColumn<User,String> firstName = new TableColumn("First Name");

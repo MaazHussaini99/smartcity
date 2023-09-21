@@ -179,6 +179,9 @@ public class EventsController extends EventBookingController{
                 }
                 try {
                     double price = Double.parseDouble(eventPriceField.getText());
+
+
+
                     newEvent.setEventPrice(price);
                 } catch (NumberFormatException e) {
                     // Handle invalid price input
