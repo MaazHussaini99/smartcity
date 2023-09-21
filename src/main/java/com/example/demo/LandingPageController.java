@@ -271,7 +271,6 @@ public class LandingPageController extends NightLifeController implements Initia
 
         }
 
-        //todo limit to admin only
         // limited to admin only
         if (User.getInstance().getRoleID() == 2)
             setJobEditRowBehavior();
