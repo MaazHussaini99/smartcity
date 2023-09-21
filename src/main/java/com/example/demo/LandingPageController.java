@@ -38,9 +38,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalTime;
@@ -55,6 +52,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 public class LandingPageController extends NightLifeController implements Initializable {
     @FXML
     private Button profileLink,newCard,nextButton,previousButton, adminButton, editProfileButton;
@@ -272,8 +270,11 @@ public class LandingPageController extends NightLifeController implements Initia
         if(User.getInstance().getRoleID() == 2){
 
         }
-        //todo limit to admin only 
-        setJobEditRowBehavior();
+
+        //todo limit to admin only
+        // limited to admin only
+        if (User.getInstance().getRoleID() == 2)
+            setJobEditRowBehavior();
 
         MapController maps = new MapController();
         maps.showMap(webviewMap);
@@ -586,12 +587,15 @@ public class LandingPageController extends NightLifeController implements Initia
         editProfileButton.setLayoutY(150);
         editProfileButton.setOnAction(event -> goToEditProfile());
 
-        adminButton = new Button("Add new Admin");
-        adminButton.setLayoutX(10);
-        adminButton.setLayoutY(200);
+        if (User.getInstance().getRoleID() == 2) {
+            adminButton = new Button("Add new Admin");
+            adminButton.setLayoutX(10);
+            adminButton.setLayoutY(200);
 
-// Add an event handler to the button
-        adminButton.setOnAction(event -> loadAdminFXML());
+            // Add an event handler to the button
+            adminButton.setOnAction(event -> loadAdminFXML());
+            userDataPane.getChildren().add(adminButton);
+        }
 
         newCard = new Button("Add a New Payment Method"); // Replace with your user data components
         newCard.setLayoutX(10);
@@ -602,7 +606,6 @@ public class LandingPageController extends NightLifeController implements Initia
 
         userDataPane.getChildren().add(userDataText);
         userDataPane.getChildren().add(newCard);
-        userDataPane.getChildren().add(adminButton);
         userDataPane.getChildren().add(editProfileButton);
         return userDataPane;
     }

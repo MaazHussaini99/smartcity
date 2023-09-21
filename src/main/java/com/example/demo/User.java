@@ -11,7 +11,7 @@ public class User {
 
     private static User user = null;
 
-    private int userID;
+    final private int userID;
     private int roleID;
     private String firstName;
     private String lastName;
