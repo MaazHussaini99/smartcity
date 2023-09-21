@@ -29,41 +29,24 @@ import static com.example.demo.JobListing.jobs;
 
 public class AdminController {
 
-    Connection connection=DBConn.connectDB();;
     @FXML
-    AnchorPane anchorPane;
-
-    VBox basePane;
-    //behavior of the admin panel
-    // it does two things,
-    // promote/demote a user
-    // send email to people
-    // have a table of all users, and you can scroll through the users
-    // and click on them to promote via a promote button
-    // three rows name, emails, and isAdmin
-    // there is also empty text fiedl that is disable until you click write email
-    // this is below the empty text field, and will transform into 2 buttons
-    // cancel and send
-    // you can click on the people inthe rows to autopopulat who you will send it to
-    //also I need a subject bar
-    TableView<User> userTable;
-    TextField emailTarget;
-    TextField emailSubject;
-    TextField emailContent;
-    Button writeEmail;
-    Button cancel;
-    Button sendEmail;
-    HBox buttonBox;
-    Button back;
-
+    private AnchorPane anchorPane;
+    @FXML
+    private TableView<User> userTable;
+    @FXML
+    private TextField emailTarget;
+    @FXML
+    private TextField emailSubject;
+    @FXML
+    private TextField emailContent;
+    @FXML
+    private Button sendEmailButton,back,accept,reject,promote;
     static User user;
     public void initialize() {
-        basePane = new VBox();
-        buttonBox = new HBox();
+        // Initialize your UI components and set event handlers here.
+        // The UI components are already injected via @FXML annotations.
         generateTable();
         addEmailFunction();
-        anchorPane.getChildren().add(basePane);
-
     }
 
 
@@ -74,29 +57,14 @@ public class AdminController {
         emailTarget.setPromptText("To:");
         emailSubject.setPromptText("Subject");
         emailContent.setPromptText("Write here!");
-        writeEmail = new Button("Write Email");
         emailTarget.setDisable(true);
         emailSubject.setDisable(true);
         emailContent.setDisable(true);
 
-        writeEmail.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                buttonBox.getChildren().clear();
-                enableWrite();
-            }
-        });
-
-        addPromotionButton();
-        addBackButton();
-        buttonBox.getChildren().add(writeEmail);
-        basePane.getChildren().addAll(emailTarget,emailSubject,emailContent,buttonBox);
 
     }
 
-    public void addBackButton(){
-        back = new Button("back");
-        buttonBox.getChildren().add(back);
+    public void BackButton(){
         back.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -114,6 +82,7 @@ public class AdminController {
                     Stage stage = (Stage) anchorPane.getScene().getWindow();
                     stage.setScene(scene);
                     stage.show();
+                    stage.centerOnScreen();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -121,57 +90,57 @@ public class AdminController {
         });
     }
 
-    public void enableWrite(){
-        emailContent.setDisable(false);
-        emailSubject.setDisable(false);
-        emailTarget.setDisable(false);
-
-        ArrayList<User> subjects = new ArrayList<>();
-        //give table bonus function
-        userTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                User currentUser = userTable.getSelectionModel().getSelectedItem();
-                String subjectLine ="";
-                if(subjects.contains(currentUser)){
-                    subjects.remove(currentUser);
-                }
-                else{
-                    subjects.add(currentUser);
-                }
-                for(int i =0;i< subjects.size();i++){
-                    subjectLine+=subjects.get(i).getEmail();
-                    System.out.println(subjectLine + "i");
-                    if(i!=subjectLine.length()-1){
-                        subjectLine+=",";
-                    }
-                }
-                emailTarget.setText(subjectLine);
-            }
-        });
-
-        cancel = new Button("cancel");
-        sendEmail = new Button("Send");
-        buttonBox.getChildren().addAll(cancel,sendEmail);
-
-        sendEmail.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                sendEmail();
-            }
-        });
-
-        cancel.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                buttonBox.getChildren().clear();
-                basePane.getChildren().clear();
-                addEmailFunction();
-
-            }
-        });
-
-    }
+//    public void enableWrite(){
+//        emailContent.setDisable(false);
+//        emailSubject.setDisable(false);
+//        emailTarget.setDisable(false);
+//
+//        ArrayList<User> subjects = new ArrayList<>();
+//        //give table bonus function
+//        userTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                User currentUser = userTable.getSelectionModel().getSelectedItem();
+//                String subjectLine ="";
+//                if(subjects.contains(currentUser)){
+//                    subjects.remove(currentUser);
+//                }
+//                else{
+//                    subjects.add(currentUser);
+//                }
+//                for(int i =0;i< subjects.size();i++){
+//                    subjectLine+=subjects.get(i).getEmail();
+//                    System.out.println(subjectLine + "i");
+//                    if(i!=subjectLine.length()-1){
+//                        subjectLine+=",";
+//                    }
+//                }
+//                emailTarget.setText(subjectLine);
+//            }
+//        });
+//
+//        cancel = new Button("cancel");
+//        sendEmail = new Button("Send");
+//        buttonBox.getChildren().addAll(cancel,sendEmail);
+//
+//        sendEmail.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                sendEmail();
+//            }
+//        });
+//
+//        cancel.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                buttonBox.getChildren().clear();
+//                basePane.getChildren().clear();
+//                addEmailFunction();
+//
+//            }
+//        });
+//
+//    }
 
     public void sendEmail(){
 
@@ -206,17 +175,7 @@ public class AdminController {
         }    }
 
 
-    public void addPromotionButton(){
-        Button promote = new Button("Promote a user");
-        buttonBox.getChildren().add(promote);
-        userTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                user = userTable.getSelectionModel().getSelectedItem();
-                promote.setText(String.format("Promote %s %s.",user.getFirstName(),user.getLastName()));
-            }
-        });
-
+    public void PromotionButton(){
         promote.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -257,10 +216,8 @@ public class AdminController {
         isAdmin.setCellValueFactory(cellData -> cellData.getValue().adminProperty());
 
 
-        userTable = new TableView<>();
         userTable.getColumns().addAll(firstName,lastName,email,isAdmin);
         userTable.getItems().addAll(users);
-        basePane.getChildren().add(userTable);
     }
 
 

@@ -6,6 +6,7 @@ module com.example.demo {
     requires java.desktop;
     requires java.mail;
     requires javafx.web;
+    //requires javafx.web;
 
 
 

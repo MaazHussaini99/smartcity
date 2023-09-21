@@ -79,6 +79,7 @@ public class LoggedinController {
         stage.setTitle("Smart City - Sign up");
         stage.setScene(scene);
         stage.show();
+        stage.centerOnScreen();
     }
 
     public static void infoBox(String infoMessage, String headerText, String title) {

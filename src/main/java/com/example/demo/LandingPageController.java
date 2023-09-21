@@ -42,6 +42,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -52,7 +53,8 @@ import javafx.stage.Window;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 public class LandingPageController extends NightLifeController implements Initializable {
     @FXML
     private Button profileLink,newCard,nextButton,previousButton, adminButton, editProfileButton;
@@ -169,7 +171,7 @@ public class LandingPageController extends NightLifeController implements Initia
         transportTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 1) { // Detect a single click
                 Bus selectedBus = transportTable.getSelectionModel().getSelectedItem();
-                busLabel.setText("Bus #" + selectedBus.getShortName().getValue());
+                busLabel.setText("Bus #" + selectedBus.getShortName().getValue() + " Schedule");
                 if (selectedBus != null) {
                     // Clear the existing items in stopsTable
                     stopsTable.getItems().clear();
@@ -190,14 +192,26 @@ public class LandingPageController extends NightLifeController implements Initia
                             SimpleStringProperty arrivalTimeProperty = stopList.get(i).arrivalTime;
                             String arrivalTime = arrivalTimeProperty.get();
                             String newTime = currentHour + arrivalTime.substring(1);
-                            arrivalTimeProperty.set(newTime);
-
                             String newDTime = currentHour + departureTime.substring(1);
-                            departureTimeProperty.set(newDTime);
+
+                            SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
+                            Date arrivalDate = inputFormat.parse(newTime);
+                            Date departureDate = inputFormat.parse(newDTime);
+
+                            // Create a format for the desired output format
+                            SimpleDateFormat outputFormat = new SimpleDateFormat("hh:mm a");
+
+                            // Format the time values as "HH:MM AM/PM"
+                            String formattedArrivalTime = outputFormat.format(arrivalDate);
+                            String formattedDepartureTime = outputFormat.format(departureDate);
+                            arrivalTimeProperty.set(formattedArrivalTime);
+
+
+                            departureTimeProperty.set(formattedDepartureTime);
                         }
                         stopsTable.getItems().addAll(stopList);
 
-                    } catch (SQLException e) {
+                    } catch (SQLException | ParseException e) {
                         e.printStackTrace();
                     }
                 }
@@ -270,8 +284,8 @@ public class LandingPageController extends NightLifeController implements Initia
         //spawn 3 button on load
         //change it to text box with 2 buttons
         //invoke the various commands in Job Controller or something
-        Button b1 = new Button("Edit");
         Button b2 = new Button("Add");
+        Button b1 = new Button("Edit");
         Button b3 = new Button("Delete");
         editJobRow.getChildren().addAll(b1, b2, b3);
         Button[] buttons = {b1, b2, b3};
@@ -616,17 +630,15 @@ public class LandingPageController extends NightLifeController implements Initia
 
     private void loadAdminFXML() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("adminpanel.fxml"));
-            Parent root = loader.load();
 
-            // Create a new scene
-            Scene scene = new Scene(root);
-
-            // Get the current stage and set the new scene
-            Stage stage = (Stage) adminButton.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("adminpanel2.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 700, 550);
+            Stage stage = (Stage) editProfileButton.getScene().getWindow();
+            stage.setTitle("Smart City - Edit Profile");
             stage.setScene(scene);
             stage.show();
             stage.centerOnScreen();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -646,6 +658,7 @@ public class LandingPageController extends NightLifeController implements Initia
             stage.setTitle("Smart City - Edit Profile");
             stage.setScene(scene);
             stage.show();
+            stage.centerOnScreen();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -664,7 +677,7 @@ public class LandingPageController extends NightLifeController implements Initia
         stage.setTitle("Smart City - Sign up");
         stage.setScene(scene);
         stage.show();
-
+        stage.centerOnScreen();
 
     }
 

@@ -173,6 +173,7 @@ public class BankController {
             Stage stage = (Stage) bankView.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
+            stage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -190,6 +191,7 @@ public class BankController {
             Stage stage = (Stage) bankView.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
+            stage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
