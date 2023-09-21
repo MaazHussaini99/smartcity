@@ -6,13 +6,17 @@
 <AnchorPane fx:id="anchorPane" prefHeight="520.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.AdminController">
    <children>
       <Button fx:id="promote" layoutX="335.0" layoutY="477.0" mnemonicParsing="false" onAction="#PromotionButton" prefWidth="100.0" text="Promote User" />
+
       <Button fx:id="demote" layoutX="445.0" layoutY="477.0" mnemonicParsing="false" onAction="#DemotionButton" prefWidth="100.0" text="Demote User" />
       <TableView layoutX="15.0" layoutY="15.0" prefHeight="222.0" prefWidth="300.0" />
+      <TableView fx:id="jobApplications" layoutX="15.0" layoutY="15.0" prefHeight="222.0" prefWidth="300.0" />
       <TableView fx:id="userTable" layoutX="335.0" layoutY="17.0" prefHeight="455.0" prefWidth="350.0" />
-      <TextArea layoutX="15.0" layoutY="351.0" prefHeight="119.0" prefWidth="300.0" promptText="Enter Message" />
-      <TextField layoutX="15.0" layoutY="287.0" prefHeight="26.0" prefWidth="300.0" promptText="Email" />
-      <TextField layoutX="15.0" layoutY="319.0" prefHeight="26.0" prefWidth="300.0" promptText="Subject" />
-      <Button fx:id="sendEmailButton" layoutX="15.0" layoutY="477.0" mnemonicParsing="false" onAction="#sendEmail" prefWidth="80.0" text="Send" />
+      <TextArea fx:id="emailContent" layoutX="15.0" layoutY="351.0" prefHeight="119.0" prefWidth="300.0" promptText="Enter Message" />
+      <TextField fx:id="emailSubject" layoutX="15.0" layoutY="287.0" prefHeight="26.0" prefWidth="300.0" promptText="Email" />
+      <TextField fx:id="emailTarget" layoutX="15.0" layoutY="319.0" prefHeight="26.0" prefWidth="300.0" promptText="Subject" />
+      <HBox fx:id = "buttonBox" layoutX="14.0" layoutY="477.0" prefHeight="25.0" prefWidth="179.0">
+         <Button fx:id="writeEmail" layoutX="15.0" layoutY="477.0" mnemonicParsing="false" onAction="#sendEmail" prefWidth="80.0" text="Write Email" />
+      </HBox>
       <Button fx:id="accept" layoutX="14.0" layoutY="245.0" mnemonicParsing="false" prefWidth="80.0" text="Accept" />
       <Button fx:id="reject" layoutX="104.0" layoutY="245.0" mnemonicParsing="false" prefWidth="80.0" text="Reject" />
       <Button fx:id="back" layoutX="644.0" layoutY="477.0" mnemonicParsing="false" onAction="#BackButton" text="Back" />
