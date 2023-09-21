@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,6 +35,9 @@ public class AdminController {
     private AnchorPane anchorPane;
     @FXML
     private TableView<User> userTable;
+
+    @FXML
+    private TableView<JobApplication> jobApplications;
     @FXML
     private TextField emailTarget;
     @FXML
@@ -41,12 +46,15 @@ public class AdminController {
     private TextField emailContent;
     @FXML
     private Button sendEmailButton,back,accept,reject,promote;
+
+    JobApplication selectedApplication;
     static User user;
     public void initialize() {
         // Initialize your UI components and set event handlers here.
         // The UI components are already injected via @FXML annotations.
         generateTable();
         addEmailFunction();
+        fillJobApplicationTable();
     }
 
 
@@ -89,58 +97,6 @@ public class AdminController {
             }
         });
     }
-
-//    public void enableWrite(){
-//        emailContent.setDisable(false);
-//        emailSubject.setDisable(false);
-//        emailTarget.setDisable(false);
-//
-//        ArrayList<User> subjects = new ArrayList<>();
-//        //give table bonus function
-//        userTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                User currentUser = userTable.getSelectionModel().getSelectedItem();
-//                String subjectLine ="";
-//                if(subjects.contains(currentUser)){
-//                    subjects.remove(currentUser);
-//                }
-//                else{
-//                    subjects.add(currentUser);
-//                }
-//                for(int i =0;i< subjects.size();i++){
-//                    subjectLine+=subjects.get(i).getEmail();
-//                    System.out.println(subjectLine + "i");
-//                    if(i!=subjectLine.length()-1){
-//                        subjectLine+=",";
-//                    }
-//                }
-//                emailTarget.setText(subjectLine);
-//            }
-//        });
-//
-//        cancel = new Button("cancel");
-//        sendEmail = new Button("Send");
-//        buttonBox.getChildren().addAll(cancel,sendEmail);
-//
-//        sendEmail.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                sendEmail();
-//            }
-//        });
-//
-//        cancel.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                buttonBox.getChildren().clear();
-//                basePane.getChildren().clear();
-//                addEmailFunction();
-//
-//            }
-//        });
-//
-//    }
 
     public void sendEmail(){
 
@@ -218,8 +174,113 @@ public class AdminController {
 
         userTable.getColumns().addAll(firstName,lastName,email,isAdmin);
         userTable.getItems().addAll(users);
+        acceptOrDenyApplication();
+        setJobTableBehavior();
     }
 
+    public void setJobTableBehavior() {
+
+        jobApplications.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                selectedApplication = jobApplications.getSelectionModel().getSelectedItem();
+            }
+        });
+    }
+
+    public void acceptOrDenyApplication(){
+        String delete = "DELETE FROM jobapplications WHERE app_id=";
+
+        accept.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Clippy.deleteQuery(delete+selectedApplication.jbID);
+                jobApplications.getItems().remove(selectedApplication);
+                System.out.println("Accepted~!");
+                //todo make a pop up
+            }
+        });
+
+        reject.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Clippy.deleteQuery(delete+selectedApplication.jbID);
+                jobApplications.getItems().remove(selectedApplication);
+                System.out.println("rejected~!");
+                //todo make a pop up
+            }
+        });
+
+
+    }
+
+    public void fillJobApplicationTable(){
+        ObservableList<JobApplication> jobApplicationsList= FXCollections.observableArrayList(getJobApplication());
+        TableColumn<JobApplication,String> name = new TableColumn("Name");
+        TableColumn<JobApplication,String> jobDescription = new TableColumn("Job");
+        name.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        jobDescription.setCellValueFactory(cellData-> cellData.getValue().jobProperty());
+
+        jobApplications.getColumns().addAll(name,jobDescription);
+        jobApplications.getItems().addAll(jobApplicationsList);
+    }
+
+    public ArrayList<JobApplication> getJobApplication(){
+        ArrayList<User> users = getUser();
+        ArrayList<Job> jobs =  new ArrayList<>(JobListing.jobs);
+        ArrayList<JobApplication> applications = new ArrayList<>();
+        String sql = "SELECT * FROM jobapplication";
+        ResultSet rs = Clippy.makeQuery(sql);
+            try {
+                while(rs.next()){
+                    int applicationUserID = rs.getInt(3);
+                    int applicationJobID = rs.getInt(2);
+                    System.out.println(applicationJobID+" "+applicationJobID);
+
+                    User user = null;
+                    Job job = null;
+                    for(int i =0;i<users.size();i++){
+                        int userID = users.get(i).getUserID();
+                        if(applicationUserID == userID){
+                            user = users.get(i);
+                        }
+                    }
+                    for(int i =0;i<jobs.size();i++){
+                        int jobID = jobs.get(i).getJobId();
+                        if(jobID == applicationJobID){
+                            job = jobs.get(i);
+                        }
+                    }
+                    applications.add(new JobApplication(user,job,rs.getInt(1)));
+
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            return applications;
+    }
+
+
+    class JobApplication{
+        User user;
+        Job job;
+
+        int jbID;
+
+        public JobApplication(User user, Job job, int id){
+            this.user   = user;
+            this.job = job;
+            jbID = id;
+        }
+
+        public StringProperty nameProperty(){
+            return new SimpleStringProperty(user.getFirstName()+" "+user.getLastName());
+        }
+
+        public StringProperty jobProperty(){
+            return new SimpleStringProperty(job.getJobTitle());
+        }
+    }
 
     public ArrayList<User> getUser(){
         String sql = "SELECT * FROM user";
