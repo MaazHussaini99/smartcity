@@ -43,9 +43,15 @@ public class AdminController {
     @FXML
     private TextField emailSubject;
     @FXML
-    private TextField emailContent;
+    private TextArea emailContent;
     @FXML
-    private Button sendEmailButton,back,accept,reject,promote;
+    private Button sendEmailButton,back,accept,reject,promote,writeEmail;
+    @FXML
+    private HBox buttonBox;
+
+    private ArrayList<User> currentList;
+
+    boolean writingEmail= false;
 
     JobApplication selectedApplication;
     static User user;
@@ -53,24 +59,87 @@ public class AdminController {
         // Initialize your UI components and set event handlers here.
         // The UI components are already injected via @FXML annotations.
         generateTable();
+        setUserTableBehavior();
         addEmailFunction();
         fillJobApplicationTable();
     }
 
 
     public void addEmailFunction(){
-        emailTarget = new TextField();
-        emailSubject = new TextField();
-        emailContent = new TextField();
         emailTarget.setPromptText("To:");
         emailSubject.setPromptText("Subject");
         emailContent.setPromptText("Write here!");
         emailTarget.setDisable(true);
         emailSubject.setDisable(true);
         emailContent.setDisable(true);
-
-
+        writeEmail.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                buttonBox.getChildren().clear();
+                buttonBox.getChildren().addAll(new Button("Cancel"), new Button("Send"));
+                writeEmail();
+            }
+        });
     }
+
+    public void writeEmail(){
+        Button cancel = (Button) buttonBox.getChildren().get(0);
+        Button send = (Button) buttonBox.getChildren().get(1);
+        currentList = new ArrayList<>();
+        writingEmail = true;
+        emailTarget.setDisable(false);
+        emailSubject.setDisable(false);
+        emailContent.setDisable(false);
+        cancel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                writingEmail=false;
+                emailTarget.clear();
+                emailSubject.clear();
+                emailContent.clear();
+                buttonBox.getChildren().clear();
+                buttonBox.getChildren().add(writeEmail);
+                addEmailFunction();
+            }
+        });
+
+        send.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                sendEmail();
+            }
+        });
+    }
+
+    public void setUserTableBehavior(){
+        userTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                user = userTable.getSelectionModel().getSelectedItem();
+                if(writingEmail){
+                    if(currentList.contains(user)){
+                        currentList.remove(user);
+                    }
+                    else{
+                        currentList.add(user);
+                    }
+                    String targetList ="";
+                    for(int i = 0;i< currentList.size();i++){
+                        if(i==currentList.size()-1){
+                            targetList+=currentList.get(i).getEmail();
+                        }
+                        else{
+                            targetList+=currentList.get(i).getEmail()+",";
+                        }
+                    }
+                    emailTarget.setText(targetList);
+                }
+            }
+        });
+    }
+
+
+
 
     public void BackButton(){
         back.setOnAction(new EventHandler<ActionEvent>() {
