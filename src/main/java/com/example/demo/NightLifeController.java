@@ -3,26 +3,22 @@ package com.example.demo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
-
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
+import java.util.Objects;
 
 public class NightLifeController extends HotelBookingController {
 
@@ -46,8 +42,10 @@ public class NightLifeController extends HotelBookingController {
     private DialogPane nightLifedescriptionPane1,nightLifedescriptionPane2,nightLifedescriptionPane3;
     @FXML
     private Hyperlink nightLifeLink1,nightLifeLink2,nightLifeLink3;
-    private int nightLifePerPage = 3;
 
+    /**
+     * Show NightLife information on the screen.
+     */
     public void show() {
         try {
             String emailId = HotelBooking.getInstance().getEmailId();
@@ -57,7 +55,6 @@ public class NightLifeController extends HotelBookingController {
                 addNightLifeInfo.setVisible(true);
                 deleteNightLifeInfo.setVisible(true);
             }
-
             ObservableList<NightLife> nightLifeItems = FXCollections.observableArrayList(NightLife.getNightlifeInfo());
 
             // Initialize the dialog panes and images for the first news article
@@ -84,46 +81,62 @@ public class NightLifeController extends HotelBookingController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Get the ImageView for the specified index.
+     *
+     * @param index The index of the ImageView.
+     * @return The ImageView for the specified index.
+     */
     public ImageView getNightLifeImagePaneForIndex(int index) {
-        switch (index) {
-            case 0:
-                return nightLifeImage1;
-            case 1:
-                return nightLifeImage2;
-            case 2:
-                return nightLifeImage3;
-            default:
-                // Handle any other index as needed
-                return null;
-        }
+        return switch (index) {
+            case 0 -> nightLifeImage1;
+            case 1 -> nightLifeImage2;
+            case 2 -> nightLifeImage3;
+            default ->
+                    // Handle any other index as needed
+                    null;
+        };
     }
 
+    /**
+     * Get the DialogPane for the specified index.
+     *
+     * @param index The index of the DialogPane.
+     * @return The DialogPane for the specified index.
+     */
     public DialogPane getNightLifeDescriptionPaneForIndex(int index) {
-        switch (index) {
-            case 0:
-                return nightLifedescriptionPane1;
-            case 1:
-                return nightLifedescriptionPane2;
-            case 2:
-                return nightLifedescriptionPane3;
-            default:
-                // Handle any other index as needed
-                return null;
-        }
+        return switch (index) {
+            case 0 -> nightLifedescriptionPane1;
+            case 1 -> nightLifedescriptionPane2;
+            case 2 -> nightLifedescriptionPane3;
+            default ->
+                    // Handle any other index as needed
+                    null;
+        };
     }
+
+    /**
+     * Get the Hyperlink for the specified index.
+     *
+     * @param index The index of the Hyperlink.
+     * @return The Hyperlink for the specified index.
+     */
     public Hyperlink getNightLifeLinkForIndex(int index) {
-        switch (index) {
-            case 0:
-                return nightLifeLink1;
-            case 1:
-                return nightLifeLink2;
-            case 2:
-                return nightLifeLink3;
+        return switch (index) {
+            case 0 -> nightLifeLink1;
+            case 1 -> nightLifeLink2;
+            case 2 -> nightLifeLink3;
             // Add more cases if you have more Hyperlink fields in your layout
-            default:
-                throw new IllegalArgumentException("Invalid index: " + index);
-        }
+            default -> throw new IllegalArgumentException("Invalid index: " + index);
+        };
     }
+
+    /**
+     * Create a DialogPane for adding NightLife information.
+     *
+     * @return The created DialogPane.
+     */
     private DialogPane addNightLifeDialogContent() {
         DialogPane dialogPane = new DialogPane();
         this.name=new TextField();
@@ -136,6 +149,12 @@ public class NightLifeController extends HotelBookingController {
         dialogPane.setContent(content);
         return dialogPane;
     }
+
+    /**
+     * Create a DialogPane for deleting NightLife information.
+     *
+     * @return The created DialogPane.
+     */
     private DialogPane deleteNightLifeDialogContent() {
         DialogPane dialogPane = new DialogPane();
         this.namee=new TextField();
@@ -145,6 +164,10 @@ public class NightLifeController extends HotelBookingController {
         dialogPane.setContent(content);
         return dialogPane;
     }
+
+    /**
+     * Handle the action of adding NightLife information.
+     */
     @FXML
     private void addNightLife() {
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -163,16 +186,18 @@ public class NightLifeController extends HotelBookingController {
                 String nightLifeWebsiteUrl = moreInfoUrl.getText();
                 boolean querySuccess=false;
                 String sql = "INSERT INTO nightlife (name, description, imageUrl,moreInfoUrl) VALUES ( ?, ?, ?, ?)";
-                try (Connection connection = DBConn.connectDB();
-                     PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-                    preparedStatement.setString(1, nightLifename);
-                    preparedStatement.setString(2, nightLifedescription);
-                    preparedStatement.setString(3, nightLifeimageUrl);
-                    preparedStatement.setString(4, nightLifeWebsiteUrl);
-                    int rowsAffected= preparedStatement.executeUpdate();
-                   if(rowsAffected > 0){
-                   querySuccess=true;
-                   }
+                try (Connection connection = DBConn.connectDB()) {
+                    assert connection != null;
+                    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                        preparedStatement.setString(1, nightLifename);
+                        preparedStatement.setString(2, nightLifedescription);
+                        preparedStatement.setString(3, nightLifeimageUrl);
+                        preparedStatement.setString(4, nightLifeWebsiteUrl);
+                        int rowsAffected= preparedStatement.executeUpdate();
+                       if(rowsAffected > 0){
+                       querySuccess=true;
+                       }
+                    }
                 }
                 catch(SQLException e){
                     e.printStackTrace();
@@ -190,6 +215,10 @@ public class NightLifeController extends HotelBookingController {
         });
         dialog.showAndWait();
     }
+
+    /**
+     * Handle the action of deleting NightLife information.
+     */
     @FXML
     private void deleteNightLife() {
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -204,19 +233,21 @@ public class NightLifeController extends HotelBookingController {
                 // Get the selected check-in and check-out dates from the DatePicker controls
                 String nightLifename = namee.getText();
                 String sql = "delete from nightlife where name=?";
-                try (Connection connection = DBConn.connectDB();
-                     PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                try (Connection connection = DBConn.connectDB()) {
+                    assert connection != null;
+                    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-                    preparedStatement.setString(1, nightLifename);
+                        preparedStatement.setString(1, nightLifename);
 
-                    int rowsAffected = preparedStatement.executeUpdate();
-                    if(rowsAffected > 0){
-                        showAlert(Alert.AlertType.INFORMATION, "Query Success",
-                                "Night Life information deleted successfully!");
-                    }
-                    else{
-                        showAlert(Alert.AlertType.INFORMATION, "Action failed",
-                                "Action Failed!");
+                        int rowsAffected = preparedStatement.executeUpdate();
+                        if(rowsAffected > 0){
+                            showAlert(Alert.AlertType.INFORMATION, "Query Success",
+                                    "Night Life information deleted successfully!");
+                        }
+                        else{
+                            showAlert(Alert.AlertType.INFORMATION, "Action failed",
+                                    "Action Failed!");
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -226,7 +257,15 @@ public class NightLifeController extends HotelBookingController {
         });
         dialog.showAndWait();
     }
+
+    /**
+     * Populate the NightLife panes with information.
+     *
+     * @param nightLifeItems The list of NightLife items to populate.
+     * @param startIndex     The start index for populating the panes.
+     */
     private void populateNightLifePanes(ObservableList<NightLife> nightLifeItems, int startIndex) {
+        int nightLifePerPage = 3;
         for (int i = 0; i < nightLifePerPage; i++) {
             int nightLifeIndex = startIndex + i;
             if (nightLifeIndex < nightLifeItems.size()) {
@@ -236,7 +275,7 @@ public class NightLifeController extends HotelBookingController {
                 DialogPane descriptionPane = getNightLifeDescriptionPaneForIndex(i);
 
                 try {
-                    if (nightLife.getImageUrl() == "null") {
+                    if (Objects.equals(nightLife.getImageUrl(), "null")) {
                         Image image = new Image("file:src/main/resources/com/example/images/MicrosoftTeams-image.png");
                         imageView.setImage(image);
                     } else {

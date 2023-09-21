@@ -1,82 +1,126 @@
 package com.example.demo;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
+/**
+ * A class for retrieving weather information from a weather API.
+ */
 public class Weather {
 
-    private double tempFarhenhiet, feelsLikeFarhenhiet, windMph, precipIn;
-    private int humidity, visibilityMiles, uvIndex;
-    private String conditionIcon, conditionText;
+    // Weather data fields
+    private final double tempFarhenhiet;
+    private final double windMph;
+    private final double precipIn;
+    private final int humidity;
+    private final int uvIndex;
+    private final String conditionIcon;
+    private final String conditionText;
 
-    public Weather(double tempFarhenhiet, double feelsLikeFarhenhiet, double windMph, int humidity, int visibilityMiles,
+    /**
+     * Constructor to initialize weather data.
+     * @param tempFarhenhiet Temperature in Fahrenheit.
+     * @param windMph Wind speed in miles per hour.
+     * @param humidity Humidity percentage.
+     * @param uvIndex UV index.
+     * @param precipIn Precipitation in inches.
+     * @param conditionIcon Icon representing the weather condition.
+     * @param conditionText Text description of the weather condition.
+     */
+    public Weather(double tempFarhenhiet, double windMph, int humidity,
                    int uvIndex, double precipIn, String conditionIcon, String conditionText){
         this.tempFarhenhiet = tempFarhenhiet;
-        this.feelsLikeFarhenhiet = feelsLikeFarhenhiet;
         this.windMph = windMph;
         this.precipIn = precipIn;
         this.humidity = humidity;
-        this.visibilityMiles = visibilityMiles;
         this.uvIndex = uvIndex;
         this.conditionIcon = conditionIcon;
         this.conditionText =conditionText;
     }
 
+    /**
+     * Get the temperature in Fahrenheit.
+     * @return Temperature in Fahrenheit.
+     */
     public double getTempFarhenhiet() {
         return tempFarhenhiet;
     }
 
-    public double getFeelsLikeFarhenhiet() {
-        return feelsLikeFarhenhiet;
-    }
-
+    /**
+     * Get the wind speed in miles per hour.
+     * @return Wind speed in miles per hour.
+     */
     public double getWindMph() {
         return windMph;
     }
 
+    /**
+     * Get the precipitation in inches.
+     * @return Precipitation in inches.
+     */
     public double getPrecipIn() {
         return precipIn;
     }
 
+    /**
+     * Get the humidity percentage.
+     * @return Humidity percentage.
+     */
     public int getHumidity() {
         return humidity;
     }
 
-    public int getVisibilityMiles() {
-        return visibilityMiles;
-    }
-
+    /**
+     * Get the UV index.
+     * @return UV index.
+     */
     public int getUvIndex() {
         return uvIndex;
     }
 
+    /**
+     * Get the weather condition icon.
+     * @return Weather condition icon.
+     */
     public String getConditionIcon() {
         return conditionIcon;
     }
 
+    /**
+     * Get the weather condition text description.
+     * @return Weather condition text description.
+     */
     public String getConditionText() {
         return conditionText;
     }
 
+    /**
+     * Retrieve weather data from a weather API.
+     * @return Weather object containing weather information.
+     */
     public static Weather getWeather() {
+        // Weather API URL
         String apiUrl = "http://api.weatherapi.com/v1/current.json?key=d8a18be87c82447eb77182645232508&q=Albany,NY";
 
         try {
+            // Create a URL object
             URL url = new URL(apiUrl);
+
+            // Establish an HTTP connection
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Authorization", "Bearer ");
 
+            // Get the HTTP response code
             int responseCode = connection.getResponseCode();
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Read the API response
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
                 StringBuilder response = new StringBuilder();
@@ -91,25 +135,18 @@ public class Weather {
                 JSONObject current = jsonResponse.getJSONObject("current");
                 JSONObject condition = current.getJSONObject("condition");
 
-                // Now you can access fields within the "current" object
+                // Extract weather data
                 double tempFarhenhiet = current.getDouble("temp_f");
-                double feelsLikeFarhenhiet = current.getDouble("feelslike_f");
                 double windMph = current.getDouble("wind_mph");
                 int humidity = current.getInt("humidity");
-                int visibilityMiles = current.getInt("vis_miles");
                 int uvIndex = current.getInt("uv");
                 double precipIn = current.getDouble("precip_in");
                 String conditionIcon = condition.getString("icon");
                 String conditionText = condition.getString("text");
 
-                return new Weather(tempFarhenhiet, feelsLikeFarhenhiet, windMph, humidity,
-                        visibilityMiles, uvIndex, precipIn, conditionIcon, conditionText);
-
+                return new Weather(tempFarhenhiet, windMph, humidity,
+                        uvIndex, precipIn, conditionIcon, conditionText);
             }
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
