@@ -21,7 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class HotelBookingController {
+public class HotelBookingController extends EventsController{
     @FXML
     private TextField emailIdField;
     @FXML

@@ -344,6 +344,155 @@
                     </AnchorPane>
                 </content>
             </Tab>
+            <Tab xmlns="http://javafx.com/javafx"
+                 xmlns:fx="http://javafx.com/fxml/1" text="Events">
+                <content>
+                    <AnchorPane styleClass="anchor-pane">
+                        <children>
+                            <StackPane prefWidth="700">
+                                <!-- First TableView for Event 1 -->
+                                <VBox fx:id="event1Details" spacing="10" visible="false" layoutX="10.0" layoutY="20.0">
+                                    <TableView fx:id="eventsTableView1" onMouseClicked="#handleEventSelection1"
+                                               prefHeight="300.0" prefWidth="900.0" style="-fx-background-color: #87aede;">
+                                        <columns>
+                                            <TableColumn text="Event Name">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventName" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn text="Date">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventDate" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn text="Location">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventLocation" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn text="Price">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventPrice" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                        </columns>
+                                    </TableView>
+                                    <HBox spacing="20">
+                                        <Button text="Go Back" onAction="#mainContentView" />
+                                        <Button text="Create Booking" onAction="#createBooking" />
+                                        <Button text="View Bookings" onAction="#viewBookings"/>
+                                        <Button text="Create Event" fx:id="event1createEventButton" onAction="#createEvent" />
+                                        <Button text="Delete Event" fx:id="event1deleteEventButton" onAction="#deleteEvent"/>
+                                    </HBox>
+                                </VBox>
+
+                                <!-- Second TableView for Event 2 -->
+                                <VBox fx:id="event2Details" spacing="10" visible="false" layoutX="10.0" layoutY="20.0">
+                                    <TableView fx:id="eventsTableView2" onMouseClicked="#handleEventSelection2"
+                                               prefHeight="300.0" prefWidth="900.0" style="-fx-background-color: #87aede;">
+                                        <columns>
+                                            <TableColumn text="Event Name">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventName" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn text="Date">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventDate" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn text="Location">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventLocation" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn text="Price">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventPrice" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                        </columns>
+                                    </TableView>
+                                    <HBox spacing="20">
+                                        <Button text="Go Back" onAction="#mainContentView" />
+                                        <Button text="Create Booking" onAction="#createBooking" />
+                                        <Button text="View Bookings" onAction="#viewBookings"/>
+                                        <Button text="Create Event" fx:id="event2createEventButton" onAction="#createEvent"/>
+                                        <Button text="Delete Event" fx:id="event2deleteEventButton" onAction="#deleteEvent"/>
+                                    </HBox>
+                                </VBox>
+
+                                <!-- Third TableView for Event 3 -->
+                                <VBox fx:id="event3Details" spacing="10" visible="false" layoutX="10.0" layoutY="20.0">
+                                    <TableView fx:id="eventsTableView3" onMouseClicked="#handleEventSelection3"
+                                               prefHeight="300.0" prefWidth="900.0" style="-fx-background-color: #87aede;">
+                                        <columns>
+                                            <TableColumn text="Event Name">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventName" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn text="Date">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventDate" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn text="Location">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventLocation" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn text="Price">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventPrice" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                        </columns>
+                                    </TableView>
+                                    <HBox spacing="20">
+                                        <Button text="Go Back" onAction="#mainContentView" />
+                                        <Button text="Create Booking" onAction="#createBooking" />
+                                        <Button text="View Bookings" onAction="#viewBookings"/>
+                                        <Button text="Create Event" fx:id="event3createEventButton" onAction="#createEvent"/>
+                                        <Button text="Delete Event" fx:id="event3deleteEventButton" onAction="#deleteEvent"/>
+                                    </HBox>
+                                </VBox>
+                                <VBox fx:id="bookingDetails" spacing="10" visible="false" layoutX="10.0" layoutY="20.0">
+                                    <TableView fx:id="bookingTableView" onMouseClicked="#handleBookingSelection"
+                                               prefHeight="300.0" prefWidth="900.0" style="-fx-background-color: #87aede;">
+                                        <columns>
+                                            <TableColumn text="Event Name">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventName" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn text="Date">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventDate" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn text="Location">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventLocation" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn text="Cost">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="eventPrice" />
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                        </columns>
+                                    </TableView>
+                                    <HBox spacing="20">
+                                        <Button text="Go Back" onAction="#mainContentView2" />
+                                        <Button text="Delete Booking" onAction="#deleteBooking" />
+                                    </HBox>
+                                </VBox>
+                            </StackPane>
+                        </children>
+                    </AnchorPane>
+                </content>
+            </Tab>
             <Tab text="City Map">
                 <Pane>
                   <children>
