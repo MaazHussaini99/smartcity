@@ -397,4 +397,41 @@ public class HotelBooking {
         }
         return 1;
     }
+    public int getHotelAvalibility(int hotelId) {
+        try (Connection connection = DBConn.connectDB()) {
+            String sql = "SELECT hotel_availibility FROM hotel WHERE hotel_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, hotelId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("hotel_availibility");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Return a default value if there was an error or if the account doesn't exist
+        return 0;
+    }
+
+    public void updatedAvailability(int hotelId, int availibilityy) {
+        try (Connection connection = DBConn.connectDB()) {
+            connection.setAutoCommit(false); // Disable auto-commit
+
+            String sql = "UPDATE hotel SET hotel_availibility= ? WHERE hotel_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,availibilityy);
+            preparedStatement.setInt(2, hotelId);
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                connection.commit(); // Commit the transaction
+            } else {
+                connection.rollback(); // Rollback if the update fails
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

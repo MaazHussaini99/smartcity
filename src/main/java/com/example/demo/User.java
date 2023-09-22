@@ -12,7 +12,7 @@ public class User {
     private static User user = null;
 
     final private int userID;
-    private int roleID;
+    private final int roleID;
     private String firstName;
     private String lastName;
     private String streetAddress;
@@ -83,9 +83,8 @@ public class User {
      * @param email email
      * @param phoneNumber phone number
      * @param roleID role ID
-     * @return a User object
      */
-    public static synchronized User initializeUser(int userID,
+    public static synchronized void initializeUser(int userID,
                                                    String firstName,
                                                    String lastName,
                                                    String streetAddress,
@@ -107,7 +106,6 @@ public class User {
                     phoneNumber,
                     roleID);
 
-        return user;
     }
 
     /**
@@ -300,32 +298,43 @@ public class User {
     }
 
     /**
-     * setRoleID
-     * Sets the user's role ID
-     * @param roleID
+     * toString
+     * @return String address
      */
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
-    }
-
     public String toString() {
-        String address = "";
+        String address;
         address = this.streetAddress + " " + this.city + ",\n" + this.state + " " + this.zipcode;
         return address;
     }
 
+    /**
+     * firstNameProperty
+     * @return SimpleStringProperty firstName
+     */
     public StringProperty firstNameProperty(){
         return new SimpleStringProperty(firstName);
     }
 
+    /**
+     * lastNameProperty
+     * @return SimpleStringProperty lastName
+     */
     public StringProperty lastNameProperty(){
         return new SimpleStringProperty(lastName);
     }
 
+    /**
+     * emailProperty
+     * @return StringProperty email
+     */
     public StringProperty emailProperty(){
         return new SimpleStringProperty(email);
     }
 
+    /**
+     * adminProperty
+     * @return StringProperty admin
+     */
     public StringProperty adminProperty(){
         String admin;
         if(roleID == 1){

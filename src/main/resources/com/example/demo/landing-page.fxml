@@ -119,11 +119,11 @@
                                                 <PropertyValueFactory property="hotelPrice" />
                                             </cellValueFactory>
                                         </TableColumn>
-                                        <TableColumn prefWidth="109.20001220703125" text="Room Number">
+                                       <!-- <TableColumn prefWidth="109.20001220703125" text="Room Number">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelRoomNumber" />
                                             </cellValueFactory>
-                                        </TableColumn>
+                                        </TableColumn> -->
                                         <TableColumn prefWidth="103.39996337890625" text="Availability">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelAvailability" />
