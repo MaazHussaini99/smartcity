@@ -585,13 +585,13 @@ public class LandingPageController extends NightLifeController implements Initia
         // Edit profile
         editProfileButton = new Button("Edit Profile");
         editProfileButton.setLayoutX(10);
-        editProfileButton.setLayoutY(150);
+        editProfileButton.setLayoutY(190);
         editProfileButton.setOnAction(event -> goToEditProfile());
 
         if (User.getInstance().getRoleID() == 2) {
-            adminButton = new Button("Add new Admin");
+            adminButton = new Button("Admin Panel");
             adminButton.setLayoutX(10);
-            adminButton.setLayoutY(200);
+            adminButton.setLayoutY(220);
 
             // Add an event handler to the button
             adminButton.setOnAction(event -> loadAdminFXML());

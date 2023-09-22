@@ -395,6 +395,7 @@ public class BankAccountController {
             Stage stage = (Stage) bankAccountView.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
+            stage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
