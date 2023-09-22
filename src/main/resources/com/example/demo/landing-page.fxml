@@ -60,8 +60,8 @@
                         <children>
                             <TableView fx:id="jobTableView" layoutX="10.0" layoutY="20.0" prefHeight="566.0" prefWidth="849.0">
                                 <columns>
-                                    <TableColumn fx:id="titleColumn" styleClass="TitleTabStyle" text="Title" />
-                                    <TableColumn fx:id="gradeColumn" text="Grade" />
+                                    <TableColumn fx:id="titleColumn" prefWidth="100.99999713897705" styleClass="TitleTabStyle" text="Title" />
+                                    <TableColumn fx:id="gradeColumn" prefWidth="59.0" text="Grade" />
                                     <TableColumn fx:id="agencyColumn" text="Agency" />
                                     <TableColumn fx:id="locationColumn" text="City" />
                                     <TableColumn fx:id="applyColumn" prefWidth="125.0" text="Apply" />
@@ -216,7 +216,7 @@
                           <Pane layoutX="488.0" layoutY="20.0" prefHeight="600.0" prefWidth="370.0" style="-fx-background-color: #3567c4; -fx-background-radius: 20px;">
                               <children>
                                   <Button layoutX="149.0" layoutY="520.0" mnemonicParsing="false" onAction="#purchaseTransportTicket" text="Purchase" />
-                                  <TableView fx:id="stopsTable" layoutX="10.0" layoutY="75.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="379.0" prefWidth="350.0">
+                                  <TableView fx:id="stopsTable" layoutX="9.0" layoutY="75.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="352.0">
                                     <columns>
                                       <TableColumn fx:id="busStop" prefWidth="150.0" text="Stop" />
                                       <TableColumn fx:id="busArrivalTime" prefWidth="100.0" resizable="false" text="Arrival" />
@@ -230,11 +230,11 @@
                                  </font>
                               </Label>
                               </children></Pane>
-                        <TableView fx:id="transportTable" layoutX="10.0" layoutY="20.0" prefHeight="600.0" prefWidth="462.0">
+                        <TableView fx:id="transportTable" layoutX="10.0" layoutY="20.0" prefHeight="600.0">
                           <columns>
                             <TableColumn fx:id="busNo" prefWidth="53.200013160705566" text="Bus #" />
                             <TableColumn fx:id="busName" prefWidth="126.79998779296875" text="Bus Name" />
-                              <TableColumn fx:id="routeDescription" prefWidth="282.00001525878906" text="Route Description" />
+                              <TableColumn fx:id="routeDescription" prefWidth="282.3999786376953" text="Route Description" />
                           </columns>
                         </TableView>
                       </children>

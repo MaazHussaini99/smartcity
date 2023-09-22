@@ -1,16 +1,10 @@
 package com.example.demo;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -20,6 +14,15 @@ import javafx.scene.control.TextField;
 import javafx.stage.Window;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+/**
+ * Controller class for the logged-in view.
+ */
 public class LoggedinController {
 
     @FXML
@@ -31,33 +34,34 @@ public class LoggedinController {
     @FXML
     private Button submitButton;
 
-    @FXML
-    private Button signUp;
 
+    /**
+     * Handles the login action when the submit button is clicked.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     * @throws IOException  If an I/O error occurs.
+     */
     @FXML
-    public void login(ActionEvent event) throws SQLException, IOException {
-
+    public void login(ActionEvent event) throws IOException {
         Window owner = submitButton.getScene().getWindow();
 
         if (emailIdField.getText().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                    "Please enter your email id");
+            showAlert(owner, "Please enter your email id");
             return;
         }
         if (passwordField.getText().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                    "Please enter a password");
+            showAlert(owner, "Please enter a password");
             return;
         }
 
         String emailId = emailIdField.getText();
         String password = passwordField.getText();
 
-
         boolean flag = validate(emailId, password);
-        System.out.println("Flag: "+flag);
-        if (flag == true) {
+
+        if (flag) {
             infoBox("Login Successful!", null, "Success");
+            // Load the main application window
             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("landing-page.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 1200, 681);
             Node node = (Node) event.getSource();
@@ -70,8 +74,15 @@ public class LoggedinController {
             infoBox("Please enter correct Email and Password", null, "Failed");
         }
     }
+
+    /**
+     * Handles the sign-up action when the sign-up button is clicked.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     * @throws IOException  If an I/O error occurs.
+     */
     @FXML
-    public void goToSignUp(ActionEvent event) throws SQLException, IOException {
+    public void goToSignUp(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("sign-up.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 535, 400);
         Node node = (Node) event.getSource();
@@ -82,81 +93,89 @@ public class LoggedinController {
         stage.centerOnScreen();
     }
 
+    /**
+     * Displays an information dialog box with the given message.
+     *
+     * @param infoMessage The message to display.
+     * @param headerText  The header text for the dialog box.
+     * @param title       The title of the dialog box.
+     */
     public static void infoBox(String infoMessage, String headerText, String title) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setContentText(infoMessage);
-        alert.setTitle(title);
-        alert.setHeaderText(headerText);
-        alert.showAndWait();
+        Platform.runLater(() -> {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setContentText(infoMessage);
+            alert.setTitle(title);
+            alert.setHeaderText(headerText);
+            alert.showAndWait();
+        });
     }
 
-    private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
+    /**
+     * Displays an alert dialog with the specified alert type, title, and message.
+     * @param owner     The owner window of the alert.
+     * @param message   The message to display in the alert.
+     */
+    private static void showAlert(Window owner, String message) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Form Error!");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.initOwner(owner);
         alert.show();
     }
 
-    public static boolean validate(String emailId, String password) throws SQLException {
-
-        // Step 1: Establishing a Connection and
-        // try-with-resource statement will auto close the connection.
+    /**
+     * Validates the user's login credentials.
+     *
+     * @param emailId  The user's email ID.
+     * @param password The user's password.
+     * @return True if the credentials are valid, false otherwise.
+     */
+    public static boolean validate(String emailId, String password){
         final String SELECT_QUERY = "SELECT * FROM user WHERE user_email = ? and user_password = ?";
-        try (Connection connection = DBConn.connectDB();
 
-             // Step 2:Create a statement using connection object
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
-            preparedStatement.setString(1, emailId);
-            preparedStatement.setString(2, password);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        try (Connection connection = DBConn.connectDB()) {
+            assert connection != null;
+            try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
+                preparedStatement.setString(1, emailId);
+                preparedStatement.setString(2, password);
+                ResultSet resultSet = preparedStatement.executeQuery();
 
-            // 1 = user ID
-            // 2 = first name
-            // 3 = last name
-            // 4 = street Add
-            // 5 = city
-            // 6 = zip
-            // 7 = state
-            // 8 = email
-            // 9 = password
-            // 10 = phone
-            // 11 = role ID
-            if (resultSet.next() == true) {
+                if (resultSet.next()) {
+                    PreparedStatement preparedStatement2 = connection.prepareStatement("SELECT * FROM states WHERE state_ID = ?");
+                    preparedStatement2.setInt(1, Integer.parseInt(resultSet.getString(7)));
+                    ResultSet stateResultSet = preparedStatement2.executeQuery();
 
-                PreparedStatement preparedStatement2 = connection.prepareStatement("SELECT * FROM states WHERE state_ID = ?");
-                preparedStatement2.setInt(1, Integer.parseInt(resultSet.getString(7)));
-                ResultSet stateResultSet = preparedStatement2.executeQuery();
-
-                if (stateResultSet.next() == true) {
-                    // Save login data to User object
-                    User user = User.initializeUser(Integer.parseInt(resultSet.getString(1)),
-                            resultSet.getString(2),
-                            resultSet.getString(3),
-                            resultSet.getString(4),
-                            resultSet.getString(5),
-                            resultSet.getString(6),
-                            stateResultSet.getString(2),
-                            resultSet.getString(8),
-                            resultSet.getString(10),
-                            Integer.parseInt(resultSet.getString(11)));
-                    System.out.println("Logged in!");
-                    HotelBooking.getInstance().setEmailId(emailId);
-                    return true;
+                    if (stateResultSet.next()) {
+                        User.initializeUser(Integer.parseInt(resultSet.getString(1)),
+                                resultSet.getString(2),
+                                resultSet.getString(3),
+                                resultSet.getString(4),
+                                resultSet.getString(5),
+                                resultSet.getString(6),
+                                stateResultSet.getString(2),
+                                resultSet.getString(8),
+                                resultSet.getString(10),
+                                Integer.parseInt(resultSet.getString(11)));
+                        System.out.println("Logged in!");
+                        HotelBooking.getInstance().setEmailId(emailId);
+                        return true;
+                    }
                 }
             }
-
-
         } catch (SQLException e) {
-            // print SQL exception information
             printSQLException(e);
         }
         return false;
     }
 
+    /**
+     * Prints SQL exception details.
+     *
+     * @param ex The SQLException.
+     */
     public static void printSQLException(SQLException ex) {
-        for (Throwable e: ex) {
+        for (Throwable e : ex) {
             if (e instanceof SQLException) {
                 e.printStackTrace(System.err);
                 System.err.println("SQLState: " + ((SQLException) e).getSQLState());
