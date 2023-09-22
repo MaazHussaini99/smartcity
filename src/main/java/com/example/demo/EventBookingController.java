@@ -326,19 +326,36 @@ public class EventBookingController {
         }
     }
     private boolean deleteBookingFromDatabase(String eventName, String eventDate) {
-        try (Connection connection = DBConn.connectDB()) {
-            String sql = "DELETE FROM event_booking WHERE event_id = (SELECT event_id FROM event WHERE event_name = ? AND event_date = ?) AND user_id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, eventName);
-            preparedStatement.setString(2, eventDate);
-            preparedStatement.setInt(3, getUser_Id()); // You may need to replace this with the actual user ID
+        if(userRole == 1){
+            try (Connection connection = DBConn.connectDB()) {
+                String sql = "DELETE FROM event_booking WHERE event_id = (SELECT event_id FROM event WHERE event_name = ? AND event_date = ?) AND user_id = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, eventName);
+                preparedStatement.setString(2, eventDate);
+                preparedStatement.setInt(3, getUser_Id()); // You may need to replace this with the actual user ID
 
-            int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+                int rowsAffected = preparedStatement.executeUpdate();
+                return rowsAffected > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else if (userRole == 2) {
+            try (Connection connection = DBConn.connectDB()) {
+                String sql = "DELETE FROM event_booking WHERE event_id = (SELECT event_id FROM event WHERE event_name = ? AND event_date = ?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, eventName);
+                preparedStatement.setString(2, eventDate);
+               // preparedStatement.setInt(3, getUser_Id()); // You may need to replace this with the actual user ID
+
+                int rowsAffected = preparedStatement.executeUpdate();
+                return rowsAffected > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
+        return false;
     }
     private void showErrorDialog(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
