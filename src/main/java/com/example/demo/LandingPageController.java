@@ -266,10 +266,6 @@ public class LandingPageController extends NightLifeController implements Initia
         });
         // Populate the TableView with job listings from JobListing class
         jobTableView.getItems().addAll(JobListing.getAllJobs());
-        System.out.println("This is where admin check would go");
-        if(User.getInstance().getRoleID() == 2){
-
-        }
 
         // limited to admin only
         if (User.getInstance().getRoleID() == 2)
@@ -278,6 +274,7 @@ public class LandingPageController extends NightLifeController implements Initia
         MapController maps = new MapController();
         maps.showMap(webviewMap);
     }
+
 
     private void setJobEditRowBehavior() {
         //what does this do?
@@ -636,12 +633,11 @@ public class LandingPageController extends NightLifeController implements Initia
         try {
 
             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("adminpanel2.fxml"));
+            Stage adminWindow = new Stage();
+            adminWindow.setTitle("Smart City - Admin Panel");
             Scene scene = new Scene(fxmlLoader.load(), 700, 550);
-            Stage stage = (Stage) editProfileButton.getScene().getWindow();
-            stage.setTitle("Smart City - Admin Panel");
-            stage.setScene(scene);
-            stage.show();
-            stage.centerOnScreen();
+            adminWindow.setScene(scene);
+            adminWindow.show();
 
         } catch (IOException e) {
             e.printStackTrace();
