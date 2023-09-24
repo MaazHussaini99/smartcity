@@ -29,6 +29,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -586,7 +587,7 @@ public class LandingPageController extends NightLifeController implements Initia
         editProfileButton.setOnAction(event -> goToEditProfile());
 
         if (User.getInstance().getRoleID() == 2) {
-            adminButton = new Button("Add new Admin");
+            adminButton = new Button("Admin Panel");
             adminButton.setLayoutX(10);
             adminButton.setLayoutY(200);
 
@@ -637,6 +638,7 @@ public class LandingPageController extends NightLifeController implements Initia
             adminWindow.setTitle("Smart City - Admin Panel");
             Scene scene = new Scene(fxmlLoader.load(), 700, 550);
             adminWindow.setScene(scene);
+            adminWindow.initModality(Modality.WINDOW_MODAL);
             adminWindow.show();
 
         } catch (IOException e) {
