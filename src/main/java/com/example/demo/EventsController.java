@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Random;
 
+// EventsController handles events-related functionality and extends EventBookingController
 public class EventsController extends EventBookingController{
     @FXML
     private VBox event1Details;
@@ -62,17 +63,16 @@ public class EventsController extends EventBookingController{
     private int userRole = User.getInstance().getRoleID();
 
     // Initialize the table data
-    //private ObservableList<Event> eventData = FXCollections.observableArrayList();
     private ObservableList<Event> eventData1 = FXCollections.observableArrayList();
     private ObservableList<Event> eventData2 = FXCollections.observableArrayList();
     private ObservableList<Event> eventData3 = FXCollections.observableArrayList();
 
+    // Load event data from the database
     private void loadDataFromDatabase() {
-       // eventData.clear(); // Clear the existing data
+       // Clear the existing data
         eventData1.clear();
         eventData2.clear();
         eventData3.clear();
-
         eventsTableView1.getItems().clear();
         eventsTableView2.getItems().clear();
         eventsTableView3.getItems().clear();
@@ -90,7 +90,6 @@ public class EventsController extends EventBookingController{
                 double eventPrice = resultSet.getDouble("event_price");
 
                 Event event = new Event(eventId, eventName, eventLocation, eventDate, eventPrice);
-              //  eventData.add(event);
 
                 // Determine which TableView to set based on the event_id range
 
@@ -109,6 +108,8 @@ public class EventsController extends EventBookingController{
             e.printStackTrace();
         }
     }
+
+    // Handle the creation of a new event
     @FXML
     private void createEvent() {
         Dialog<Event> dialog = new Dialog<>();
@@ -179,9 +180,6 @@ public class EventsController extends EventBookingController{
                 }
                 try {
                     double price = Double.parseDouble(eventPriceField.getText());
-
-
-
                     newEvent.setEventPrice(price);
                 } catch (NumberFormatException e) {
                     // Handle invalid price input
@@ -210,10 +208,13 @@ public class EventsController extends EventBookingController{
         });
     }
 
+    // Generate a random event ID within a specified range
     private int getRandomEventId(int min, int max) {
         Random random = new Random();
         return random.nextInt(max - min + 1) + min;
     }
+
+    // Check if an event ID is unique in the database
     private boolean isEventIdUnique(int eventId) {
         String sql = "SELECT COUNT(*) FROM event WHERE event_id = ?";
         try (Connection connection = DBConn.connectDB();
@@ -232,6 +233,7 @@ public class EventsController extends EventBookingController{
         return false;
     }
 
+    // Insert a new event into the database
     private boolean insertEvent(Event event) throws SQLException {
         String sql = "INSERT INTO event (event_id, event_name, event_location, event_date, event_price) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DBConn.connectDB();
@@ -250,6 +252,7 @@ public class EventsController extends EventBookingController{
         }
     }
 
+    // Refresh the table view after changes
     private void refreshTableView() {
         loadDataFromDatabase();
         eventsTableView1.refresh();
@@ -257,6 +260,7 @@ public class EventsController extends EventBookingController{
         eventsTableView3.refresh();
     }
 
+    // Handle the deletion of an event
     @FXML
     private void deleteEvent() {
         Event selectedEvent = null;
@@ -302,6 +306,7 @@ public class EventsController extends EventBookingController{
         }
     }
 
+    // Delete an event from the database
     private boolean deleteEventFromDatabase(int eventIdToDelete) {
         String sql = "DELETE FROM event WHERE event_id = ?";
         try (Connection connection = DBConn.connectDB();
@@ -315,18 +320,25 @@ public class EventsController extends EventBookingController{
         }
     }
 
+    // Handle event selection for TableView1
     @FXML
     private void handleEventSelection1(MouseEvent event) {
         selectedEvent1 = eventsTableView1.getSelectionModel().getSelectedItem();
     }
+
+    // Handle event selection for TableView2
     @FXML
     private void handleEventSelection2(MouseEvent event) {
         selectedEvent2 = eventsTableView2.getSelectionModel().getSelectedItem();
     }
+
+    // Handle event selection for TableView3
     @FXML
     private void handleEventSelection3(MouseEvent event) {
         selectedEvent3 = eventsTableView3.getSelectionModel().getSelectedItem();
     }
+
+    // Show more details for TableView1
     @FXML
     private void showMoreDetails1(ActionEvent selectedEvent1) {
         loadDataFromDatabase();
@@ -343,6 +355,7 @@ public class EventsController extends EventBookingController{
         event3deleteEventButton.setVisible(userRole == 2);
     }
 
+    // Show more details for TableView1
     @FXML
     private void showMoreDetails2(ActionEvent selectedEvent2) {
         loadDataFromDatabase();
@@ -353,6 +366,7 @@ public class EventsController extends EventBookingController{
         event3Details.setVisible(false);
     }
 
+    // Show more details for TableView3
     @FXML
     private void showMoreDetails3(ActionEvent selectedEvent3) {
         loadDataFromDatabase();
@@ -362,6 +376,8 @@ public class EventsController extends EventBookingController{
         event2Details.setVisible(false);
         event3Details.setVisible(true);
     }
+
+    // Return to the main content view
     @FXML
     private void mainContentView() {
         mainContentView.setVisible(true);
@@ -369,6 +385,8 @@ public class EventsController extends EventBookingController{
         event2Details.setVisible(false);
         event3Details.setVisible(false);
     }
+
+    // Show an information message dialog
     private void showInfoMessage(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -377,6 +395,7 @@ public class EventsController extends EventBookingController{
         alert.showAndWait();
     }
 
+    // Show an error message dialog
     private void showErrorMessage(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
