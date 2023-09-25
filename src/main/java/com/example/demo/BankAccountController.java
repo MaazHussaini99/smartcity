@@ -20,7 +20,9 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+/**
+ * Controller class for managing bank accounts and transactions.
+ */
 public class BankAccountController {
 
     @FXML
@@ -61,11 +63,14 @@ public class BankAccountController {
             backToLandingPageButton.setVisible(false);
         }
     }
+
+    // Initialize the controller with data for the selected bank.
     public void initData(String selectedBank) {
         bankNameLabel.setText("Bank Name: " + selectedBank);
         loadBankAccounts();
     }
 
+    // Load available bank names into the ComboBox.
     private void loadBankNames() {
         try (Connection connection = DBConn.connectDB()) {
             String sql = "SELECT bank_name FROM bank";
@@ -81,12 +86,16 @@ public class BankAccountController {
             e.printStackTrace();
         }
     }
+
+    // Get the user ID based on their email.
     public int getUserId(){
         String userEmail = HotelBooking.getInstance().getEmailId();
         HotelBooking c = new HotelBooking();
         userId = c.getUserdetails(userEmail);
         return userId;
     }
+
+    // Create a new bank account for the selected user.
     @FXML
     public void createNewBankAccount() {
         // Get the input values
@@ -142,6 +151,7 @@ public class BankAccountController {
         }
     }
 
+    // Get the bank ID based on the selected bank name.
     private int getBankId(String selectedBank) {
         int bankId = -1; // Default value in case of an error
 
@@ -160,6 +170,8 @@ public class BankAccountController {
 
         return bankId;
     }
+
+    // Delete the selected bank account.
     @FXML
     public void deleteSelectedBank() {
         String selectedBankAccountText = bankListView.getSelectionModel().getSelectedItem();
@@ -195,6 +207,7 @@ public class BankAccountController {
         }
     }
 
+    // Extract the account number from the selected bank account text.
     private int extractAccountNumberFromText(String text) {
 
         // Define a regular expression pattern to match the "Account No:" part and extract the number
@@ -217,6 +230,7 @@ public class BankAccountController {
         return -1;
     }
 
+    // Update the selected bank account
     @FXML
     public void updateSelectedBank() {
         String selectedBankAccountText = bankListView.getSelectionModel().getSelectedItem();
@@ -229,6 +243,7 @@ public class BankAccountController {
         }
     }
 
+    // Deposit money into the selected bank account.
     @FXML
     public void depositMoney() {
         String selectedBankAccountText = bankListView.getSelectionModel().getSelectedItem();
@@ -296,6 +311,7 @@ public class BankAccountController {
         return null;
     }
 
+    // Update the balance of a bank account.
     private boolean updateAccountBalance(int accountNumber, double depositAmount) {
         try (Connection connection = DBConn.connectDB()) {
             connection.setAutoCommit(false); // Disable auto-commit
@@ -320,6 +336,7 @@ public class BankAccountController {
         }
     }
 
+    // Withdraw money from the selected bank account.
     @FXML
     public void withdrawMoney() {
         String selectedBankAccountText = bankListView.getSelectionModel().getSelectedItem();
@@ -369,6 +386,7 @@ public class BankAccountController {
         }
     }
 
+    // Show the balance of the selected bank account.
     @FXML
     public void showBalance() {
         String selectedBankAccountText = bankListView.getSelectionModel().getSelectedItem();
@@ -381,6 +399,7 @@ public class BankAccountController {
         }
     }
 
+    // Navigate back to the bank view.
     @FXML
     public void navigateBackToBank() {
         try {
@@ -399,6 +418,8 @@ public class BankAccountController {
             e.printStackTrace();
         }
     }
+
+    // Navigate back to the landing page.
     @FXML
     public void navigateBackToLandingPage() {
         try {
@@ -417,6 +438,8 @@ public class BankAccountController {
             e.printStackTrace();
         }
     }
+
+    // Load bank accounts based on the user's role.
     private void loadBankAccounts() {
         bankListView.getItems().clear(); // Clear the ListView before loading new accounts
         if(userRole == 1){
@@ -471,6 +494,7 @@ public class BankAccountController {
         }
     }
 
+    // Get the balance of a bank account.
     private double getAccountBalance(int accountNumber) {
         try (Connection connection = DBConn.connectDB()) {
             String sql = "SELECT balance FROM bank_account WHERE account_no = ?";
@@ -490,6 +514,7 @@ public class BankAccountController {
         return 0.0;
     }
 
+    // Get the balance of a bank account.
     private boolean isAccountNumberUnique(int accountNumber, int bankId) {
         try (Connection connection = DBConn.connectDB()) {
             String sql = "SELECT COUNT(*) AS count FROM bank_account WHERE account_no = ? AND bank_id = ?";
@@ -510,6 +535,7 @@ public class BankAccountController {
         // In case of an error, return false to be on the safe side
         return false;
     }
+
     // Generate a random account number of 8 digits
     private int generateRandomAccountNumber() {
         Random random = new Random();
@@ -535,6 +561,8 @@ public class BankAccountController {
 
         return routingNumber;
     }
+
+    // Show a success message dialog.
     private void showSuccessMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Success");
@@ -543,6 +571,7 @@ public class BankAccountController {
         alert.showAndWait();
     }
 
+    // Show an error message dialog.
     private void showErrorMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
