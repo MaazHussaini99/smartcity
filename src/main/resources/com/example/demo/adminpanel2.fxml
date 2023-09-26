@@ -1,24 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="520.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.AdminController">
+<AnchorPane fx:id="anchorPane" prefHeight="520.0" prefWidth="1104.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.AdminController">
    <children>
       <Button fx:id="promote" layoutX="335.0" layoutY="477.0" mnemonicParsing="false" onAction="#PromotionButton" prefWidth="100.0" text="Promote User" />
 
       <Button fx:id="demote" layoutX="445.0" layoutY="477.0" mnemonicParsing="false" onAction="#DemotionButton" prefWidth="100.0" text="Demote User" />
-      <TableView layoutX="15.0" layoutY="15.0" prefHeight="222.0" prefWidth="300.0" />
-      <TableView fx:id="jobApplications" layoutX="15.0" layoutY="15.0" prefHeight="222.0" prefWidth="300.0" />
-      <TableView fx:id="userTable" layoutX="335.0" layoutY="17.0" prefHeight="455.0" prefWidth="350.0" />
+
+      <TableView fx:id="jobApplications" layoutX="15.0" layoutY="40.0" prefHeight="196.0" prefWidth="300.0" />
+      <TableView fx:id="userTable" layoutX="335.0" layoutY="40.0" prefHeight="428.0" prefWidth="350.0" />
       <TextField fx:id="emailSubject" layoutX="15.0" layoutY="287.0" prefHeight="26.0" prefWidth="300.0" promptText="Email" />
       <TextField fx:id="emailTarget" layoutX="15.0" layoutY="319.0" prefHeight="26.0" prefWidth="300.0" promptText="Subject" />
       <TextArea fx:id="emailContent" layoutX="15.0" layoutY="351.0" prefHeight="119.0" prefWidth="300.0" promptText="Enter Message" />
-      <HBox fx:id = "buttonBox" layoutX="14.0" layoutY="477.0" prefHeight="25.0" prefWidth="179.0">
-         <Button fx:id="writeEmail" layoutX="15.0" layoutY="477.0" mnemonicParsing="false" onAction="#sendEmail" prefWidth="80.0" text="Write Email" />
+      <HBox fx:id="buttonBox" layoutX="14.0" layoutY="477.0" prefHeight="25.0" prefWidth="179.0">
+         <Button fx:id="writeEmail" layoutX="15.0" layoutY="477.0" mnemonicParsing="false" onAction="#sendEmail" prefHeight="27.0" prefWidth="98.0" text="Write Email" />
       </HBox>
       <Button fx:id="accept" layoutX="14.0" layoutY="245.0" mnemonicParsing="false" prefWidth="80.0" text="Accept" />
       <Button fx:id="reject" layoutX="104.0" layoutY="245.0" mnemonicParsing="false" prefWidth="80.0" text="Reject" />
-      <Button fx:id="back" layoutX="644.0" layoutY="477.0" mnemonicParsing="false" onAction="#BackButton" text="Back" />
+
+      <VBox fx:id="bankView" layoutX="701.0" prefHeight="520.0" prefWidth="394.0" spacing="10" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
+
+         <AnchorPane prefHeight="28.0" prefWidth="679.0">
+
+            <Label layoutY="10.0" styleClass="label" text="Bank Information" />
+         </AnchorPane>
+
+         <!-- Display the ListView and TextField initially -->
+         <ListView fx:id="bankListView" onMouseClicked="#bankSelected" prefHeight="273.0" prefWidth="679.0" styleClass="list-view" />
+
+
+         <!-- Hide the Delete and Update sections initially -->
+         <VBox fx:id="deleteAndUpdateContainer" visible="false">
+            <TextField fx:id="updateBankNameField" promptText="Enter updated bank name" styleClass="text-field" />
+            <Button onAction="#updateSelectedBank" styleClass="button" text="Update Bank">
+               <VBox.margin>
+               </VBox.margin></Button>
+         </VBox>
+         <HBox prefHeight="42.0" prefWidth="394.0">
+            <children>
+               <TextField fx:id="newBankNameField" prefHeight="35.0" prefWidth="395.0" promptText="Enter new bank name" styleClass="text-field" />
+            </children>
+         </HBox>
+         <HBox prefHeight="29.0" prefWidth="394.0" spacing="30.0">
+            <children>
+
+               <!-- Display the Create Bank button -->
+               <Button id="createBankButton" onAction="#createNewBank" prefHeight="45.0" prefWidth="100.0" styleClass="button" text="Create Bank">
+                  <font>
+                  </font></Button>
+               <Button fx:id="deleteBankButton" onAction="#deleteSelectedBank" prefHeight="45.0" prefWidth="100.0" styleClass="button" text="Delete Bank">
+                  <font>
+
+                  </font></Button>
+            </children>
+         </HBox>
+         <!-- The Back to Landing Page button, anchored to the top right corner -->
+         <Button layoutX="50.0" onAction="#navigateBackToLandingPage" styleClass="button" text="Back to Landing Page">
+            <VBox.margin>
+               <Insets left="250.0" />
+            </VBox.margin></Button>
+
+         <padding>
+         </padding>
+      </VBox>
+      <Label layoutX="335.0" layoutY="10.0" text="Promote/Demote Users" />
+      <Label layoutX="15.0" layoutY="10.0" text="Job Applications" />
    </children>
 </AnchorPane>

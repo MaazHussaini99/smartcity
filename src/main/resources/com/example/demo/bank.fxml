@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="bankView" prefHeight="450.0" prefWidth="530.0" spacing="10" stylesheets="@bank.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.BankController">
+<VBox fx:id="bankView" prefHeight="450.0" prefWidth="530.0" spacing="10" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.BankController">
 
         <AnchorPane prefHeight="28.0" prefWidth="679.0">
                 <!-- The Back to Landing Page button, anchored to the top right corner -->

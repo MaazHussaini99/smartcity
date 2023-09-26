@@ -53,13 +53,7 @@ public class BankAccountController {
         // Call loadBankNames when the controller is initialized
         loadBankNames();
         loadBankAccounts();
-        if (userRole == 1) {
-            backToBankButton.setVisible(false);
-            backToLandingPageButton.setVisible(true);
-        } else if(userRole == 2){
-            backToBankButton.setVisible(true);
-            backToLandingPageButton.setVisible(false);
-        }
+
     }
     public void initData(String selectedBank) {
         bankNameLabel.setText("Bank Name: " + selectedBank);
