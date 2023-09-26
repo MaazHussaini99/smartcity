@@ -567,12 +567,18 @@ public class LandingPageController extends NightLifeController implements Initia
     private Pane createUserProfilePane() {
         // Create a Pane for user data
         Pane userDataPane = new Pane();
+        String role = "";
+
+        if (User.getInstance().getRoleID() == 1)
+            role = "User";
+        else
+            role = "Admin";
 
         // Populate the user data Pane with user-specific content
         Text userDataText = new Text("Name: " + User.getInstance().getFirstName() + " " + User.getInstance().getLastName()
                 + "\nEmail: " + User.getInstance().getEmail()
                 + "\nPhone number: " + User.getInstance().getPhoneNumber()
-                + "\nUser role ID: " + User.getInstance().getRoleID() // Replace with your user data components
+                + "\nUser role: " + role
                 + "\nAddress: \n" + User.getInstance().getStreetAddress()
                 + "\n" + User.getInstance().getCity()
                 + ", " + User.getInstance().getZipcode()
