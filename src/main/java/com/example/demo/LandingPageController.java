@@ -29,6 +29,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -266,10 +267,6 @@ public class LandingPageController extends NightLifeController implements Initia
         });
         // Populate the TableView with job listings from JobListing class
         jobTableView.getItems().addAll(JobListing.getAllJobs());
-        System.out.println("This is where admin check would go");
-        if(User.getInstance().getRoleID() == 2){
-
-        }
 
         // limited to admin only
         if (User.getInstance().getRoleID() == 2)
@@ -278,6 +275,7 @@ public class LandingPageController extends NightLifeController implements Initia
         MapController maps = new MapController();
         maps.showMap(webviewMap);
     }
+
 
     private void setJobEditRowBehavior() {
         //what does this do?
@@ -567,12 +565,18 @@ public class LandingPageController extends NightLifeController implements Initia
     private Pane createUserProfilePane() {
         // Create a Pane for user data
         Pane userDataPane = new Pane();
+        String role = "";
+
+        if (User.getInstance().getRoleID() == 1)
+            role = "User";
+        else
+            role = "Admin";
 
         // Populate the user data Pane with user-specific content
         Text userDataText = new Text("Name: " + User.getInstance().getFirstName() + " " + User.getInstance().getLastName()
                 + "\nEmail: " + User.getInstance().getEmail()
                 + "\nPhone number: " + User.getInstance().getPhoneNumber()
-                + "\nUser role ID: " + User.getInstance().getRoleID() // Replace with your user data components
+                + "\nUser role: " + role
                 + "\nAddress: \n" + User.getInstance().getStreetAddress()
                 + "\n" + User.getInstance().getCity()
                 + ", " + User.getInstance().getZipcode()
@@ -634,12 +638,12 @@ public class LandingPageController extends NightLifeController implements Initia
         try {
 
             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("adminpanel2.fxml"));
+            Stage adminWindow = new Stage();
+            adminWindow.setTitle("Smart City - Admin Panel");
             Scene scene = new Scene(fxmlLoader.load(), 700, 550);
-            Stage stage = (Stage) editProfileButton.getScene().getWindow();
-            stage.setTitle("Smart City - Admin Panel");
-            stage.setScene(scene);
-            stage.show();
-            stage.centerOnScreen();
+            adminWindow.setScene(scene);
+            adminWindow.initModality(Modality.APPLICATION_MODAL);
+            adminWindow.show();
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -41,17 +41,18 @@ public class AdminController {
     @FXML
     private TextArea emailContent;
     @FXML
-    private Button sendEmailButton,back,accept,reject,promote,demote, writeEmail;
+    private Button sendEmailButton, back, accept, reject, promote, demote, writeEmail;
 
     @FXML
     private HBox buttonBox;
 
     private ArrayList<User> currentList;
 
-    boolean writingEmail= false;
+    boolean writingEmail = false;
 
     JobApplication selectedApplication;
     static User user;
+
     public void initialize() {
         // Initialize your UI components and set event handlers here.
         // The UI components are already injected via @FXML annotations.
@@ -63,7 +64,7 @@ public class AdminController {
     }
 
 
-    public void addEmailFunction(){
+    public void addEmailFunction() {
         emailTarget.setPromptText("To:");
         emailSubject.setPromptText("Subject");
         emailContent.setPromptText("Write here!");
@@ -80,7 +81,7 @@ public class AdminController {
         });
     }
 
-    public void writeEmail(){
+    public void writeEmail() {
         Button cancel = (Button) buttonBox.getChildren().get(0);
         Button send = (Button) buttonBox.getChildren().get(1);
         currentList = new ArrayList<>();
@@ -91,7 +92,7 @@ public class AdminController {
         cancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                writingEmail=false;
+                writingEmail = false;
                 emailTarget.clear();
                 emailSubject.clear();
                 emailContent.clear();
@@ -110,25 +111,23 @@ public class AdminController {
         });
     }
 
-    public void setUserTableBehavior(){
+    public void setUserTableBehavior() {
         userTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 user = userTable.getSelectionModel().getSelectedItem();
-                if(writingEmail){
-                    if(currentList.contains(user)){
+                if (writingEmail) {
+                    if (currentList.contains(user)) {
                         currentList.remove(user);
-                    }
-                    else{
+                    } else {
                         currentList.add(user);
                     }
-                    String targetList ="";
-                    for(int i = 0;i< currentList.size();i++){
-                        if(i==currentList.size()-1){
-                            targetList+=currentList.get(i).getEmail();
-                        }
-                        else{
-                            targetList+=currentList.get(i).getEmail()+",";
+                    String targetList = "";
+                    for (int i = 0; i < currentList.size(); i++) {
+                        if (i == currentList.size() - 1) {
+                            targetList += currentList.get(i).getEmail();
+                        } else {
+                            targetList += currentList.get(i).getEmail() + ",";
                         }
                     }
                     emailTarget.setText(targetList);
@@ -138,35 +137,12 @@ public class AdminController {
     }
 
 
-
-
-    public void BackButton(){
-        back.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-
-
-                    // Load the LandingPage.fxml file
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("landing-page.fxml"));
-                    Parent root = loader.load();
-
-                    // Create a new scene
-                    Scene scene = new Scene(root);
-
-                    // Get the current stage and set the new scene
-                    Stage stage = (Stage) anchorPane.getScene().getWindow();
-                    stage.setScene(scene);
-                    stage.show();
-                    stage.centerOnScreen();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    public void BackButton() {
+                Stage stage = (Stage) back.getScene().getWindow();
+                stage.close();
     }
 
-    public void sendEmail(){
+    public void sendEmail() {
 
         final String username = "kevinzhengtwo@gmail.com"; // Your Gmail email address
         final String password = "iqly zzcf tqny taiv"; // Your Gmail password
@@ -203,12 +179,10 @@ public class AdminController {
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 
     public void PromotionButton() {
-        promote.setOnAction(event -> {
             User selectedUser = userTable.getSelectionModel().getSelectedItem();
             if (selectedUser != null) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -219,24 +193,22 @@ public class AdminController {
                     int userID = selectedUser.getUserID();
 
                     System.out.println("Yes");
-                    String sql = "UPDATE user SET role_ID = 2 WHERE uid=  "+userID;
+                    String sql = "UPDATE user SET role_ID = 2 WHERE uid=  " + userID;
 
-                    try{
+                    try {
                         Connection connection = DBConn.connectDB();
                         PreparedStatement ps = connection.prepareStatement(sql);
                         ps.executeUpdate();
-                    }
-                    catch(SQLException e){
+                    } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
                 }
                 userTable.getItems().clear();
                 generateRoleTable();
             }
-        });
     }
+
     public void DemotionButton() {
-        demote.setOnAction(event -> {
             User selectedUser = userTable.getSelectionModel().getSelectedItem();
             if (selectedUser != null) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -247,29 +219,28 @@ public class AdminController {
                     int userID = selectedUser.getUserID();
 
                     System.out.println("Yes");
-                    String sql = "UPDATE user SET role_ID = 1 WHERE uid=  "+userID;
+                    String sql = "UPDATE user SET role_ID = 1 WHERE uid=  " + userID;
 
-                    try{
+                    try {
                         Connection connection = DBConn.connectDB();
                         PreparedStatement ps = connection.prepareStatement(sql);
                         ps.executeUpdate();
-                    }
-                    catch(SQLException e){
+                    } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
                 }
                 userTable.getItems().clear();
                 generateRoleTable();
             }
-        });
     }
-    public void generateRoleTable(){
+
+    public void generateRoleTable() {
         //get users
         ObservableList<User> users = FXCollections.observableArrayList(getUser());
-        TableColumn<User,String> firstName = new TableColumn("First Name");
-        TableColumn <User,String>lastName = new TableColumn("Last Name");
-        TableColumn<User,String> email = new TableColumn("Email");
-        TableColumn<User,String> isAdmin = new TableColumn("Admin");
+        TableColumn<User, String> firstName = new TableColumn("First Name");
+        TableColumn<User, String> lastName = new TableColumn("Last Name");
+        TableColumn<User, String> email = new TableColumn("Email");
+        TableColumn<User, String> isAdmin = new TableColumn("Admin");
 
         firstName.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
         lastName.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
@@ -277,7 +248,7 @@ public class AdminController {
         isAdmin.setCellValueFactory(cellData -> cellData.getValue().adminProperty());
 
 
-        userTable.getColumns().addAll(firstName,lastName,email,isAdmin);
+        userTable.getColumns().addAll(firstName, lastName, email, isAdmin);
         userTable.getItems().addAll(users);
 
         setJobTableBehavior();
@@ -295,14 +266,10 @@ public class AdminController {
 
     public void acceptOrDenyApplication(){
         String delete = "DELETE FROM jobapplication WHERE app_id=";
-
         accept.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
-
-
-                SQLHelper.deleteQuery(delete+selectedApplication.jbID);
+                SQLHelper.deleteQuery(delete + selectedApplication.jbID);
                 jobApplications.getItems().remove(selectedApplication);
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -317,7 +284,7 @@ public class AdminController {
         reject.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                SQLHelper.deleteQuery(delete+selectedApplication.jbID);
+                SQLHelper.deleteQuery(delete + selectedApplication.jbID);
                 jobApplications.getItems().remove(selectedApplication);
 
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -332,82 +299,82 @@ public class AdminController {
 
     }
 
-    public void fillJobApplicationTable(){
-        ObservableList<JobApplication> jobApplicationsList= FXCollections.observableArrayList(getJobApplication());
-        TableColumn<JobApplication,String> name = new TableColumn("Name");
-        TableColumn<JobApplication,String> jobDescription = new TableColumn("Job");
+    public void fillJobApplicationTable() {
+        ObservableList<JobApplication> jobApplicationsList = FXCollections.observableArrayList(getJobApplication());
+        TableColumn<JobApplication, String> name = new TableColumn("Name");
+        TableColumn<JobApplication, String> jobDescription = new TableColumn("Job");
         name.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        jobDescription.setCellValueFactory(cellData-> cellData.getValue().jobProperty());
+        jobDescription.setCellValueFactory(cellData -> cellData.getValue().jobProperty());
 
-        jobApplications.getColumns().addAll(name,jobDescription);
+        jobApplications.getColumns().addAll(name, jobDescription);
         jobApplications.getItems().addAll(jobApplicationsList);
     }
 
-    public ArrayList<JobApplication> getJobApplication(){
+    public ArrayList<JobApplication> getJobApplication() {
         ArrayList<User> users = getUser();
-        ArrayList<Job> jobs =  new ArrayList<>(JobListing.jobs);
+        ArrayList<Job> jobs = new ArrayList<>(JobListing.jobs);
         ArrayList<JobApplication> applications = new ArrayList<>();
         String sql = "SELECT * FROM jobapplication";
         ResultSet rs = SQLHelper.makeQuery(sql);
-            try {
-                while(rs.next()){
-                    int applicationUserID = rs.getInt(3);
-                    int applicationJobID = rs.getInt(2);
-                    System.out.println(applicationJobID+" "+applicationJobID);
+        try {
+            while (rs.next()) {
+                int applicationUserID = rs.getInt(3);
+                int applicationJobID = rs.getInt(2);
+                System.out.println(applicationJobID + " " + applicationJobID);
 
-                    User user = null;
-                    Job job = null;
-                    for(int i =0;i<users.size();i++){
-                        int userID = users.get(i).getUserID();
-                        if(applicationUserID == userID){
-                            user = users.get(i);
-                        }
+                User user = null;
+                Job job = null;
+                for (int i = 0; i < users.size(); i++) {
+                    int userID = users.get(i).getUserID();
+                    if (applicationUserID == userID) {
+                        user = users.get(i);
                     }
-                    for(int i =0;i<jobs.size();i++){
-                        int jobID = jobs.get(i).getJobId();
-                        if(jobID == applicationJobID){
-                            job = jobs.get(i);
-                        }
-                    }
-                    applications.add(new JobApplication(user,job,rs.getInt(1)));
-
                 }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+                for (int i = 0; i < jobs.size(); i++) {
+                    int jobID = jobs.get(i).getJobId();
+                    if (jobID == applicationJobID) {
+                        job = jobs.get(i);
+                    }
+                }
+                applications.add(new JobApplication(user, job, rs.getInt(1)));
+
             }
-            return applications;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return applications;
     }
 
 
-    class JobApplication{
+    class JobApplication {
         User user;
         Job job;
 
         int jbID;
 
-        public JobApplication(User user, Job job, int id){
-            this.user   = user;
+        public JobApplication(User user, Job job, int id) {
+            this.user = user;
             this.job = job;
             jbID = id;
         }
 
-        public StringProperty nameProperty(){
-            return new SimpleStringProperty(user.getFirstName()+" "+user.getLastName());
+        public StringProperty nameProperty() {
+            return new SimpleStringProperty(user.getFirstName() + " " + user.getLastName());
         }
 
-        public StringProperty jobProperty(){
+        public StringProperty jobProperty() {
             return new SimpleStringProperty(job.getJobTitle());
         }
     }
 
-    public ArrayList<User> getUser(){
+    public ArrayList<User> getUser() {
         String sql = "SELECT * FROM user";
         ArrayList<User> users = new ArrayList<>();
         try {
             Connection connection = DBConn.connectDB();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 users.add(new User(
                         resultSet.getInt(1),
                         resultSet.getString(2),
@@ -415,7 +382,7 @@ public class AdminController {
                         resultSet.getString(8),
                         resultSet.getInt(11)
                 ));
-                System.out.printf("%s %s %s %s \n",resultSet.getInt(1),
+                System.out.printf("%s %s %s %s \n", resultSet.getInt(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getString(8),
