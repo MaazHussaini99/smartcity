@@ -121,9 +121,10 @@ public class JobListing {
 
     public static void removeJob(Job job) throws SQLException {
         int jobID = job.getJobId();
-        String sql = String.format("DELETE FROM jobs WHERE job_id=%s", jobID);
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.executeUpdate();
+        String sql = "DELETE FROM jobs WHERE job_id=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, jobID);
+        preparedStatement.executeQuery();
     }
 
     public static void getJob(Job job) throws SQLException{

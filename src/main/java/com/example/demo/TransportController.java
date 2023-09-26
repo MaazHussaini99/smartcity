@@ -52,8 +52,8 @@ public class TransportController {
 
         // Use SQL joins with distinct aliases for tables
         String query = "SELECT ts.stop_name, tt.arrival_time, tt.departure_time " +
-                "FROM transport_trip2 ttrip " +
-                "JOIN transport_time2 tt ON ttrip.trip_id = tt.trip_id " +
+                "FROM transport_trip3 ttrip " +
+                "JOIN transport_time3 tt ON ttrip.trip_id = tt.trip_id " +
                 "JOIN transport_stop ts ON tt.stop_id = ts.stop_id " +
                 "WHERE ttrip.route_id = ?";
 

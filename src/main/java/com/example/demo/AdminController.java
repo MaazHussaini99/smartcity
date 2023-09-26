@@ -59,6 +59,7 @@ public class AdminController {
         setUserTableBehavior();
         addEmailFunction();
         fillJobApplicationTable();
+        acceptOrDenyApplication();
     }
 
 
@@ -278,7 +279,7 @@ public class AdminController {
 
         userTable.getColumns().addAll(firstName,lastName,email,isAdmin);
         userTable.getItems().addAll(users);
-        acceptOrDenyApplication();
+
         setJobTableBehavior();
     }
 
@@ -298,6 +299,8 @@ public class AdminController {
         accept.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+
+
 
                 SQLHelper.deleteQuery(delete+selectedApplication.jbID);
                 jobApplications.getItems().remove(selectedApplication);

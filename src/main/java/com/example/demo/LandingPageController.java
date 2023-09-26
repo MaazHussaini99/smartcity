@@ -406,7 +406,7 @@ public class LandingPageController extends NightLifeController implements Initia
                 currentJob = JobListing.addJob(title, grade, agency, city);
                 jobTableView.getItems().add(0,currentJob);
             } else if (flag == 3) {
-                JobListing.removeJob(currentJob);
+                //JobListing.removeJob(currentJob);
                 jobTableView.getItems().remove(currentJob);
             }
         } catch (SQLException e) {
@@ -530,14 +530,12 @@ public class LandingPageController extends NightLifeController implements Initia
 // Calculate the X position to center the condition label with respect to temperatureLabel
             double temperatureLabelWidth = new Text(temperatureLabel.getText()).getLayoutBounds().getWidth();
             double conditionLabelWidth = new Text(conditionLabel.getText()).getLayoutBounds().getWidth();
-            double conditionLabelX = temperatureLabel.getLayoutX() + (temperatureLabelWidth - conditionLabelWidth) / 2;
+            double conditionLabelX = temperatureLabel.getLayoutX() + 22.5 + (temperatureLabelWidth - conditionLabelWidth) / 2;
 
 // Set the calculated X position
             conditionLabel.setLayoutX(conditionLabelX);
 
-// Align vertically with temperatureLabel
-            double conditionLabelY = 45.0; // Align vertically with temperatureLabel
-            conditionLabel.setLayoutY(conditionLabelY);
+            conditionLabel.setLayoutY(45);
 
             Label humidityLabel = new Label("Humidity: " + weather.getHumidity());
             humidityLabel.setLayoutX(10.0);
@@ -580,17 +578,17 @@ public class LandingPageController extends NightLifeController implements Initia
                 + ", " + User.getInstance().getZipcode()
                 + ", " + User.getInstance().getState());
         userDataText.setLayoutX(10);
-        userDataText.setLayoutY(10);
+        userDataText.setLayoutY(80);
 
         // Edit profile
         editProfileButton = new Button("Edit Profile");
         editProfileButton.setLayoutX(10);
-        editProfileButton.setLayoutY(190);
+        editProfileButton.setLayoutY(220);
         editProfileButton.setOnAction(event -> goToEditProfile());
 
         if (User.getInstance().getRoleID() == 2) {
             adminButton = new Button("Admin Panel");
-            adminButton.setLayoutX(10);
+            adminButton.setLayoutX(100);
             adminButton.setLayoutY(220);
 
             // Add an event handler to the button
