@@ -136,16 +136,8 @@ public class AdminController {
 
 
     public void BackButton() {
-        back.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-
                 Stage stage = (Stage) back.getScene().getWindow();
                 stage.close();
-
-            }
-        });
-
     }
 
     public void sendEmail() {
@@ -183,7 +175,6 @@ public class AdminController {
 
 
     public void PromotionButton() {
-        promote.setOnAction(event -> {
             User selectedUser = userTable.getSelectionModel().getSelectedItem();
             if (selectedUser != null) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -207,11 +198,9 @@ public class AdminController {
                 userTable.getItems().clear();
                 generateRoleTable();
             }
-        });
     }
 
     public void DemotionButton() {
-        demote.setOnAction(event -> {
             User selectedUser = userTable.getSelectionModel().getSelectedItem();
             if (selectedUser != null) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -235,7 +224,6 @@ public class AdminController {
                 userTable.getItems().clear();
                 generateRoleTable();
             }
-        });
     }
 
     public void generateRoleTable() {
