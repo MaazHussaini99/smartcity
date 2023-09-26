@@ -18,7 +18,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+/**
+ * Controller class for managing banks.
+ */
 public class BankController {
 
     @FXML
@@ -36,14 +38,18 @@ public class BankController {
     private VBox deleteAndUpdateContainer;
     // Add a flag to track whether to show the "Delete" and "Update" sections
     private boolean showDeleteAndUpdate = false;
+    // ObservableList to store bank names
     public ObservableList<String> bankNames = FXCollections.observableArrayList();
 
+    // Initialize the controller
     public void initialize() {
         bankListView.setCellFactory(TextFieldListCell.forListView());
 
         // Load bank list when initializing
         loadBankList();
     }
+
+    // Event handler for when a bank is selected in the list
     @FXML
     public void bankSelected() {
         String selectedBank = bankListView.getSelectionModel().getSelectedItem();
@@ -55,6 +61,8 @@ public class BankController {
             showDeleteAndUpdateSections(false);
         }
     }
+
+    // Event handler for creating a new bank
     @FXML
     public void createNewBank() {
         String newBankName = newBankNameField.getText();
@@ -84,6 +92,7 @@ public class BankController {
         }
     }
 
+    // Event handler for deleting a selected bank
     @FXML
     public void deleteSelectedBank() {
         String selectedBank = bankListView.getSelectionModel().getSelectedItem();
@@ -109,10 +118,13 @@ public class BankController {
             showErrorMessage("Please select a bank to delete.");
         }
     }
+
     // Helper method to toggle the visibility of "Delete" and "Update" sections
     private void showDeleteAndUpdateSections(boolean show) {
         deleteAndUpdateContainer.setVisible(show);
     }
+
+    // Load the list of banks from the database
     private void loadBankList() {
         bankNames.clear();
 
@@ -130,6 +142,8 @@ public class BankController {
             e.printStackTrace();
         }
     }
+
+    // Event handler for updating the selected bank
     @FXML
     public void updateSelectedBank() {
         String selectedBank = bankListView.getSelectionModel().getSelectedItem();
@@ -159,6 +173,8 @@ public class BankController {
             showErrorMessage("Please select a bank and enter an updated bank name.");
         }
     }
+
+    // Event handler for navigating back to the landing page
     @FXML
     public void navigateBackToLandingPage() {
         try {
@@ -178,6 +194,8 @@ public class BankController {
             e.printStackTrace();
         }
     }
+
+    // Event handler for showing bank accounts
     @FXML
     public void showBankAccounts() {
         try {
@@ -196,6 +214,8 @@ public class BankController {
             e.printStackTrace();
         }
     }
+
+    // Helper method to show a success message dialog
     private void showSuccessMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Success");
@@ -204,6 +224,7 @@ public class BankController {
         alert.showAndWait();
     }
 
+    // Helper method to show an error message dialog
     private void showErrorMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");

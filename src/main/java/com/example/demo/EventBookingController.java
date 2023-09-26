@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+// EventBookingController handles the interaction between the user interface and event booking functionality
 public class EventBookingController {
     @FXML
     private VBox mainContentView;
@@ -27,6 +28,8 @@ public class EventBookingController {
 
     @FXML
     private VBox bookingDetails;
+
+    // TableViews for displaying event data and bookings
     @FXML
     private TableView<Event> bookingTableView;
 
@@ -36,6 +39,8 @@ public class EventBookingController {
     private TableView<Event> eventsTableView2;
     @FXML
     private TableView<Event> eventsTableView3;
+
+    // TableColumn definitions
     @FXML
     private TableColumn<Event, String> eventNameColumn;
 
@@ -47,10 +52,14 @@ public class EventBookingController {
 
     @FXML
     private TableColumn<Event, Double> eventPriceColumn;
+
+    // User role and other data
     private int userRole = User.getInstance().getRoleID();
     private static int userId;
     private ObservableList<EventBooking> eventBookingData = FXCollections.observableArrayList();
     private Event selectedItem;
+
+    // Load event booking data from the database
     private void loadDataFromDatabase() {
         // Clear existing data
         bookingTableView.getItems().clear();
@@ -121,12 +130,16 @@ public class EventBookingController {
         }
 
     }
+
+    // Get the user ID associated with the logged-in user
     public int getUser_Id(){
         String userEmail = HotelBooking.getInstance().getEmailId();
         HotelBooking c = new HotelBooking();
         userId = c.getUserdetails(userEmail);
         return userId;
     }
+
+    // Get the account ID associated with the user
     public int getAccountId(int userId) {
         int accountId = -1; // Default value in case of an error
 
@@ -145,6 +158,8 @@ public class EventBookingController {
 
         return accountId;
     }
+
+    // Handle the "View Bookings" button click event
     @FXML
     private void viewBookings(ActionEvent selectedEvent1) {
         loadDataFromDatabase();
@@ -154,6 +169,8 @@ public class EventBookingController {
         event3Details.setVisible(false);
         bookingDetails.setVisible(true);
     }
+
+    // Handle the main content view when returning from details or bookings view
     @FXML
     private void mainContentView2() {
         mainContentView.setVisible(true);
@@ -163,14 +180,19 @@ public class EventBookingController {
         bookingDetails.setVisible(false);
     }
 
+    // Handle the selection of a booking in the TableView
     @FXML
     private void handleBookingSelection(MouseEvent event) {
         selectedItem = bookingTableView.getSelectionModel().getSelectedItem();
     }
+
+    // Handle the selection of an event in the TableView
     @FXML
     private void handleEventSelection1(MouseEvent event) {
          selectedItem = eventsTableView1.getSelectionModel().getSelectedItem();
     }
+
+    // Create a new event booking
     @FXML
     private void createBooking() {
         // Get the user_id and account_id
@@ -229,6 +251,8 @@ public class EventBookingController {
             showErrorDialog("Error", "Insufficient funds in bank account. Booking failed.");
         }
     }
+
+    // Check if an event is already booked by the user
     private boolean checkEventBooking(Event event, int userId) {
         try (Connection connection = DBConn.connectDB()) {
             String sql = "SELECT * FROM event_booking WHERE event_id = ? AND user_id = ?";
@@ -244,6 +268,7 @@ public class EventBookingController {
         }
     }
 
+    // Create an event booking in the database
     private boolean createEventBooking(Event selectedEvent, int userId, int accountId, double eventPrice) {
         try (Connection connection = DBConn.connectDB()) {
             String sql = "INSERT INTO event_booking (event_id, user_id, account_id, event_price) VALUES (?, ?, ?, ?)";
@@ -260,6 +285,8 @@ public class EventBookingController {
             return false;
         }
     }
+
+    // Show an information dialog
     private void showInfoDialog(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -268,6 +295,7 @@ public class EventBookingController {
         alert.showAndWait();
     }
 
+    // Get the current account balance
     private double getBalance(int accountId) {
         try (Connection connection = DBConn.connectDB()) {
             String sql = "SELECT balance FROM bank_account WHERE account_no = ?";
@@ -285,6 +313,7 @@ public class EventBookingController {
         }
     }
 
+    // Update the account balance
     private void updateBalance(int accountId, double newBalance) {
         try (Connection connection = DBConn.connectDB()) {
             String sql = "UPDATE bank_account SET balance = ? WHERE account_no = ?";
@@ -297,6 +326,7 @@ public class EventBookingController {
         }
     }
 
+    // Handle the deletion of a booking
     @FXML
     private void deleteBooking() {
         if(bookingTableView.isVisible() == true){
@@ -325,6 +355,8 @@ public class EventBookingController {
             }
         }
     }
+
+    // Handle the deletion of a booking
     private boolean deleteBookingFromDatabase(String eventName, String eventDate) {
         if(userRole == 1){
             try (Connection connection = DBConn.connectDB()) {
@@ -357,6 +389,8 @@ public class EventBookingController {
         }
         return false;
     }
+
+    // Show an error dialog
     private void showErrorDialog(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
