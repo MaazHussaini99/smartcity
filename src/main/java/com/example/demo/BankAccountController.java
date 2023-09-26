@@ -47,9 +47,7 @@ public class BankAccountController {
     private Button backToBankButton;
     @FXML
     private Button backToLandingPageButton;
-    private static int userRole = User.getInstance().getRoleID();
-
-    private static String firstName = User.getInstance().getFirstName();
+    private int userRole = User.getInstance().getRoleID();
     @FXML
     public void initialize() {
         // Bind the ListView to the ObservableList
@@ -270,9 +268,7 @@ public class BankAccountController {
 
                         if (depositSuccess) {
                             // After successful deposit, fetch updated details and update the ListView
-                            String updatedAccountInfo = fetchUpdatedAccountInfo(accountNumber);
-                            bankListView.getItems().set(bankListView.getSelectionModel().getSelectedIndex(), updatedAccountInfo);
-
+                            loadBankAccounts();
                             showSuccessMessage("Deposit Successful!");
                         } else {
                             showErrorMessage("Failed to update the balance.");
@@ -287,30 +283,6 @@ public class BankAccountController {
         } else {
             showErrorMessage("Please select a bank account to deposit money.");
         }
-    }
-
-    // Fetch updated account details after deposit
-    private String fetchUpdatedAccountInfo(int accountNumber) {
-        try (Connection connection = DBConn.connectDB()) {
-            String sql = "SELECT ba.balance, b.bank_name, ba.routing_no, ba.user_id FROM bank_account ba JOIN bank b ON ba.bank_id = b.bank_id WHERE ba.account_no = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, accountNumber);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                String bankName = resultSet.getString("bank_name");
-                int userId = resultSet.getInt("user_id");
-                double balance = resultSet.getDouble("balance");
-                String routingNo = resultSet.getString("routing_no");
-
-
-                return "Bank: " + bankName + " - Account No: " + accountNumber + " - User ID: " + userId + " - Routing No: " + routingNo + " - Balance:$" + balance;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     // Update the balance of a bank account.
@@ -368,9 +340,7 @@ public class BankAccountController {
 
                             if (withdrawalSuccess) {
                                 // After successful withdrawal, fetch updated details and update the ListView
-                                String updatedAccountInfo = fetchUpdatedAccountInfo(accountNumber);
-                                bankListView.getItems().set(bankListView.getSelectionModel().getSelectedIndex(), updatedAccountInfo);
-
+                                loadBankAccounts();
                                 showSuccessMessage("Withdrawal Successful!");
                             } else {
                                 showErrorMessage("Failed to update the balance.");
@@ -461,10 +431,13 @@ public class BankAccountController {
                     String bankName = resultSet.getString("bank_name");
                     int routingNumber = resultSet.getInt("routing_no");
                     double balance = resultSet.getDouble("balance");
+                    BankAccountController c = new BankAccountController();
+
+                    String name = c.getName(userId);
 
                     // Create a formatted account text with bank name
                     String accountText = "Bank: " + bankName + " - Account No: "
-                            + accountNumber + " - User ID: " + userId + " - Routing No: " + routingNumber + " - Balance:$" + balance;
+                            + accountNumber + " - Name: " + name + " - Routing No: " + routingNumber + " - Balance:$" + balance;
                     bankListView.getItems().add(accountText); // Add the account to the ListView
                 }
             } catch (SQLException e) {
@@ -508,10 +481,8 @@ public class BankAccountController {
             while(resultSet.next()){
                 String firstName = resultSet.getString("first_name");
                 String lastName = resultSet.getString("last_name");
-                //HotelBooking.getInstance().setUserId(userId);
 
                 return firstName + " " + lastName;
-
             }
 
         } catch (SQLException e) {
