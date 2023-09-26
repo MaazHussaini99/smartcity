@@ -47,7 +47,9 @@ public class BankAccountController {
     private Button backToBankButton;
     @FXML
     private Button backToLandingPageButton;
-    private static int userRole = User.getInstance().getRoleID();;
+    private static int userRole = User.getInstance().getRoleID();
+
+    private static String firstName = User.getInstance().getFirstName();
     @FXML
     public void initialize() {
         // Bind the ListView to the ObservableList
@@ -483,16 +485,39 @@ public class BankAccountController {
                     String bankName = resultSet.getString("bank_name");
                     int routingNumber = resultSet.getInt("routing_no");
                     double balance = resultSet.getDouble("balance");
+                    BankAccountController c = new BankAccountController();
 
+                    String name = c.getName(userId);
                     // Create a formatted account text with bank name
                     String accountText = "Bank: " + bankName + " - Account No: "
-                            + accountNumber + " - User ID: " + userId + " - Routing No: " + routingNumber + " - Balance:$" + balance;
+                            + accountNumber + " - Name: " + name + " - Routing No: " + routingNumber + " - Balance:$" + balance;
                     bankListView.getItems().add(accountText); // Add the account to the ListView
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public String getName(int userId){
+        String sql = "SELECT first_name, last_name FROM user where uid= ?";
+        try (Connection connection = DBConn.connectDB();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1,userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                //HotelBooking.getInstance().setUserId(userId);
+
+                return firstName + " " + lastName;
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return "";
     }
 
     // Get the balance of a bank account.
