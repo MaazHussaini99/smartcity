@@ -59,6 +59,7 @@ public class AdminController {
         setUserTableBehavior();
         addEmailFunction();
         fillJobApplicationTable();
+        acceptOrDenyApplication();
     }
 
 
@@ -97,6 +98,7 @@ public class AdminController {
                 buttonBox.getChildren().clear();
                 buttonBox.getChildren().add(writeEmail);
                 addEmailFunction();
+
             }
         });
 
@@ -191,10 +193,18 @@ public class AdminController {
 
             Transport.send(message);
 
-            System.out.println("Email sent successfully.");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Email");
+            alert.setHeaderText(null);
+            alert.setContentText("Email Sent");
+
+            alert.showAndWait();
+
         } catch (MessagingException e) {
             throw new RuntimeException(e);
-        }    }
+        }
+
+    }
 
 
     public void PromotionButton() {
@@ -269,7 +279,7 @@ public class AdminController {
 
         userTable.getColumns().addAll(firstName,lastName,email,isAdmin);
         userTable.getItems().addAll(users);
-        acceptOrDenyApplication();
+
         setJobTableBehavior();
     }
 
@@ -284,15 +294,23 @@ public class AdminController {
     }
 
     public void acceptOrDenyApplication(){
-        String delete = "DELETE FROM jobapplications WHERE app_id=";
+        String delete = "DELETE FROM jobapplication WHERE app_id=";
 
         accept.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+
+
+
                 SQLHelper.deleteQuery(delete+selectedApplication.jbID);
                 jobApplications.getItems().remove(selectedApplication);
-                System.out.println("Accepted~!");
-                //todo make a pop up
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Application Accepted");
+                alert.setHeaderText(null);
+                alert.setContentText("Application has been accepted!");
+
+                alert.showAndWait();
             }
         });
 
@@ -301,8 +319,13 @@ public class AdminController {
             public void handle(ActionEvent actionEvent) {
                 SQLHelper.deleteQuery(delete+selectedApplication.jbID);
                 jobApplications.getItems().remove(selectedApplication);
-                System.out.println("rejected~!");
-                //todo make a pop up
+
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Application Rejected");
+                alert.setHeaderText(null);
+                alert.setContentText("Application has been rejected!");
+
+                alert.showAndWait();
             }
         });
 

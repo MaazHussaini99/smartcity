@@ -120,6 +120,7 @@ public class EditProfileController implements Initializable{
             Stage stage = (Stage) signUp.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
+            stage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }

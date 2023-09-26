@@ -11,9 +11,9 @@
       <TableView layoutX="15.0" layoutY="15.0" prefHeight="222.0" prefWidth="300.0" />
       <TableView fx:id="jobApplications" layoutX="15.0" layoutY="15.0" prefHeight="222.0" prefWidth="300.0" />
       <TableView fx:id="userTable" layoutX="335.0" layoutY="17.0" prefHeight="455.0" prefWidth="350.0" />
-      <TextArea fx:id="emailContent" layoutX="15.0" layoutY="351.0" prefHeight="119.0" prefWidth="300.0" promptText="Enter Message" />
       <TextField fx:id="emailSubject" layoutX="15.0" layoutY="287.0" prefHeight="26.0" prefWidth="300.0" promptText="Email" />
       <TextField fx:id="emailTarget" layoutX="15.0" layoutY="319.0" prefHeight="26.0" prefWidth="300.0" promptText="Subject" />
+      <TextArea fx:id="emailContent" layoutX="15.0" layoutY="351.0" prefHeight="119.0" prefWidth="300.0" promptText="Enter Message" />
       <HBox fx:id = "buttonBox" layoutX="14.0" layoutY="477.0" prefHeight="25.0" prefWidth="179.0">
          <Button fx:id="writeEmail" layoutX="15.0" layoutY="477.0" mnemonicParsing="false" onAction="#sendEmail" prefWidth="80.0" text="Write Email" />
       </HBox>
