@@ -638,7 +638,7 @@ public class LandingPageController extends NightLifeController implements Initia
             adminWindow.setTitle("Smart City - Admin Panel");
             Scene scene = new Scene(fxmlLoader.load(), 700, 550);
             adminWindow.setScene(scene);
-            adminWindow.initModality(Modality.WINDOW_MODAL);
+            adminWindow.initModality(Modality.APPLICATION_MODAL);
             adminWindow.show();
 
         } catch (IOException e) {
