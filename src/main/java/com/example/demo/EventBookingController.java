@@ -14,7 +14,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
-// EventBookingController handles the interaction between the user interface and event booking functionality
+/**
+ * EventBookingController handles the interaction between the user interface and event booking functionality.
+ */
 public class EventBookingController {
     @FXML
     private VBox mainContentView;
@@ -131,7 +133,12 @@ public class EventBookingController {
 
     }
 
-    // Get the user ID associated with the logged-in user
+
+    /**
+     * Get the user ID associated with the logged-in user.
+     *
+     * @return The user ID of the logged-in user.
+     */
     public int getUser_Id(){
         String userEmail = HotelBooking.getInstance().getEmailId();
         HotelBooking c = new HotelBooking();
@@ -139,7 +146,12 @@ public class EventBookingController {
         return userId;
     }
 
-    // Get the account ID associated with the user
+    /**
+     * Get the account ID associated with the user.
+     *
+     * @param userId The user ID for which to retrieve the account ID.
+     * @return The account ID associated with the user.
+     */
     public int getAccountId(int userId) {
         int accountId = -1; // Default value in case of an error
 

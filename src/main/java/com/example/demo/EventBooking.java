@@ -1,8 +1,8 @@
 package com.example.demo;
 
-import org.w3c.dom.events.Event;
-
-// EventBooking class represents information about event bookings
+/**
+ * Represents an Event Booking with booking details.
+ */
 public class EventBooking {
 
     // Fields to store event booking information
@@ -17,7 +17,15 @@ public class EventBooking {
         // Default constructor with no arguments
     }
 
-    // Constructor with full event booking details including event_booking_id
+    /**
+     * Constructor for an event booking with full details including event_booking_id.
+     *
+     * @param event_booking_id The unique identifier for the event booking.
+     * @param event_id         The identifier for the associated event.
+     * @param user_id          The user identifier associated with the booking.
+     * @param account_id       The account identifier associated with the booking.
+     * @param event_price      The price or cost of the event booking.
+     */
     public EventBooking(int event_booking_id, int event_id, int user_id, int account_id, double event_price) {
         this.event_booking_id = event_booking_id;
         this.event_id = event_id;
@@ -26,7 +34,14 @@ public class EventBooking {
         this.event_price = event_price;
     }
 
-    // Constructor without event_booking_id (used when creating a new event booking)
+    /**
+     * Constructor for an event booking without an event_booking_id (used when creating a new event booking).
+     *
+     * @param eventId    The identifier for the associated event.
+     * @param userId     The user identifier associated with the booking.
+     * @param accountId  The account identifier associated with the booking.
+     * @param eventPrice The price or cost of the event booking.
+     */
     public EventBooking(int eventId, int userId, int accountId, double eventPrice) {
         this.event_id = event_id;
         this.user_id = user_id;

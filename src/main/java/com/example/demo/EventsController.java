@@ -17,7 +17,9 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Random;
 
-// EventsController handles events-related functionality and extends EventBookingController
+/**
+ * EventsController handles events-related functionality and extends EventBookingController.
+ */
 public class EventsController extends EventBookingController{
     @FXML
     private VBox event1Details;
@@ -109,7 +111,9 @@ public class EventsController extends EventBookingController{
         }
     }
 
-    // Handle the creation of a new event
+    /**
+     * Handle the creation of a new event.
+     */
     @FXML
     private void createEvent() {
         Dialog<Event> dialog = new Dialog<>();
@@ -208,13 +212,24 @@ public class EventsController extends EventBookingController{
         });
     }
 
-    // Generate a random event ID within a specified range
+    /**
+     * Generate a random event ID within a specified range.
+     *
+     * @param min The minimum event ID value.
+     * @param max The maximum event ID value.
+     * @return A randomly generated event ID.
+     */
     private int getRandomEventId(int min, int max) {
         Random random = new Random();
         return random.nextInt(max - min + 1) + min;
     }
 
-    // Check if an event ID is unique in the database
+    /**
+     * Check if an event ID is unique in the database.
+     *
+     * @param eventId The event ID to check for uniqueness.
+     * @return True if the event ID is unique, false otherwise.
+     */
     private boolean isEventIdUnique(int eventId) {
         String sql = "SELECT COUNT(*) FROM event WHERE event_id = ?";
         try (Connection connection = DBConn.connectDB();
@@ -233,7 +248,13 @@ public class EventsController extends EventBookingController{
         return false;
     }
 
-    // Insert a new event into the database
+    /**
+     * Insert a new event into the database.
+     *
+     * @param event The event to insert into the database.
+     * @return True if the event was inserted successfully, false otherwise.
+     * @throws SQLException If a database error occurs during insertion.
+     */
     private boolean insertEvent(Event event) throws SQLException {
         String sql = "INSERT INTO event (event_id, event_name, event_location, event_date, event_price) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DBConn.connectDB();
@@ -252,7 +273,9 @@ public class EventsController extends EventBookingController{
         }
     }
 
-    // Refresh the table view after changes
+    /**
+     * Refresh the table view after changes.
+     */
     private void refreshTableView() {
         loadDataFromDatabase();
         eventsTableView1.refresh();
@@ -260,7 +283,9 @@ public class EventsController extends EventBookingController{
         eventsTableView3.refresh();
     }
 
-    // Handle the deletion of an event
+    /**
+     * Handle the deletion of an event.
+     */
     @FXML
     private void deleteEvent() {
         Event selectedEvent = null;
@@ -306,7 +331,12 @@ public class EventsController extends EventBookingController{
         }
     }
 
-    // Delete an event from the database
+    /**
+     * Delete an event from the database.
+     *
+     * @param eventIdToDelete The ID of the event to delete.
+     * @return True if the event was deleted successfully, false otherwise.
+     */
     private boolean deleteEventFromDatabase(int eventIdToDelete) {
         String sql = "DELETE FROM event WHERE event_id = ?";
         try (Connection connection = DBConn.connectDB();
@@ -386,7 +416,12 @@ public class EventsController extends EventBookingController{
         event3Details.setVisible(false);
     }
 
-    // Show an information message dialog
+    /**
+     * Show an information message dialog.
+     *
+     * @param title   The title of the information message.
+     * @param content The content of the information message.
+     */
     private void showInfoMessage(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -395,7 +430,12 @@ public class EventsController extends EventBookingController{
         alert.showAndWait();
     }
 
-    // Show an error message dialog
+    /**
+     * Show an error message dialog.
+     *
+     * @param title   The title of the error message.
+     * @param content The content of the error message.
+     */
     private void showErrorMessage(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

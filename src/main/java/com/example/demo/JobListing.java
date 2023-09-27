@@ -9,10 +9,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a class for managing job listings and applications.
+ */
 public class JobListing {
 
     static List<Job> jobs = new ArrayList<>();
-    static Connection connection=DBConn.connectDB();;
+    static Connection connection=DBConn.connectDB();
+
+    /**
+     * Retrieves a list of all available jobs from the database.
+     *
+     * @return A list of Job objects representing available jobs.
+     * @throws RuntimeException If there is an SQL exception.
+     */
     public static List<Job> getAllJobs(){
         String sql = "SELECT * FROM jobs";
         try (Connection connection = DBConn.connectDB();
@@ -29,6 +39,11 @@ public class JobListing {
         }
     }
 
+    /**
+     * Allows a user to apply for a job.
+     *
+     * @param jobID The ID of the job to apply for.
+     */
     public static void applyJob(int jobID) {
         // Get the user ID from User.getInstance().getUserID()
         int userID = User.getInstance().getUserID();
@@ -85,6 +100,16 @@ public class JobListing {
         }
     }
 
+    /**
+     * Adds a new job listing to the database.
+     *
+     * @param title  The title of the job.
+     * @param grade  The job grade.
+     * @param agency The agency offering the job.
+     * @param city   The city where the job is located.
+     * @return The newly created Job object.
+     * @throws SQLException If there is an SQL exception.
+     */
     public static Job addJob(String title, String grade, String agency, String city ) throws SQLException {
         int jobID = 0;
         jobID = (int) (Math.random()*10000);
@@ -103,6 +128,12 @@ public class JobListing {
         return job;
     }
 
+    /**
+     * Retrieves a list of all available jobs from the database.
+     *
+     * @return An ArrayList of Job objects representing available jobs.
+     * @throws SQLException If there is an SQL exception.
+     */
     public static ArrayList<Job> getJobs() throws SQLException {
         String sql = "SELECT * FROM jobs";
         ArrayList<Job> jobs = new ArrayList<>();
@@ -117,15 +148,26 @@ public class JobListing {
 
     }
 
-    //remove job
-
+    /**
+     * Removes a job listing from the database.
+     *
+     * @param job The Job object to be removed.
+     * @throws SQLException If there is an SQL exception.
+     */
     public static void removeJob(Job job) throws SQLException {
         int jobID = job.getJobId();
-        String sql = String.format("DELETE FROM jobs WHERE job_id=%s", jobID);
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.executeUpdate();
+        String sql = "DELETE FROM jobs WHERE job_id=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, jobID);
+        preparedStatement.executeQuery();
     }
 
+    /**
+     * Retrieves a specific job listing from the database.
+     *
+     * @param job The Job object to retrieve.
+     * @throws SQLException If there is an SQL exception.
+     */
     public static void getJob(Job job) throws SQLException{
         int jobID = job.getJobId();
         String sql = String.format("SELECT * FROM jobs WHERE job_id = %s", jobID);
@@ -133,6 +175,12 @@ public class JobListing {
         ResultSet rs = ps.executeQuery();
     }
 
+    /**
+     * Retrieves and displays all available jobs from the database.
+     *
+     * @param k The parameter for some unspecified purpose.
+     * @throws SQLException If there is an SQL exception.
+     */
     public static void getAllJobs(int k) throws SQLException {
         String sql = "SELECT * FROM jobs";
         PreparedStatement ps = connection.prepareStatement(sql);
@@ -147,10 +195,11 @@ public class JobListing {
     }
 
 
-    /***
-     * update a job into the database
-     * @param job
-     * @throws SQLException
+    /**
+     * Inserts a new job listing into the database.
+     *
+     * @param job The Job object to be inserted.
+     * @throws SQLException If there is an SQL exception.
      */
     public static void postJob(Job job) throws SQLException {
 
@@ -161,11 +210,12 @@ public class JobListing {
         getJob(job);
     }
 
-    /***
-     * replace an instance of old Job with new job
-     * looks good
-     * @param oldJob
-     * @param newJob
+    /**
+     * Replaces an old job listing with a new one in the database.
+     *
+     * @param oldJob The old Job object to be replaced.
+     * @param newJob The new Job object to replace the old one.
+     * @throws SQLException If there is an SQL exception.
      */
     public static void editJob(Job oldJob, Job newJob) throws SQLException {
         removeJob(oldJob);

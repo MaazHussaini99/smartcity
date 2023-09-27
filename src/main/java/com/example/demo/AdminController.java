@@ -11,9 +11,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javax.mail.*;
@@ -60,6 +62,11 @@ public class AdminController {
         setUserTableBehavior();
         addEmailFunction();
         fillJobApplicationTable();
+        acceptOrDenyApplication();
+        bankListView.setCellFactory(TextFieldListCell.forListView());
+
+        // Load bank list when initializing
+        loadBankList();
     }
 
 
@@ -98,6 +105,7 @@ public class AdminController {
                 buttonBox.getChildren().clear();
                 buttonBox.getChildren().add(writeEmail);
                 addEmailFunction();
+
             }
         });
 
@@ -134,7 +142,6 @@ public class AdminController {
         });
     }
 
-
     public void BackButton() {
                 Stage stage = (Stage) back.getScene().getWindow();
                 stage.close();
@@ -167,7 +174,13 @@ public class AdminController {
 
             Transport.send(message);
 
-            System.out.println("Email sent successfully.");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Email");
+            alert.setHeaderText(null);
+            alert.setContentText("Email Sent");
+
+            alert.showAndWait();
+
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
@@ -242,7 +255,7 @@ public class AdminController {
 
         userTable.getColumns().addAll(firstName, lastName, email, isAdmin);
         userTable.getItems().addAll(users);
-        acceptOrDenyApplication();
+
         setJobTableBehavior();
     }
 
@@ -256,16 +269,20 @@ public class AdminController {
         });
     }
 
-    public void acceptOrDenyApplication() {
-        String delete = "DELETE FROM jobapplications WHERE app_id=";
-
+    public void acceptOrDenyApplication(){
+        String delete = "DELETE FROM jobapplication WHERE app_id=";
         accept.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 SQLHelper.deleteQuery(delete + selectedApplication.jbID);
                 jobApplications.getItems().remove(selectedApplication);
-                System.out.println("Accepted~!");
-                //todo make a pop up
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Application Accepted");
+                alert.setHeaderText(null);
+                alert.setContentText("Application has been accepted!");
+
+                alert.showAndWait();
             }
         });
 
@@ -274,8 +291,13 @@ public class AdminController {
             public void handle(ActionEvent actionEvent) {
                 SQLHelper.deleteQuery(delete + selectedApplication.jbID);
                 jobApplications.getItems().remove(selectedApplication);
-                System.out.println("rejected~!");
-                //todo make a pop up
+
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Application Rejected");
+                alert.setHeaderText(null);
+                alert.setContentText("Application has been rejected!");
+
+                alert.showAndWait();
             }
         });
 
@@ -376,6 +398,172 @@ public class AdminController {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+    @FXML
+    private VBox bankView;
+
+    @FXML
+    private TextField newBankNameField;
+    @FXML
+    private ListView<String> bankListView;
+
+    @FXML
+    private TextField updateBankNameField;
+
+    @FXML
+    private VBox deleteAndUpdateContainer;
+    // Add a flag to track whether to show the "Delete" and "Update" sections
+    private boolean showDeleteAndUpdate = false;
+    public ObservableList<String> bankNames = FXCollections.observableArrayList();
+
+    @FXML
+    public void bankSelected() {
+        String selectedBank = bankListView.getSelectionModel().getSelectedItem();
+        if (selectedBank != null) {
+            // Show the Delete and Update sections
+            showDeleteAndUpdateSections(true);
+        } else {
+            // Hide the Delete and Update sections if no bank is selected
+            showDeleteAndUpdateSections(false);
+        }
+    }
+    @FXML
+    public void createNewBank() {
+        String newBankName = newBankNameField.getText();
+        if (!newBankName.isEmpty()) {
+            try (Connection connection = DBConn.connectDB()) {
+                String sql = "INSERT INTO bank (bank_name) VALUES (?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, newBankName);
+                int rowsAffected = preparedStatement.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    showSuccessMessage("Bank Created Successfully!");
+                    newBankNameField.clear();
+                    // Reload and display the updated list of banks
+                    loadBankList();
+                    // Show the "Delete" and "Update" sections
+                    // showDeleteAndUpdateSections(true);
+                } else {
+                    showErrorMessage("Failed to Create Bank!");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                showErrorMessage("An error occurred while creating the bank.");
+            }
+        } else {
+            showErrorMessage("Bank name cannot be empty.");
+        }
+    }
+
+    @FXML
+    public void deleteSelectedBank() {
+        String selectedBank = bankListView.getSelectionModel().getSelectedItem();
+        if (selectedBank != null) {
+            try (Connection connection = DBConn.connectDB()) {
+                String sql = "DELETE FROM bank WHERE bank_name = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, selectedBank);
+                int rowsAffected = preparedStatement.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    showSuccessMessage("Bank Deleted Successfully!");
+                    // Reload and display the updated list of banks
+                    loadBankList();
+                } else {
+                    showErrorMessage("Failed to Delete Bank!");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                showErrorMessage("An error occurred while deleting the bank.");
+            }
+        } else {
+            showErrorMessage("Please select a bank to delete.");
+        }
+    }
+    // Helper method to toggle the visibility of "Delete" and "Update" sections
+    private void showDeleteAndUpdateSections(boolean show) {
+        deleteAndUpdateContainer.setVisible(show);
+    }
+    private void loadBankList() {
+        bankNames.clear();
+
+        try (Connection connection = DBConn.connectDB()) {
+            String sql = "SELECT bank_name FROM bank";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                bankNames.add(resultSet.getString("bank_name"));
+            }
+
+            bankListView.setItems(bankNames);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    public void updateSelectedBank() {
+        String selectedBank = bankListView.getSelectionModel().getSelectedItem();
+        String updatedBankName = updateBankNameField.getText();
+
+        if (selectedBank != null && !updatedBankName.isEmpty()) {
+            try (Connection connection = DBConn.connectDB()) {
+                String sql = "UPDATE bank SET bank_name = ? WHERE bank_name = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, updatedBankName);
+                preparedStatement.setString(2, selectedBank);
+                int rowsAffected = preparedStatement.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    showSuccessMessage("Bank Updated Successfully!");
+                    updateBankNameField.clear();
+                    // Reload and display the updated list of banks
+                    loadBankList();
+                } else {
+                    showErrorMessage("Failed to Update Bank!");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                showErrorMessage("An error occurred while updating the bank.");
+            }
+        } else {
+            showErrorMessage("Please select a bank and enter an updated bank name.");
+        }
+    }
+    @FXML
+    public void navigateBackToLandingPage() {
+        try {
+            // Load the LandingPage.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("landing-page.fxml"));
+            Parent root = loader.load();
+
+            // Create a new scene
+            Scene scene = new Scene(root);
+
+            // Get the current stage and set the new scene
+            Stage stage = (Stage) bankView.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+            stage.centerOnScreen();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void showSuccessMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showErrorMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }

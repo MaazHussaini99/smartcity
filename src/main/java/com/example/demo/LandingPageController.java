@@ -404,7 +404,7 @@ public class LandingPageController extends NightLifeController implements Initia
                 currentJob = JobListing.addJob(title, grade, agency, city);
                 jobTableView.getItems().add(0,currentJob);
             } else if (flag == 3) {
-                JobListing.removeJob(currentJob);
+                //JobListing.removeJob(currentJob);
                 jobTableView.getItems().remove(currentJob);
             }
         } catch (SQLException e) {
@@ -528,14 +528,12 @@ public class LandingPageController extends NightLifeController implements Initia
 // Calculate the X position to center the condition label with respect to temperatureLabel
             double temperatureLabelWidth = new Text(temperatureLabel.getText()).getLayoutBounds().getWidth();
             double conditionLabelWidth = new Text(conditionLabel.getText()).getLayoutBounds().getWidth();
-            double conditionLabelX = temperatureLabel.getLayoutX() + (temperatureLabelWidth - conditionLabelWidth) / 2;
+            double conditionLabelX = temperatureLabel.getLayoutX() + 22.5 + (temperatureLabelWidth - conditionLabelWidth) / 2;
 
 // Set the calculated X position
             conditionLabel.setLayoutX(conditionLabelX);
 
-// Align vertically with temperatureLabel
-            double conditionLabelY = 45.0; // Align vertically with temperatureLabel
-            conditionLabel.setLayoutY(conditionLabelY);
+            conditionLabel.setLayoutY(45);
 
             Label humidityLabel = new Label("Humidity: " + weather.getHumidity());
             humidityLabel.setLayoutX(10.0);
@@ -567,29 +565,35 @@ public class LandingPageController extends NightLifeController implements Initia
     private Pane createUserProfilePane() {
         // Create a Pane for user data
         Pane userDataPane = new Pane();
+        String role = "";
+
+        if (User.getInstance().getRoleID() == 1)
+            role = "User";
+        else
+            role = "Admin";
 
         // Populate the user data Pane with user-specific content
         Text userDataText = new Text("Name: " + User.getInstance().getFirstName() + " " + User.getInstance().getLastName()
                 + "\nEmail: " + User.getInstance().getEmail()
                 + "\nPhone number: " + User.getInstance().getPhoneNumber()
-                + "\nUser role ID: " + User.getInstance().getRoleID() // Replace with your user data components
+                + "\nUser role: " + role
                 + "\nAddress: \n" + User.getInstance().getStreetAddress()
                 + "\n" + User.getInstance().getCity()
                 + ", " + User.getInstance().getZipcode()
                 + ", " + User.getInstance().getState());
         userDataText.setLayoutX(10);
-        userDataText.setLayoutY(10);
+        userDataText.setLayoutY(80);
 
         // Edit profile
         editProfileButton = new Button("Edit Profile");
         editProfileButton.setLayoutX(10);
-        editProfileButton.setLayoutY(150);
+        editProfileButton.setLayoutY(220);
         editProfileButton.setOnAction(event -> goToEditProfile());
 
         if (User.getInstance().getRoleID() == 2) {
             adminButton = new Button("Admin Panel");
-            adminButton.setLayoutX(10);
-            adminButton.setLayoutY(200);
+            adminButton.setLayoutX(100);
+            adminButton.setLayoutY(220);
 
             // Add an event handler to the button
             adminButton.setOnAction(event -> loadAdminFXML());
@@ -634,12 +638,12 @@ public class LandingPageController extends NightLifeController implements Initia
         try {
 
             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("adminpanel2.fxml"));
-            Stage adminWindow = new Stage();
-            adminWindow.setTitle("Smart City - Admin Panel");
-            Scene scene = new Scene(fxmlLoader.load(), 700, 550);
-            adminWindow.setScene(scene);
-            adminWindow.initModality(Modality.APPLICATION_MODAL);
-            adminWindow.show();
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = (Stage) editProfileButton.getScene().getWindow();
+            stage.setTitle("Smart City - Admin Panel");
+            stage.setScene(scene);
+            stage.show();
+            stage.centerOnScreen();
 
         } catch (IOException e) {
             e.printStackTrace();
