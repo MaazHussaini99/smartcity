@@ -138,35 +138,15 @@ public class LandingPageController extends NightLifeController implements Initia
         profileLink.setOnAction(this::handleProfileButtonClick);
         show();
         displayWeather();
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() {
-                Platform.runLater(() -> {
-                    // Update UI elements on the JavaFX Application Thread
-                    busNo.setCellValueFactory(cellData -> cellData.getValue().getShortName());
-                    busName.setCellValueFactory(cellData -> cellData.getValue().getLongName());
-                    routeDescription.setCellValueFactory(cellData -> cellData.getValue().getRouteID());
+        loadJobTab();
+        loadTransportTab();
 
-                    // Transport Table
-                    try {
-                        transportTable.getItems().addAll(TransportController.getBuses());
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                });
-                return null;
-            }
-        };
+        MapController maps = new MapController();
+        maps.showMap(webviewMap);
+    }
 
-        // Execute the task in the separate thread
-        executorService.submit(task);
-
-        busStop.setCellValueFactory(cellData -> cellData.getValue().stopNameProperty());
-        busArrivalTime.setCellValueFactory(cellData -> cellData.getValue().arrivalTimeProperty());
-        busDepartureTime.setCellValueFactory(cellData -> cellData.getValue().departureTimeProperty());
-
+    private void loadJobTab(){
         transportTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
         transportTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 1) { // Detect a single click
                 Bus selectedBus = transportTable.getSelectionModel().getSelectedItem();
@@ -216,12 +196,9 @@ public class LandingPageController extends NightLifeController implements Initia
                 }
             }
         });
-
-
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
         titleColumn.setMinWidth(348);
         gradeColumn.setCellValueFactory(cellData -> cellData.getValue().JobGradeProperty());
-
         agencyColumn.setCellValueFactory(cellData -> cellData.getValue().JobAgencyProperty());
         locationColumn.setCellValueFactory(cellData -> cellData.getValue().JobLocationProperty());
         applyColumn.setCellFactory(column -> new TableCell<Job, String>() {
@@ -265,17 +242,62 @@ public class LandingPageController extends NightLifeController implements Initia
                 }
             }
         });
-        // Populate the TableView with job listings from JobListing class
-        jobTableView.getItems().addAll(JobListing.getAllJobs());
 
-        // limited to admin only
-        if (User.getInstance().getRoleID() == 2)
-            setJobEditRowBehavior();
 
-        MapController maps = new MapController();
-        maps.showMap(webviewMap);
+        Task<Void> loadJobTab = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                ArrayList<Job> jobs = new ArrayList<>(JobListing.getAllJobs());
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        jobTableView.getItems().addAll(jobs);
+                        if (User.getInstance().getRoleID() == 2)
+                            setJobEditRowBehavior();
+                    }
+                });
+                return null;
+            };
+        };
+
+        Thread loadJobThread = new Thread(loadJobTab);
+        loadJobThread.start();
     }
 
+    private void loadTransportTab(){
+        Task<Void> loadTransportTabTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                //prep tabl
+                busStop.setCellValueFactory(cellData -> cellData.getValue().stopNameProperty());
+                busArrivalTime.setCellValueFactory(cellData -> cellData.getValue().arrivalTimeProperty());
+                busDepartureTime.setCellValueFactory(cellData -> cellData.getValue().departureTimeProperty());
+                busNo.setCellValueFactory(cellData -> cellData.getValue().getShortName());
+                busName.setCellValueFactory(cellData -> cellData.getValue().getLongName());
+                routeDescription.setCellValueFactory(cellData -> cellData.getValue().getRouteID());
+
+                ArrayList<Bus> buslistlist = new ArrayList<>();
+
+                try {
+                    buslistlist = TransportController.getBuses();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                // use this code to update gui
+                ArrayList<Bus> finalBuslistlist = buslistlist;
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        transportTable.getItems().addAll(finalBuslistlist);
+                    }
+                });
+                return null;
+            };
+        };
+
+        Thread loadTransportTabThread = new Thread(loadTransportTabTask);
+        loadTransportTabThread.start();
+    }
 
     private void setJobEditRowBehavior() {
         //what does this do?

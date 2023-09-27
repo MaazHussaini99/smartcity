@@ -55,6 +55,7 @@ public class AdminController {
     JobApplication selectedApplication;
     static User user;
 
+
     public void initialize() {
         // Initialize your UI components and set event handlers here.
         // The UI components are already injected via @FXML annotations.
@@ -69,7 +70,9 @@ public class AdminController {
         loadBankList();
     }
 
-
+    /***
+     * define the behavior of textlabel, and textfield used in sending emails
+     */
     public void addEmailFunction() {
         emailTarget.setPromptText("To:");
         emailSubject.setPromptText("Subject");
