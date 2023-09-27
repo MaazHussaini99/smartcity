@@ -34,6 +34,7 @@ public class LoggedinController {
     @FXML
     private Button submitButton;
 
+    static Connection connection = DBConn.connectDB();
 
     /**
      * Handles the login action when the submit button is clicked.
@@ -134,8 +135,7 @@ public class LoggedinController {
     public static boolean validate(String emailId, String password){
         final String SELECT_QUERY = "SELECT * FROM user WHERE user_email = ? and user_password = ?";
 
-        try (Connection connection = DBConn.connectDB()) {
-            assert connection != null;
+        try {
             try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
                 preparedStatement.setString(1, emailId);
                 preparedStatement.setString(2, password);

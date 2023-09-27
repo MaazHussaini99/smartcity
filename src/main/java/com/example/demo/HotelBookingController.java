@@ -126,6 +126,7 @@ public class HotelBookingController extends EventsController{
         this.emailId = emailId;
     }
     int userIdd;
+    Connection connection = DBConn.connectDB();
     public HotelBookingController() {
     }
 
@@ -391,7 +392,7 @@ public class HotelBookingController extends EventsController{
              userIdd = c.getUserdetails(emailId);
         }
         String sql = "SELECT * FROM hotel_booking where user_id=?";
-        try (Connection connection = DBConn.connectDB();
+        try (
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, userIdd);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -438,8 +439,7 @@ public class HotelBookingController extends EventsController{
     private void retrieveHotelsFromDatabase() throws SQLException {
         // Fetch hotel data from the database and populate the TableView
         String sql = "SELECT * FROM hotel";
-        try (Connection connection = DBConn.connectDB()) {
-            assert connection != null;
+        try {
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
                  ResultSet resultSet = preparedStatement.executeQuery()) {
                 ObservableList<Hotel> hotels = FXCollections.observableArrayList();
@@ -455,6 +455,9 @@ public class HotelBookingController extends EventsController{
                 }
                 hotelTableView.setItems(hotels);
             }
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
     // ...
@@ -556,6 +559,8 @@ public class HotelBookingController extends EventsController{
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+
     private DialogPane createBookingDialogContent() {
         DialogPane dialogPane = new DialogPane();
         this.checkInDatePicker = new DatePicker();

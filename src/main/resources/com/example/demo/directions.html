@@ -5,8 +5,31 @@
   <title>Directions to Place</title>
   <script src="http://maps.google.com/maps/api/js?key=AIzaSyC-g-iwyXGl5-q_Ke0_wGMuHafKsc2fu64&sensor=false&libraries=places"></script>
   <style>
-    #mapcanvas { height: 550px; width: 100% }
-    #backButton { margin-top: 20px }
+    body{
+    background-color: #424fb3;
+    }
+    #mapcanvas {
+    height: 550px; width: 100%
+
+    }
+#backButton {
+  background-color: #e3b256;
+  font-weight: bold;
+  text-fill: #545a5e;
+  font-size: 12px;
+  font-family: "Utopia";
+  padding: 5px 10px;
+}
+
+#backButton:hover {
+  background-color: #fac869;
+  text-fill: #6b6e70;
+  font-weight: bold;
+  font-size: 12px;
+  font-family: "Utopia";
+  padding: 5px 10px;
+  transform: scale(0.95);
+}
   </style>
   <script>
     var map;

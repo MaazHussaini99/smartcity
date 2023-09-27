@@ -29,13 +29,29 @@
                <effect>
                   <DropShadow offsetX="2.0" offsetY="2.0">
                      <input>
-                        <Glow level="0.49" />
+                        <ColorAdjust />
                      </input>
                      <color>
                         <Color red="0.13333334028720856" green="0.24705882370471954" blue="0.27843138575553894" />
                      </color>
                   </DropShadow>
-               </effect></StackPane>
+               </effect>
+               <children>
+                  <ImageView fitHeight="59.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
+                     <StackPane.margin>
+                        <Insets bottom="230.0" />
+                     </StackPane.margin>
+                     <image>
+                        <Image url="@../images/Default.png" />
+                     </image>
+                     <effect>
+                        <DropShadow spread="0.29">
+                           <color>
+                              <Color red="0.25438597798347473" green="0.31652048230171204" blue="0.4736842215061188" />
+                           </color>
+                        </DropShadow>
+                     </effect></ImageView>
+               </children></StackPane>
             <Pane fx:id="weatherPane" layoutX="21.0" layoutY="112.0" prefHeight="112.0" prefWidth="260.0" style="-fx-background-color: #87aede; -fx-background-radius: 20; -fx-opacity: 90%;">
                <effect>
                   <Glow level="0.49">
@@ -67,7 +83,7 @@
                                     <TableColumn fx:id="applyColumn" prefWidth="125.0" text="Apply" />
                                 </columns>
                             </TableView>
-                            <HBox fx:id="editJobRow" layoutX="9.0" layoutY="579.0" prefHeight="40.0" prefWidth="852.0" />
+                            <HBox fx:id="editJobRow" alignment="CENTER_RIGHT" layoutX="8.0" layoutY="586.0" prefHeight="40.0" prefWidth="852.0" spacing="20.0" />
                         </children>
                     </AnchorPane>
                 </content>
@@ -104,17 +120,17 @@
                                 <ImageView fitHeight="437.0" fitWidth="748.0" pickOnBounds="true" preserveRatio="true"> <image> <Image url="@../images/Map-of-Albany.jpg" /> </image> </ImageView>
                                 <TableView fx:id="hotelTableView" onMouseClicked="#handleHotelSelection" prefHeight="300.0" prefWidth="750.0" visible="false">
                                     <columns>
-                                        <TableColumn prefWidth="249.4000062942505" text="Hotel Name">
+                                        <TableColumn prefWidth="340.60001850128174" text="Hotel Name">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelName" />
                                             </cellValueFactory>
                                         </TableColumn>
-                                        <TableColumn prefWidth="332.20001220703125" text="Location">
+                                        <TableColumn prefWidth="305.39996337890625" text="Location">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelLocation" />
                                             </cellValueFactory>
                                         </TableColumn>
-                                        <TableColumn prefWidth="56.4000244140625" text="Price">
+                                        <TableColumn prefWidth="100.0" text="Price">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelPrice" />
                                             </cellValueFactory>
@@ -124,7 +140,7 @@
                                                 <PropertyValueFactory property="hotelRoomNumber" />
                                             </cellValueFactory>
                                         </TableColumn> -->
-                                        <TableColumn prefWidth="103.39996337890625" text="Availability">
+                                        <TableColumn prefWidth="100.0" text="Availability">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelAvailability" />
                                             </cellValueFactory>
@@ -353,8 +369,8 @@
                                 <font>
                                     <Font name="System Bold" size="15.0" />
                                 </font></Button>
-                        <Button fx:id="addNightLifeInfo" layoutX="316.0" layoutY="587.0" mnemonicParsing="false" onAction="#addNightLife" prefHeight="28.0" prefWidth="130.0" text="Add Night Life Info" visible="false" />
-                        <Button fx:id="deleteNightLifeInfo" layoutX="486.0" layoutY="587.0" mnemonicParsing="false" onAction="#deleteNightLife" prefHeight="28.0" prefWidth="145.0" text="Delete Night Life Info" visible="false" />
+                        <Button fx:id="addNightLifeInfo" layoutX="352.0" layoutY="585.0" mnemonicParsing="false" onAction="#addNightLife" prefHeight="28.0" prefWidth="70.0" text="Add" visible="false" />
+                        <Button fx:id="deleteNightLifeInfo" layoutX="448.0" layoutY="585.0" mnemonicParsing="false" onAction="#deleteNightLife" prefHeight="28.0" prefWidth="70.0" text="Delete" visible="false" />
                         </children>
                     </AnchorPane>
                 </content>

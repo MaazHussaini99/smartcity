@@ -1,6 +1,8 @@
 package com.example.demo;
 
-// Event class represents information about events
+/**
+ * Represents an Event with event details.
+ */
 public class Event extends EventBooking {
 
     // Fields to store event information
@@ -15,7 +17,15 @@ public class Event extends EventBooking {
         // Default constructor with no arguments
     }
 
-    // Constructor with full event details including eventId
+    /**
+     * Constructor for an event with full details including eventId.
+     *
+     * @param eventId      The unique identifier for the event.
+     * @param eventName    The name of the event.
+     * @param eventLocation The location where the event takes place.
+     * @param eventDate    The date of the event.
+     * @param eventPrice   The price or cost of attending the event.
+     */
     public Event(int eventId, String eventName,String eventLocation, String eventDate, double eventPrice) {
         this.eventId = eventId;
         this.eventName = eventName;
@@ -24,7 +34,14 @@ public class Event extends EventBooking {
         this.eventPrice = eventPrice;
     }
 
-    // Constructor without eventId (used when creating a new event)
+    /**
+     * Constructor for an event without an eventId (used when creating a new event).
+     *
+     * @param eventName    The name of the event.
+     * @param eventLocation The location where the event takes place.
+     * @param eventDate    The date of the event.
+     * @param eventPrice   The price or cost of attending the event.
+     */
     public Event(String eventName, String eventLocation, String eventDate, double eventPrice) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;

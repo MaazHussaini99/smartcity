@@ -15,6 +15,7 @@ public class TransportController {
 
     // List to store bus objects
     static ArrayList<Bus> buses = new ArrayList<>();
+    static Connection connection = DBConn.connectDB();
 
     /**
      * Retrieves a list of buses from the database.
@@ -23,8 +24,7 @@ public class TransportController {
      */
     public static ArrayList<Bus> getBuses() throws SQLException {
         String busQ = "SELECT route_id, route_name, route_busNumber, route_desc FROM transport_route";
-        try (Connection connection = DBConn.connectDB()) {
-            assert connection != null;
+        try {
             try (PreparedStatement preparedStatement = connection.prepareStatement(busQ)) {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while(resultSet.next()){
@@ -52,13 +52,12 @@ public class TransportController {
 
         // Use SQL joins with distinct aliases for tables
         String query = "SELECT ts.stop_name, tt.arrival_time, tt.departure_time " +
-                "FROM transport_trip2 ttrip " +
-                "JOIN transport_time2 tt ON ttrip.trip_id = tt.trip_id " +
+                "FROM transport_trip3 ttrip " +
+                "JOIN transport_time3 tt ON ttrip.trip_id = tt.trip_id " +
                 "JOIN transport_stop ts ON tt.stop_id = ts.stop_id " +
                 "WHERE ttrip.route_id = ?";
 
-        try (Connection connection = DBConn.connectDB()) {
-            assert connection != null;
+        try {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, routeId);
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -85,9 +84,8 @@ public class TransportController {
      */
     public static double getAccountBalance(int accountNumber) {
 
-        try (Connection connection = DBConn.connectDB()) {
+        try {
             String sql = "SELECT balance FROM bank_account WHERE account_no = ?";
-            assert connection != null;
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, accountNumber);
 
@@ -135,10 +133,8 @@ public class TransportController {
      * @param amount The new account balance.
      */
     public static void updateAccountBalance(int accountNumber, double amount) {
-        try (Connection connection = DBConn.connectDB()) {
-            assert connection != null;
+        try{
             connection.setAutoCommit(false); // Disable auto-commit
-
             String sql = "UPDATE bank_account SET balance = ? WHERE account_no = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setDouble(1, amount);
