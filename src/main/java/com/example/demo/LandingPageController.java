@@ -137,12 +137,106 @@ public class LandingPageController extends NightLifeController implements Initia
         }
         profileLink.setOnAction(this::handleProfileButtonClick);
         show();
-        displayWeather();
+        //displayWeather();
         loadJobTab();
         loadTransportTab();
-
+        loadWeatherPane();
         MapController maps = new MapController();
         maps.showMap(webviewMap);
+    }
+
+
+    private void loadWeatherPane(){
+        Task<Void> loadJobTab = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                Weather weather = Weather.getWeather();
+                ImageView iconImageView = new ImageView();
+                // Open a stream to read the image data
+                InputStream stream = null;
+                try{
+                    if (weather != null) {
+                        // Create a URL object for the image
+                        URL imageUrl = null;
+                        try {
+                            imageUrl = new URL("https:" + weather.getConditionIcon());
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            stream = imageUrl.openStream();
+                            // Create an Image object from the input stream
+                            Image image = new Image(stream);
+
+                            iconImageView.setLayoutX(10.0);
+                            iconImageView.setLayoutY(0.0);
+                            Image conditionIconImage = image;
+                            iconImageView.setImage(conditionIconImage);
+                            // Close the input stream
+                            stream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                Label temperatureLabel = new Label(weather.getTempFarhenhiet() + "°F");
+                                temperatureLabel.setLayoutX(100.0);
+                                temperatureLabel.setLayoutY(10.0);
+                                temperatureLabel.setFont(new Font(30));
+
+
+                                Label conditionLabel = new Label(weather.getConditionText());
+
+// Calculate the X position to center the condition label with respect to temperatureLabel
+                                double temperatureLabelWidth = new Text(temperatureLabel.getText()).getLayoutBounds().getWidth();
+                                double conditionLabelWidth = new Text(conditionLabel.getText()).getLayoutBounds().getWidth();
+                                double conditionLabelX = temperatureLabel.getLayoutX() + 22.5 + (temperatureLabelWidth - conditionLabelWidth) / 2;
+
+// Set the calculated X position
+                                conditionLabel.setLayoutX(conditionLabelX);
+
+                                conditionLabel.setLayoutY(45);
+
+                                Label humidityLabel = new Label("Humidity: " + weather.getHumidity());
+                                humidityLabel.setLayoutX(10.0);
+                                humidityLabel.setLayoutY(60.0);
+
+                                Label percipLabel = new Label("Precipitation: " + weather.getPrecipIn());
+                                percipLabel.setLayoutX(10.0);
+                                percipLabel.setLayoutY(80.0);
+
+                                Label windLabel = new Label("Wind: " + weather.getWindMph());
+                                windLabel.setLayoutX(190.0);
+                                windLabel.setLayoutY(60.0);
+                                windLabel.setTextAlignment(TextAlignment.RIGHT);
+
+                                Label uvLabel = new Label("UV Index: " + weather.getUvIndex());
+                                uvLabel.setLayoutX(190.0);
+                                uvLabel.setLayoutY(80.0);
+                                uvLabel.setTextAlignment(TextAlignment.RIGHT);
+
+
+                                // Add these labels to the weatherPane
+                                weatherPane.getChildren().addAll(temperatureLabel, conditionLabel, humidityLabel, percipLabel, windLabel, uvLabel, iconImageView);
+                            }
+                        });
+                        return null;
+                    }
+                    else{
+                        System.out.println("Failed to fetch weather data.");
+                        return null;
+                    }
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+                return null;
+            };
+        };
+
+        Thread loadJobThread = new Thread(loadJobTab);
+        loadJobThread.start();
     }
 
     private void loadJobTab(){
@@ -413,7 +507,6 @@ public class LandingPageController extends NightLifeController implements Initia
         //title grade agency city
     }
 
-
     private void modJobListing(String title, String grade, String agency, String city) {
         //1 edit 2 add 3 delete
         try {
@@ -634,6 +727,7 @@ public class LandingPageController extends NightLifeController implements Initia
         userDataPane.getChildren().add(editProfileButton);
         return userDataPane;
     }
+
     private void onProfileLinkClicked() {
         loadBankFXML();
     }
