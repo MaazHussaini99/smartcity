@@ -177,7 +177,7 @@ public class EventBookingController {
 
     // Handle the "View Bookings" button click event
     @FXML
-    private void viewBookings(ActionEvent selectedEvent1) {
+    private void viewBookings() {
         if (userRole == 2) {
             // Create a dialog to prompt for the user's email
             TextInputDialog dialog = new TextInputDialog();
@@ -384,7 +384,8 @@ public class EventBookingController {
 
             if (deleted) {
                 showInfoDialog("Success", "Booking deleted successfully.");
-                loadDataFromDatabase(); // Reload the data to update the view
+               // loadDataFromDatabase(); // Reload the data to update the view
+                viewBookings();
             } else {
                 showErrorDialog("Error", "Failed to delete the booking.");
             }
