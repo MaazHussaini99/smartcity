@@ -25,7 +25,7 @@ public class JobListing {
      */
     public static List<Job> getAllJobs(){
         String sql = "SELECT * FROM jobs";
-        try (Connection connection = DBConn.connectDB();
+        try (
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
@@ -52,7 +52,7 @@ public class JobListing {
         String selectSql = "SELECT * FROM jobapplication WHERE job_id = ? AND user_id = ?";
         boolean alreadyExists = false;
 
-        try (Connection connection = DBConn.connectDB();
+        try (
              PreparedStatement selectStatement = connection.prepareStatement(selectSql)) {
 
             selectStatement.setInt(1, jobID);
@@ -78,7 +78,7 @@ public class JobListing {
             // Insert the new application
             String insertSql = "INSERT INTO jobapplication (job_id, user_id) VALUES (?, ?)";
 
-            try (Connection connection = DBConn.connectDB();
+            try (
                  PreparedStatement insertStatement = connection.prepareStatement(insertSql)) {
 
                 insertStatement.setInt(1, jobID);
