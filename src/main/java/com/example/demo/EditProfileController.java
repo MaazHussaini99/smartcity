@@ -23,6 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for editing user profiles.
+ */
 public class EditProfileController implements Initializable{
 
     @FXML
@@ -104,8 +107,7 @@ public class EditProfileController implements Initializable{
     }
 
     /**
-     * backToLanding
-     * Navigates the user back to the landing page
+     * Navigates the user back to the landing page.
      */
     public void backToLanding() {
         try {
@@ -126,6 +128,11 @@ public class EditProfileController implements Initializable{
         }
     }
 
+    /**
+     * Handles the editing of the user profile.
+     *
+     * @param event The ActionEvent triggered by the "Edit Profile" button.
+     */
     public void editProfile( ActionEvent event ) {
 
         Window owner = signUp.getScene().getWindow();
@@ -243,6 +250,17 @@ public class EditProfileController implements Initializable{
         return false;
     } // End of checkForEmail
 
+    /**
+     * Updates the user's profile information in the database.
+     *
+     * @param emailId     The user's email.
+     * @param fName       The user's first name.
+     * @param lName       The user's last name.
+     * @param streetAdd   The user's street address.
+     * @param city        The user's city.
+     * @param phoneNumber The user's phone number.
+     * @param zipCode     The user's zip code.
+     */
     public static void updateProfile(String emailId, String fName, String lName, String streetAdd, String city, String phoneNumber, String zipCode) {
 
         int role = User.getInstance().getRoleID();
@@ -287,6 +305,13 @@ public class EditProfileController implements Initializable{
         }
     }
 
+    /**
+     * Displays an informational dialog box.
+     *
+     * @param infoMessage The message to be displayed.
+     * @param headerText  The header text for the dialog box.
+     * @param title       The title of the dialog box.
+     */
     public static void infoBox(String infoMessage, String headerText, String title) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText(infoMessage);
@@ -295,6 +320,14 @@ public class EditProfileController implements Initializable{
         alert.showAndWait();
     } // End of infoBox
 
+    /**
+     * Shows an alert dialog box with the specified alert type, title, and message.
+     *
+     * @param alertType The type of alert (e.g., ERROR, INFORMATION, etc.).
+     * @param owner     The owner window of the alert.
+     * @param title     The title of the alert.
+     * @param message   The message to be displayed in the alert.
+     */
     private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -304,6 +337,11 @@ public class EditProfileController implements Initializable{
         alert.show();
     } // End of showAlert
 
+    /**
+     * Prints SQL exception details to the standard error stream.
+     *
+     * @param ex The SQL exception to be printed.
+     */
     public static void printSQLException(SQLException ex) {
         for (Throwable e: ex) {
             if (e instanceof SQLException) {

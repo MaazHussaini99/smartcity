@@ -1,6 +1,9 @@
 package com.example.demo;
 import java.sql.*;
 
+/**
+ * The HotelBooking class represents hotel booking information including hotel booking IDs, user IDs, check-in and check-out dates, and more.
+ */
 public class HotelBooking {
     private int hotelBookId;
     private int hotelId;
@@ -47,7 +50,17 @@ public class HotelBooking {
         this.checkOutDate = checkOutDate;
     }
 
-    // Method to create a new hotel booking
+    /**
+     * Creates a new hotel booking record in the database.
+     *
+     * @param hotelId       The unique identifier of the hotel being booked.
+     * @param uid           The unique identifier of the user making the booking.
+     * @param accountId     The unique identifier of the user's bank account.
+     * @param checkInDate   The check-in date for the hotel booking.
+     * @param checkOutDate  The check-out date for the hotel booking.
+     * @param totalCost     The total cost of the hotel booking.
+     * @return True if the booking is successful, false otherwise.
+     */
     public boolean createBooking(int hotelId, int uid, int accountId, String checkInDate, String checkOutDate, double totalCost) {
         String sql = "INSERT INTO hotel_booking (hotel_id, user_id, account_id, check_in_time, check_out_time, hotel_total_cost) VALUES ( ?, ?, ?, ?, ?, ?)";
         try (Connection connection = DBConn.connectDB();
@@ -71,6 +84,13 @@ public class HotelBooking {
             return false;
         }
     }
+
+    /**
+     * Retrieves the account balance for a given bank account number.
+     *
+     * @param accountNumber The bank account number.
+     * @return The account balance.
+     */
     public double getAccountBalance(int accountNumber) {
         try (Connection connection = DBConn.connectDB()) {
             String sql = "SELECT balance FROM bank_account WHERE account_no = ?";
@@ -89,6 +109,8 @@ public class HotelBooking {
         // Return a default value if there was an error or if the account doesn't exist
         return 0.0;
     }
+
+    
     public int getAccountId(int userId) {
         int accountId = -1; // Default value in case of an error
 
