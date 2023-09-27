@@ -556,6 +556,8 @@ public class HotelBookingController extends EventsController{
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+
     private DialogPane createBookingDialogContent() {
         DialogPane dialogPane = new DialogPane();
         this.checkInDatePicker = new DatePicker();
