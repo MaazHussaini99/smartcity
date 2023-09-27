@@ -29,7 +29,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -109,64 +108,162 @@ public class LandingPageController extends NightLifeController implements Initia
         try {
             SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1);
             ticketSpinner.setValueFactory(valueFactory);
-
-            ObservableList<News> newsItems = FXCollections.observableArrayList(News.getNews());
-
-            // Initialize the dialog panes and images for the first news article
-            populateNewsPanes(newsItems, currentNewsIndex);
-
-            // Add an event handler for the "Next" button
-            nextButton.setOnAction(event -> {
-                if (currentNewsIndex + 1 < newsItems.size() - 2) {
-                    currentNewsIndex++;
-                    populateNewsPanes(newsItems, currentNewsIndex);
-                }
-            });
-            previousButton.setOnAction(event -> {
-                if (currentNewsIndex - 1 < newsItems.size() - 2) {
-                    if (currentNewsIndex == 0) {
-                        currentNewsIndex = 1;
-                    }
-                    currentNewsIndex--;
-                    populateNewsPanes(newsItems, currentNewsIndex);
-                }
-            });
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         profileLink.setOnAction(this::handleProfileButtonClick);
         show();
-        displayWeather();
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() {
-                Platform.runLater(() -> {
-                    // Update UI elements on the JavaFX Application Thread
-                    busNo.setCellValueFactory(cellData -> cellData.getValue().getShortName());
-                    busName.setCellValueFactory(cellData -> cellData.getValue().getLongName());
-                    routeDescription.setCellValueFactory(cellData -> cellData.getValue().getRouteID());
+        //displayWeather();
+        loadJobTab();
+        loadTransportTab();
+        loadWeatherPane();
+        loadNewsPane();
+        MapController maps = new MapController();
+        maps.showMap(webviewMap);
+    }
 
-                    // Transport Table
-                    try {
-                        transportTable.getItems().addAll(TransportController.getBuses());
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+    public void loadNewsPane(){
+        Task<Void> loadNewsPaneTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                ObservableList<News> newsItems = null;
+                try{
+                    newsItems = FXCollections.observableArrayList(News.getNews());
+
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+
+                }
+
+                ObservableList<News> finalNewsItems = newsItems;
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        populateNewsPanes(finalNewsItems, currentNewsIndex);
+
+                        // Add an event handler for the "Next" button
+                        nextButton.setOnAction(event -> {
+                            if (currentNewsIndex + 1 < finalNewsItems.size() - 2) {
+                                currentNewsIndex++;
+                                populateNewsPanes(finalNewsItems, currentNewsIndex);
+                            }
+                        });
+                        previousButton.setOnAction(event -> {
+                            if (currentNewsIndex - 1 < finalNewsItems.size() - 2) {
+                                if (currentNewsIndex == 0) {
+                                    currentNewsIndex = 1;
+                                }
+                                currentNewsIndex--;
+                                populateNewsPanes(finalNewsItems, currentNewsIndex);
+                            }
+                        });
                     }
                 });
                 return null;
-            }
+            };
         };
 
-        // Execute the task in the separate thread
-        executorService.submit(task);
+        Thread loadNewsPaneThread = new Thread(loadNewsPaneTask);
+        loadNewsPaneThread.start();
 
-        busStop.setCellValueFactory(cellData -> cellData.getValue().stopNameProperty());
-        busArrivalTime.setCellValueFactory(cellData -> cellData.getValue().arrivalTimeProperty());
-        busDepartureTime.setCellValueFactory(cellData -> cellData.getValue().departureTimeProperty());
+    }
 
+    private void loadWeatherPane(){
+        Task<Void> loadJobTab = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                Weather weather = Weather.getWeather();
+                ImageView iconImageView = new ImageView();
+                // Open a stream to read the image data
+                InputStream stream = null;
+                try{
+                    if (weather != null) {
+                        // Create a URL object for the image
+                        URL imageUrl = null;
+                        try {
+                            imageUrl = new URL("https:" + weather.getConditionIcon());
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            stream = imageUrl.openStream();
+                            // Create an Image object from the input stream
+                            Image image = new Image(stream);
+
+                            iconImageView.setLayoutX(10.0);
+                            iconImageView.setLayoutY(0.0);
+                            Image conditionIconImage = image;
+                            iconImageView.setImage(conditionIconImage);
+                            // Close the input stream
+                            stream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                Label temperatureLabel = new Label(weather.getTempFarhenhiet() + "°F");
+                                temperatureLabel.setLayoutX(100.0);
+                                temperatureLabel.setLayoutY(10.0);
+                                temperatureLabel.setFont(new Font(30));
+
+
+                                Label conditionLabel = new Label(weather.getConditionText());
+
+// Calculate the X position to center the condition label with respect to temperatureLabel
+                                double temperatureLabelWidth = new Text(temperatureLabel.getText()).getLayoutBounds().getWidth();
+                                double conditionLabelWidth = new Text(conditionLabel.getText()).getLayoutBounds().getWidth();
+                                double conditionLabelX = temperatureLabel.getLayoutX() + 22.5 + (temperatureLabelWidth - conditionLabelWidth) / 2;
+
+// Set the calculated X position
+                                conditionLabel.setLayoutX(conditionLabelX);
+
+                                conditionLabel.setLayoutY(45);
+
+                                Label humidityLabel = new Label("Humidity: " + weather.getHumidity());
+                                humidityLabel.setLayoutX(10.0);
+                                humidityLabel.setLayoutY(60.0);
+
+                                Label percipLabel = new Label("Precipitation: " + weather.getPrecipIn());
+                                percipLabel.setLayoutX(10.0);
+                                percipLabel.setLayoutY(80.0);
+
+                                Label windLabel = new Label("Wind: " + weather.getWindMph());
+                                windLabel.setLayoutX(190.0);
+                                windLabel.setLayoutY(60.0);
+                                windLabel.setTextAlignment(TextAlignment.RIGHT);
+
+                                Label uvLabel = new Label("UV Index: " + weather.getUvIndex());
+                                uvLabel.setLayoutX(190.0);
+                                uvLabel.setLayoutY(80.0);
+                                uvLabel.setTextAlignment(TextAlignment.RIGHT);
+
+
+                                // Add these labels to the weatherPane
+                                weatherPane.getChildren().addAll(temperatureLabel, conditionLabel, humidityLabel, percipLabel, windLabel, uvLabel, iconImageView);
+                            }
+                        });
+                        return null;
+                    }
+                    else{
+                        System.out.println("Failed to fetch weather data.");
+                        return null;
+                    }
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+                return null;
+            };
+        };
+
+        Thread loadJobThread = new Thread(loadJobTab);
+        loadJobThread.start();
+    }
+
+    private void loadJobTab(){
         transportTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
         transportTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 1) { // Detect a single click
                 Bus selectedBus = transportTable.getSelectionModel().getSelectedItem();
@@ -216,12 +313,9 @@ public class LandingPageController extends NightLifeController implements Initia
                 }
             }
         });
-
-
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
         titleColumn.setMinWidth(348);
         gradeColumn.setCellValueFactory(cellData -> cellData.getValue().JobGradeProperty());
-
         agencyColumn.setCellValueFactory(cellData -> cellData.getValue().JobAgencyProperty());
         locationColumn.setCellValueFactory(cellData -> cellData.getValue().JobLocationProperty());
         applyColumn.setCellFactory(column -> new TableCell<Job, String>() {
@@ -265,17 +359,62 @@ public class LandingPageController extends NightLifeController implements Initia
                 }
             }
         });
-        // Populate the TableView with job listings from JobListing class
-        jobTableView.getItems().addAll(JobListing.getAllJobs());
 
-        // limited to admin only
-        if (User.getInstance().getRoleID() == 2)
-            setJobEditRowBehavior();
 
-        MapController maps = new MapController();
-        maps.showMap(webviewMap);
+        Task<Void> loadJobTab = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                ArrayList<Job> jobs = new ArrayList<>(JobListing.getAllJobs());
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        jobTableView.getItems().addAll(jobs);
+                        if (User.getInstance().getRoleID() == 2)
+                            setJobEditRowBehavior();
+                    }
+                });
+                return null;
+            };
+        };
+
+        Thread loadJobThread = new Thread(loadJobTab);
+        loadJobThread.start();
     }
 
+    private void loadTransportTab(){
+        Task<Void> loadTransportTabTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                //prep tabl
+                busStop.setCellValueFactory(cellData -> cellData.getValue().stopNameProperty());
+                busArrivalTime.setCellValueFactory(cellData -> cellData.getValue().arrivalTimeProperty());
+                busDepartureTime.setCellValueFactory(cellData -> cellData.getValue().departureTimeProperty());
+                busNo.setCellValueFactory(cellData -> cellData.getValue().getShortName());
+                busName.setCellValueFactory(cellData -> cellData.getValue().getLongName());
+                routeDescription.setCellValueFactory(cellData -> cellData.getValue().getRouteID());
+
+                ArrayList<Bus> buslistlist = new ArrayList<>();
+
+                try {
+                    buslistlist = TransportController.getBuses();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                // use this code to update gui
+                ArrayList<Bus> finalBuslistlist = buslistlist;
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        transportTable.getItems().addAll(finalBuslistlist);
+                    }
+                });
+                return null;
+            };
+        };
+
+        Thread loadTransportTabThread = new Thread(loadTransportTabTask);
+        loadTransportTabThread.start();
+    }
 
     private void setJobEditRowBehavior() {
         //what does this do?
@@ -390,7 +529,6 @@ public class LandingPageController extends NightLifeController implements Initia
         //get random job id
         //title grade agency city
     }
-
 
     private void modJobListing(String title, String grade, String agency, String city) {
         //1 edit 2 add 3 delete
@@ -612,6 +750,7 @@ public class LandingPageController extends NightLifeController implements Initia
         userDataPane.getChildren().add(editProfileButton);
         return userDataPane;
     }
+
     private void onProfileLinkClicked() {
         loadBankFXML();
     }

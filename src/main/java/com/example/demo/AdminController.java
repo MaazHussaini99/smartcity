@@ -55,6 +55,9 @@ public class AdminController {
     JobApplication selectedApplication;
     static User user;
 
+    Connection connection = DBConn.connectDB();
+
+
     public void initialize() {
         // Initialize your UI components and set event handlers here.
         // The UI components are already injected via @FXML annotations.
@@ -69,7 +72,9 @@ public class AdminController {
         loadBankList();
     }
 
-
+    /***
+     * define the behavior of textlabel, and textfield used in sending emails
+     */
     public void addEmailFunction() {
         emailTarget.setPromptText("To:");
         emailSubject.setPromptText("Subject");
@@ -201,7 +206,6 @@ public class AdminController {
                     String sql = "UPDATE user SET role_ID = 2 WHERE uid=  " + userID;
 
                     try {
-                        Connection connection = DBConn.connectDB();
                         PreparedStatement ps = connection.prepareStatement(sql);
                         ps.executeUpdate();
                     } catch (SQLException e) {
@@ -227,7 +231,6 @@ public class AdminController {
                     String sql = "UPDATE user SET role_ID = 1 WHERE uid=  " + userID;
 
                     try {
-                        Connection connection = DBConn.connectDB();
                         PreparedStatement ps = connection.prepareStatement(sql);
                         ps.executeUpdate();
                     } catch (SQLException e) {
@@ -376,7 +379,6 @@ public class AdminController {
         String sql = "SELECT * FROM user";
         ArrayList<User> users = new ArrayList<>();
         try {
-            Connection connection = DBConn.connectDB();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -431,7 +433,7 @@ public class AdminController {
     public void createNewBank() {
         String newBankName = newBankNameField.getText();
         if (!newBankName.isEmpty()) {
-            try (Connection connection = DBConn.connectDB()) {
+            try {
                 String sql = "INSERT INTO bank (bank_name) VALUES (?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, newBankName);
@@ -460,7 +462,7 @@ public class AdminController {
     public void deleteSelectedBank() {
         String selectedBank = bankListView.getSelectionModel().getSelectedItem();
         if (selectedBank != null) {
-            try (Connection connection = DBConn.connectDB()) {
+            try {
                 String sql = "DELETE FROM bank WHERE bank_name = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, selectedBank);
@@ -488,7 +490,7 @@ public class AdminController {
     private void loadBankList() {
         bankNames.clear();
 
-        try (Connection connection = DBConn.connectDB()) {
+        try {
             String sql = "SELECT bank_name FROM bank";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -508,7 +510,7 @@ public class AdminController {
         String updatedBankName = updateBankNameField.getText();
 
         if (selectedBank != null && !updatedBankName.isEmpty()) {
-            try (Connection connection = DBConn.connectDB()) {
+            try {
                 String sql = "UPDATE bank SET bank_name = ? WHERE bank_name = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, updatedBankName);
