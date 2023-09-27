@@ -10,8 +10,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9abf6f9a-f2d9-487e-8319-d7fb36438d43" name="Changes" comment="Forgot to save userID to user">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/HotelBookingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/HotelBookingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/demo/directions.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/demo/directions.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,6 +75,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../smartcity" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -84,6 +83,7 @@
       <recent name="C:\Users\maazh\eclipse-workspace\demo\target\classes\com\example\demo" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\maazh\eclipse-workspace\demo\src\main\resources\com\example\UML" />
       <recent name="D:\Xampp\htdocs\git\smartcity2\smartcity\src\main\resources\com\example\images" />
       <recent name="C:\Users\maazh\eclipse-workspace\demo\src\main\resources\com\example\demo" />
       <recent name="C:\Users\maazh\eclipse-workspace\demo\src\main\resources\com\example\images" />
