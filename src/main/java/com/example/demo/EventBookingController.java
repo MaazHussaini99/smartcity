@@ -14,7 +14,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
-// EventBookingController handles the interaction between the user interface and event booking functionality
+/**
+ * EventBookingController handles the interaction between the user interface and event booking functionality.
+ */
 public class EventBookingController {
     @FXML
     private VBox mainContentView;
@@ -63,75 +65,84 @@ public class EventBookingController {
     private void loadDataFromDatabase() {
         // Clear existing data
         bookingTableView.getItems().clear();
-        if(userRole == 1){
-            String sql = "SELECT e.event_name, e.event_date, e.event_location, e.event_price " +
-                    "FROM event_booking eb " +
-                    "INNER JOIN event e ON eb.event_id = e.event_id " +
-                    "WHERE eb.user_id = ?";
+        String sql = "SELECT e.event_name, e.event_date, e.event_location, e.event_price " +
+                "FROM event_booking eb " +
+                "INNER JOIN event e ON eb.event_id = e.event_id " +
+                "WHERE eb.user_id = ?";
 
-            try {
-                int userId = getUser_Id(); // Obtain the userId
+        try {
+            int userId = getUser_Id(); // Obtain the userId
 
-                Connection connection = DBConn.connectDB();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setInt(1, userId);
+            Connection connection = DBConn.connectDB();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, userId);
 
-                ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-                while (resultSet.next()) {
-                    String eventName = resultSet.getString("event_name");
-                    String eventLocation = resultSet.getString("event_location");
-                    String eventDate = resultSet.getString("event_date");
-                    double eventPrice = resultSet.getDouble("event_price");
+            while (resultSet.next()) {
+                String eventName = resultSet.getString("event_name");
+                String eventLocation = resultSet.getString("event_location");
+                String eventDate = resultSet.getString("event_date");
+                double eventPrice = resultSet.getDouble("event_price");
 
-                    Event event = new Event(eventName, eventLocation, eventDate, eventPrice);
-                    eventBookingData.add(event);
-                    bookingTableView.getItems().add(event);
-                }
-
-                // Close the resources
-                resultSet.close();
-                preparedStatement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                showErrorDialog("Error", "Failed to load event bookings.");
+                Event event = new Event(eventName, eventLocation, eventDate, eventPrice);
+                eventBookingData.add(event);
+                bookingTableView.getItems().add(event);
             }
-        } else if (userRole == 2) {
-            String sql = "SELECT e.event_name, e.event_date, e.event_location, e.event_price " +
-                    "FROM event_booking eb " +
-                    "INNER JOIN event e ON eb.event_id = e.event_id ";
 
-            try {
-
-                Connection connection = DBConn.connectDB();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                ResultSet resultSet = preparedStatement.executeQuery();
-
-                while (resultSet.next()) {
-                    String eventName = resultSet.getString("event_name");
-                    String eventLocation = resultSet.getString("event_location");
-                    String eventDate = resultSet.getString("event_date");
-                    double eventPrice = resultSet.getDouble("event_price");
-
-                    Event event = new Event(eventName, eventLocation, eventDate, eventPrice);
-                    eventBookingData.add(event);
-                    bookingTableView.getItems().add(event);
-                }
-
-                // Close the resources
-                resultSet.close();
-                preparedStatement.close();
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                showErrorDialog("Error", "Failed to load event bookings.");
-            }
+            // Close the resources
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorDialog("Error", "Failed to load event bookings.");
         }
+    }
+    private void loadBookingsForUser(String userEmail) {
+        // Query the database for bookings associated with the specified email
+        // Modify your SQL query to retrieve bookings for the given user's email
+        String sql = "SELECT e.event_name, e.event_date, e.event_location, e.event_price " +
+                "FROM event_booking eb " +
+                "INNER JOIN event e ON eb.event_id = e.event_id " +
+                "INNER JOIN user u ON eb.user_id = u.uid " +
+                "WHERE u.user_email = ?";
 
+        try {
+            Connection connection = DBConn.connectDB();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, userEmail);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Clear existing data
+            bookingTableView.getItems().clear();
+            while (resultSet.next()) {
+                String eventName = resultSet.getString("event_name");
+                String eventLocation = resultSet.getString("event_location");
+                String eventDate = resultSet.getString("event_date");
+                double eventPrice = resultSet.getDouble("event_price");
+
+                Event event = new Event(eventName, eventLocation, eventDate, eventPrice);
+                eventBookingData.add(event);
+                bookingTableView.getItems().add(event);
+            }
+
+            // Close the resources
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorDialog("Error", "Failed to load event bookings for the specified user.");
+        }
     }
 
-    // Get the user ID associated with the logged-in user
+    /**
+     * Get the user ID associated with the logged-in user.
+     *
+     * @return The user ID of the logged-in user.
+     */
     public int getUser_Id(){
         String userEmail = HotelBooking.getInstance().getEmailId();
         HotelBooking c = new HotelBooking();
@@ -139,7 +150,12 @@ public class EventBookingController {
         return userId;
     }
 
-    // Get the account ID associated with the user
+    /**
+     * Get the account ID associated with the user.
+     *
+     * @param userId The user ID for which to retrieve the account ID.
+     * @return The account ID associated with the user.
+     */
     public int getAccountId(int userId) {
         int accountId = -1; // Default value in case of an error
 
@@ -162,13 +178,32 @@ public class EventBookingController {
     // Handle the "View Bookings" button click event
     @FXML
     private void viewBookings(ActionEvent selectedEvent1) {
-        loadDataFromDatabase();
+        if (userRole == 2) {
+            // Create a dialog to prompt for the user's email
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("View User's Bookings");
+            dialog.setHeaderText("Enter User's Email");
+            dialog.setContentText("User Email:");
+
+            // Show the dialog and wait for user input
+            Optional<String> result = dialog.showAndWait();
+
+            // If the user entered an email, query the database
+            result.ifPresent(email -> {
+                // Call a method to load bookings for the specified email
+                loadBookingsForUser(email);
+            });
+        } else {
+            // If the user is not an admin, just load the bookings without prompting for email
+            loadDataFromDatabase();
+        }
         mainContentView.setVisible(false);
         event1Details.setVisible(false);
         event2Details.setVisible(false);
         event3Details.setVisible(false);
         bookingDetails.setVisible(true);
     }
+
 
     // Handle the main content view when returning from details or bookings view
     @FXML
@@ -189,7 +224,7 @@ public class EventBookingController {
     // Handle the selection of an event in the TableView
     @FXML
     private void handleEventSelection1(MouseEvent event) {
-         selectedItem = eventsTableView1.getSelectionModel().getSelectedItem();
+        selectedItem = eventsTableView1.getSelectionModel().getSelectedItem();
     }
 
     // Create a new event booking
@@ -330,7 +365,7 @@ public class EventBookingController {
     @FXML
     private void deleteBooking() {
         if(bookingTableView.isVisible() == true){
-             selectedItem = bookingTableView.getSelectionModel().getSelectedItem();
+            selectedItem = bookingTableView.getSelectionModel().getSelectedItem();
         }
         if (selectedItem == null) {
             showErrorDialog("Error", "No booking selected for deletion.");
@@ -378,7 +413,7 @@ public class EventBookingController {
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, eventName);
                 preparedStatement.setString(2, eventDate);
-               // preparedStatement.setInt(3, getUser_Id()); // You may need to replace this with the actual user ID
+                // preparedStatement.setInt(3, getUser_Id()); // You may need to replace this with the actual user ID
 
                 int rowsAffected = preparedStatement.executeUpdate();
                 return rowsAffected > 0;
