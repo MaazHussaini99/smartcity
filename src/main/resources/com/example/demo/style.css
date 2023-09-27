@@ -90,6 +90,79 @@ Button:hover {
     -fx-background-color: #66aede;
     -fx-text-fill: white;
 }
+.table-view .column-header {
+    -fx-background-color: linear-gradient(to bottom,#5892d6,#357ed4);
+    -fx-font-size: 13px;
+    -fx-font-family: "YU Gothic";
+}
+.table-view .label {
+    -fx-text-fill: white;
+}
+
+/* Styling the table cells */
+.table-row-cell:odd {
+    -fx-background-color: #dae8f7;
+    -fx-text-fill: #333;
+}
+.table-row-cell:even {
+    -fx-background-color: #bfd7f5;
+    -fx-text-fill: #333;
+}
+
+/* Styling selected rows */
+.table-row-cell:selected {
+    -fx-background-color: #66aede;
+    -fx-text-fill: white;
+}
+.table-view .column-header {
+    -fx-background-color: linear-gradient(to bottom,#5892d6,#357ed4);
+    -fx-font-size: 13px;
+    -fx-font-family: "YU Gothic";
+}
+.table-view .label {
+    -fx-text-fill: white;
+}
+
+/* Styling the table cells */
+.table-row-cell:odd {
+    -fx-background-color: #dae8f7;
+    -fx-text-fill: #333;
+}
+.table-row-cell:even {
+    -fx-background-color: #bfd7f5;
+    -fx-text-fill: #333;
+}
+
+/* Styling selected rows */
+.table-row-cell:selected {
+    -fx-background-color: #66aede;
+    -fx-text-fill: white;
+}
+
+.list-view .column-header {
+    -fx-background-color: linear-gradient(to bottom,#5892d6,#357ed4);
+    -fx-font-size: 13px;
+    -fx-font-family: "YU Gothic";
+}
+.list-view .label {
+    -fx-text-fill: white;
+}
+
+/* Styling the table cells */
+.list-row-cell:odd {
+    -fx-background-color: #dae8f7;
+    -fx-text-fill: #333;
+}
+.list-row-cell:even {
+    -fx-background-color: #bfd7f5;
+    -fx-text-fill: #333;
+}
+
+/* Styling selected rows */
+.list-row-cell:selected {
+    -fx-background-color: #66aede;
+    -fx-text-fill: white;
+}
 .hyperlink {
     -fx-text-fill: blue; /* Change the text color to blue */
     -fx-font-size: 12px; /* Change the font size to 14px */

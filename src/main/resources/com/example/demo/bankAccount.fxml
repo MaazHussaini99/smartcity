@@ -11,7 +11,6 @@
         <!-- Header Section -->
         <HBox alignment="TOP_RIGHT" spacing="20">
             <Button fx:id="backToLandingPageButton" onAction="#navigateBackToLandingPage" styleClass="header-button" text="Back to Landing Page" />
-            <Button fx:id="backToBankButton" onAction="#navigateBackToBank" styleClass="header-button" text="Back to Bank" />
         </HBox>
         <!-- Bank Selection Section -->
         <VBox alignment="CENTER" spacing="10.0">

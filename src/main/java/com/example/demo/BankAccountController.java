@@ -55,13 +55,7 @@ public class BankAccountController {
         // Call loadBankNames when the controller is initialized
         loadBankNames();
         loadBankAccounts();
-        if (userRole == 1) {
-            backToBankButton.setVisible(false);
-            backToLandingPageButton.setVisible(true);
-        } else if(userRole == 2){
-            backToBankButton.setVisible(true);
-            backToLandingPageButton.setVisible(false);
-        }
+
     }
 
     // Initialize the controller with data for the selected bank.

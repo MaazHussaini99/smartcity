@@ -638,12 +638,12 @@ public class LandingPageController extends NightLifeController implements Initia
         try {
 
             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("adminpanel2.fxml"));
-            Stage adminWindow = new Stage();
-            adminWindow.setTitle("Smart City - Admin Panel");
-            Scene scene = new Scene(fxmlLoader.load(), 700, 550);
-            adminWindow.setScene(scene);
-            adminWindow.initModality(Modality.APPLICATION_MODAL);
-            adminWindow.show();
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = (Stage) editProfileButton.getScene().getWindow();
+            stage.setTitle("Smart City - Admin Panel");
+            stage.setScene(scene);
+            stage.show();
+            stage.centerOnScreen();
 
         } catch (IOException e) {
             e.printStackTrace();
