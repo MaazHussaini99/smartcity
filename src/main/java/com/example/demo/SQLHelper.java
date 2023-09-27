@@ -10,13 +10,11 @@ import java.sql.SQLException;
  * often a bit too late
  */
 public class SQLHelper {
-
+    static Connection connection = DBConn.connectDB();
 
     public static ResultSet makeQuery(String sql) {
         ResultSet rs = null;
         try {
-
-            Connection connection = DBConn.connectDB();
             PreparedStatement selectStatement = connection.prepareStatement(sql);
             rs = selectStatement.executeQuery();
             return rs;
@@ -28,8 +26,6 @@ public class SQLHelper {
 
     public static void deleteQuery(String sql){
         try {
-
-            Connection connection = DBConn.connectDB();
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.executeQuery();
             System.out.print(sql+ " Executed");
