@@ -221,6 +221,7 @@ public class HotelBookingController extends EventsController{
                     hb.updateAccountBalance(accountId, balance);
                     showAlert(AlertType.INFORMATION, "Booking Success",
                             "Hotel booking changed successfully! Updated Cost: $" + totalCost);
+                    viewButtonClicked();
                 } else {
                     // Show an error message using an Alert
                     showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed.  Please check balance");
@@ -252,6 +253,7 @@ public class HotelBookingController extends EventsController{
             // Show a success message using an Alert
             showAlert(AlertType.INFORMATION, "Booking Success", "Hotel booking cancelled successfully! Amount Refunded: $"
                     + previousHotelBookingCost);
+            viewButtonClicked();
         } else {
             // Show an error message using an Alert
             showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed.");
@@ -319,6 +321,7 @@ public class HotelBookingController extends EventsController{
                     hb.updateAccountBalance(accountId, balance);
                     showAlert(AlertType.INFORMATION, "Booking Success",
                             "Hotel booking changed successfully! Updated Cost: $" + totalCost);
+                    viewButtonClicked();
                 } else {
                     // Show an error message using an Alert
                     showAlert(AlertType.ERROR, "Booking Error", "Hotel booking failed.  Please check balance");
