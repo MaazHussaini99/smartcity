@@ -29,7 +29,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -109,29 +108,6 @@ public class LandingPageController extends NightLifeController implements Initia
         try {
             SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1);
             ticketSpinner.setValueFactory(valueFactory);
-
-            ObservableList<News> newsItems = FXCollections.observableArrayList(News.getNews());
-
-            // Initialize the dialog panes and images for the first news article
-            populateNewsPanes(newsItems, currentNewsIndex);
-
-            // Add an event handler for the "Next" button
-            nextButton.setOnAction(event -> {
-                if (currentNewsIndex + 1 < newsItems.size() - 2) {
-                    currentNewsIndex++;
-                    populateNewsPanes(newsItems, currentNewsIndex);
-                }
-            });
-            previousButton.setOnAction(event -> {
-                if (currentNewsIndex - 1 < newsItems.size() - 2) {
-                    if (currentNewsIndex == 0) {
-                        currentNewsIndex = 1;
-                    }
-                    currentNewsIndex--;
-                    populateNewsPanes(newsItems, currentNewsIndex);
-                }
-            });
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -141,10 +117,57 @@ public class LandingPageController extends NightLifeController implements Initia
         loadJobTab();
         loadTransportTab();
         loadWeatherPane();
+        loadNewsPane();
         MapController maps = new MapController();
         maps.showMap(webviewMap);
     }
 
+    public void loadNewsPane(){
+        Task<Void> loadNewsPaneTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                ObservableList<News> newsItems = null;
+                try{
+                    newsItems = FXCollections.observableArrayList(News.getNews());
+
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+
+                }
+
+                ObservableList<News> finalNewsItems = newsItems;
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        populateNewsPanes(finalNewsItems, currentNewsIndex);
+
+                        // Add an event handler for the "Next" button
+                        nextButton.setOnAction(event -> {
+                            if (currentNewsIndex + 1 < finalNewsItems.size() - 2) {
+                                currentNewsIndex++;
+                                populateNewsPanes(finalNewsItems, currentNewsIndex);
+                            }
+                        });
+                        previousButton.setOnAction(event -> {
+                            if (currentNewsIndex - 1 < finalNewsItems.size() - 2) {
+                                if (currentNewsIndex == 0) {
+                                    currentNewsIndex = 1;
+                                }
+                                currentNewsIndex--;
+                                populateNewsPanes(finalNewsItems, currentNewsIndex);
+                            }
+                        });
+                    }
+                });
+                return null;
+            };
+        };
+
+        Thread loadNewsPaneThread = new Thread(loadNewsPaneTask);
+        loadNewsPaneThread.start();
+
+    }
 
     private void loadWeatherPane(){
         Task<Void> loadJobTab = new Task<Void>() {
