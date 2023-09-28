@@ -14,17 +14,7 @@ DAX SHETHIA​
 KEVIN ZHENG​
 
 ## Application Screenshots
-![Picture1](https://github.com/MaazHussaini99/smartcity/assets/65371441/31aab785-6da3-493c-a9c2-a27c74c1ac82)
-![Picture2](https://github.com/MaazHussaini99/smartcity/assets/65371441/d1086342-9b04-4b1f-bb4e-7319a2aeb030)
-![Picture3](https://github.com/MaazHussaini99/smartcity/assets/65371441/8b75fade-ce36-47f7-9705-eddc6f13433d)
-![Picture4](https://github.com/MaazHussaini99/smartcity/assets/65371441/7f748a5f-4bbe-4db1-8e87-26db009f218d)
-![Picture5](https://github.com/MaazHussaini99/smartcity/assets/65371441/e7b02db7-0c60-4170-b73c-1a170e7e19ac)
-![Picture6](https://github.com/MaazHussaini99/smartcity/assets/65371441/bae70146-581d-474b-b108-c4ca95ef1c9c)
-![Picture7](https://github.com/MaazHussaini99/smartcity/assets/65371441/d0671639-a119-493c-a73a-02fee2d1adca)
-<img width="422" alt="Picture8" src="https://github.com/MaazHussaini99/smartcity/assets/65371441/654b70d9-6119-4eb9-a9d9-39dc3e588463">
-![Picture9](https://github.com/MaazHussaini99/smartcity/assets/65371441/e2359852-da25-4693-b5f4-e03ea191b4c6)
-![Picture10](https://github.com/MaazHussaini99/smartcity/assets/65371441/22ed5c47-0c60-4697-a6f8-2e6a999252dd)
-![Picture11](https://github.com/MaazHussaini99/smartcity/assets/65371441/b91362dc-6a75-40ae-9589-f2b149a29fef)
+![Picture1](https://github.com/MaazHussaini99/smartcity/assets/65371441/31aab785-6da3-493c-a9c2-a27c74c1ac82)![Picture2](https://github.com/MaazHussaini99/smartcity/assets/65371441/d1086342-9b04-4b1f-bb4e-7319a2aeb030)![Picture3](https://github.com/MaazHussaini99/smartcity/assets/65371441/8b75fade-ce36-47f7-9705-eddc6f13433d)![Picture4](https://github.com/MaazHussaini99/smartcity/assets/65371441/7f748a5f-4bbe-4db1-8e87-26db009f218d)![Picture5](https://github.com/MaazHussaini99/smartcity/assets/65371441/e7b02db7-0c60-4170-b73c-1a170e7e19ac)![Picture6](https://github.com/MaazHussaini99/smartcity/assets/65371441/bae70146-581d-474b-b108-c4ca95ef1c9c)![Picture7](https://github.com/MaazHussaini99/smartcity/assets/65371441/d0671639-a119-493c-a73a-02fee2d1adca)<img width="422" alt="Picture8" src="https://github.com/MaazHussaini99/smartcity/assets/65371441/654b70d9-6119-4eb9-a9d9-39dc3e588463">![Picture9](https://github.com/MaazHussaini99/smartcity/assets/65371441/e2359852-da25-4693-b5f4-e03ea191b4c6)![Picture10](https://github.com/MaazHussaini99/smartcity/assets/65371441/22ed5c47-0c60-4697-a6f8-2e6a999252dd)![Picture11](https://github.com/MaazHussaini99/smartcity/assets/65371441/b91362dc-6a75-40ae-9589-f2b149a29fef)
 
 ## ERD Diagram
 ![asdsadsadsad23](https://github.com/MaazHussaini99/smartcity/assets/65371441/e7ed24f2-11e5-4ad7-8be2-db34f61f614f)
