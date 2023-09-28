@@ -159,7 +159,7 @@ public class JobListing {
         String sql = "DELETE FROM jobs WHERE job_id=?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, jobID);
-        preparedStatement.executeQuery();
+        preparedStatement.executeUpdate();
     }
 
     /**
@@ -204,7 +204,7 @@ public class JobListing {
     public static void postJob(Job job) throws SQLException {
 
         String sql = String.format("INSERT INTO jobs VALUES ('%s','%s', '%s', '%s', '%s')",
-                job.getJobId(),job.getJobTitle(),"","null",0,job.getJobAgency());
+                job.getJobId(),job.getJobTitle(),job.getJobGrade(),job.getJobAgency(),job.getJobLocation());
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.executeUpdate();
         getJob(job);

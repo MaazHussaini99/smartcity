@@ -314,9 +314,10 @@ public class LandingPageController extends NightLifeController implements Initia
             }
         });
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
-        titleColumn.setMinWidth(348);
+        titleColumn.setMinWidth(370);
         gradeColumn.setCellValueFactory(cellData -> cellData.getValue().JobGradeProperty());
         agencyColumn.setCellValueFactory(cellData -> cellData.getValue().JobAgencyProperty());
+        agencyColumn.setMinWidth(200);
         locationColumn.setCellValueFactory(cellData -> cellData.getValue().JobLocationProperty());
         applyColumn.setCellFactory(column -> new TableCell<Job, String>() {
 
@@ -542,7 +543,7 @@ public class LandingPageController extends NightLifeController implements Initia
                 currentJob = JobListing.addJob(title, grade, agency, city);
                 jobTableView.getItems().add(0,currentJob);
             } else if (flag == 3) {
-                //JobListing.removeJob(currentJob);
+                JobListing.removeJob(currentJob);
                 jobTableView.getItems().remove(currentJob);
             }
         } catch (SQLException e) {
