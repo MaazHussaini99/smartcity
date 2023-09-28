@@ -13,6 +13,8 @@ DAX SHETHIA​
 
 KEVIN ZHENG​
 ​
+
+## Plant UML for Every Java Class
 ![AdminController_structure](https://github.com/MaazHussaini99/smartcity/assets/65371441/1554d80a-87e8-43d4-a25a-8be1e7b78362)
 
 ![image](https://github.com/MaazHussaini99/smartcity/assets/65371441/f9753fc6-d734-462d-92b0-fc67e6975cca)
