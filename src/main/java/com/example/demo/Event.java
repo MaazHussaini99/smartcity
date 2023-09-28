@@ -1,4 +1,7 @@
 package com.example.demo;
+/**
+ * Author: Ravi
+ */
 
 /**
  * Represents an Event with event details.

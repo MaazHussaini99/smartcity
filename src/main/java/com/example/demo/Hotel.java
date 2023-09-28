@@ -1,4 +1,7 @@
 package com.example.demo;
+/**
+ * Author: Rahul
+ */
 
 /**
  * The Hotel class represents a hotel entity with attributes like hotel ID, name, location, price, room number, and availability.

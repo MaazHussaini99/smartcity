@@ -1,4 +1,7 @@
 package com.example.demo;
+/**
+ * Author: Rahul
+ */
 
 public class HotelBookings {
     private int hotelBookingId;

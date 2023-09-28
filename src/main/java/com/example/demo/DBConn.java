@@ -1,9 +1,10 @@
 package com.example.demo;
+/**
+ * Author: Maaz
+ */
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 /**
  * Provides a utility class for establishing a database connection.

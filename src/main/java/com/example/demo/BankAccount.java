@@ -1,5 +1,6 @@
 package com.example.demo;
 /**
+ * Author: Ravi
  * Represents a bank account entity.
  * This class encapsulates information about a user's bank account,
  * including account number, user ID, bank ID, and routing number.

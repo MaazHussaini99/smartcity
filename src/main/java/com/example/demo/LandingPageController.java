@@ -1,4 +1,7 @@
 package com.example.demo;
+/**
+ * Authors: Dax, Maaz
+ */
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;

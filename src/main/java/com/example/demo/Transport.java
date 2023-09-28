@@ -1,5 +1,9 @@
 package com.example.demo;
 
+/**
+ * Author: Maaz
+ */
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -63,6 +67,9 @@ class Bus {
         return routeMainId;
     }
 }
+/**
+ * Author: Maaz
+ */
 
 /**
  * Represents a specific point in time when a bus stops at a station.

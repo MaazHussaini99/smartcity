@@ -1,4 +1,7 @@
 package com.example.demo;
+/**
+ * Authors: Maaz, Dax, Kevin, Rahul, Ravi, Owen
+ */
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
