@@ -150,12 +150,8 @@
 
                                 <TableView fx:id="hotelBookingListView" onMouseClicked="#handleHotelBookingSelection" prefHeight="300.0" prefWidth="550.0" visible="false">
                                     <columns>
-                                        <TableColumn text="Hotel Booking Id">
-                                            <cellValueFactory>
-                                                <PropertyValueFactory property="hotelBookingId" />
-                                            </cellValueFactory>
-                                        </TableColumn>
-                                        <TableColumn text="Hotel Name">
+
+                                        <TableColumn prefWidth="200.0" text="Hotel Name">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelNamee" />
                                             </cellValueFactory>
@@ -165,17 +161,17 @@
                                                 <PropertyValueFactory property="hotelLocationn" />
                                             </cellValueFactory>
                                         </TableColumn>
-                                        <TableColumn prefWidth="200.0" text="Check In Time">
+                                        <TableColumn prefWidth="150.0" text="Check In Time">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="checkInTime" />
                                             </cellValueFactory>
                                         </TableColumn>
-                                        <TableColumn prefWidth="200.0" text="Check Out Time">
+                                        <TableColumn prefWidth="150.0" text="Check Out Time">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="checkOutTime" />
                                             </cellValueFactory>
                                         </TableColumn>
-                                        <TableColumn text="Hotel Total Cost">
+                                        <TableColumn prefWidth="150.0" text="Hotel Total Cost">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="hotelTotalCost" />
                                             </cellValueFactory>

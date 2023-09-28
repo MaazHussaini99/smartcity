@@ -47,7 +47,19 @@ public class AdminController {
 
     @FXML
     private HBox buttonBox;
+    @FXML
+    private VBox bankView;
 
+    @FXML
+    private TextField newBankNameField;
+    @FXML
+    private ListView<String> bankListView;
+
+    @FXML
+    private TextField updateBankNameField;
+
+    @FXML
+    private VBox deleteAndUpdateContainer;
     private ArrayList<User> currentList;
 
     boolean writingEmail = false;
@@ -401,19 +413,7 @@ public class AdminController {
             throw new RuntimeException(e);
         }
     }
-    @FXML
-    private VBox bankView;
 
-    @FXML
-    private TextField newBankNameField;
-    @FXML
-    private ListView<String> bankListView;
-
-    @FXML
-    private TextField updateBankNameField;
-
-    @FXML
-    private VBox deleteAndUpdateContainer;
     // Add a flag to track whether to show the "Delete" and "Update" sections
     private boolean showDeleteAndUpdate = false;
     public ObservableList<String> bankNames = FXCollections.observableArrayList();
