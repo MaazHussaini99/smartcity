@@ -12,7 +12,12 @@ RAHUL SATLA​
 DAX SHETHIA​
 
 KEVIN ZHENG​
-​
+
+## ERD Diagram
+![asdsadsadsad23](https://github.com/MaazHussaini99/smartcity/assets/65371441/e7ed24f2-11e5-4ad7-8be2-db34f61f614f)
+
+## Context Diagram
+![asdsadsadsad](https://github.com/MaazHussaini99/smartcity/assets/65371441/446bc0a5-cb07-440e-a5c7-0d863feaeefb)
 
 ## Plant UML for Every Java Class
 ![AdminController_structure](https://github.com/MaazHussaini99/smartcity/assets/65371441/1554d80a-87e8-43d4-a25a-8be1e7b78362)
@@ -69,3 +74,8 @@ KEVIN ZHENG​
 ![image](https://github.com/MaazHussaini99/smartcity/assets/65371441/31b120f2-ee06-42d1-bb78-2e06657b0925)
 
 ![image](https://github.com/MaazHussaini99/smartcity/assets/65371441/46e3afd4-73c4-44c6-9ff5-fd7e96eba0db)
+
+## Trello Board (Project Management)
+![asdsadsadsad213](https://github.com/MaazHussaini99/smartcity/assets/65371441/f4c7d031-8576-4b26-8c96-3c74c0f1799d)
+
+
